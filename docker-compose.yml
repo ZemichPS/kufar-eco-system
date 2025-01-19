@@ -1,0 +1,96 @@
+version: "3.7"
+
+networks:
+  application-net:
+    driver: bridge
+
+
+services:
+
+  kufarspy:
+    image: kufarspy-application:latest
+    restart: always
+    ports:
+      - "8081:8081"
+    depends_on:
+      - config-server
+    networks:
+      - application-net
+
+
+  service-discovery:
+    image: discovery-service:latest
+    restart: always
+    ports:
+      - "8761:8761"
+    depends_on:
+      - grafana
+      - prometheus
+      - redis
+      - minio
+    networks:
+      - application-net
+
+
+  config-server:
+    image: config-server:latest
+    restart: always
+    ports:
+      - "8888:8888"
+    depends_on:
+      - service-discovery
+    networks:
+      - application-net
+
+
+  grafana:
+    image: grafana/grafana:latest
+    restart: always
+    ports:
+      - "3000:3000"
+    container_name: grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - application-net
+
+  minio:
+    image: 'bitnami/minio:latest'
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      - MINIO_ROOT_USER=minio-root-user
+      - MINIO_ROOT_PASSWORD=minio-root-password
+    networks:
+      - application-net
+
+
+  redis:
+    container_name: redis-cache
+    image: redis:8.0-M02-alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - application-net
+
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:latest
+    restart: always
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      # - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.time=90d'
+      - '--storage.tsdb.retention.size=3GB'
+      - '--web.enable-lifecycle'
+    networks:
+      - application-net
+
+

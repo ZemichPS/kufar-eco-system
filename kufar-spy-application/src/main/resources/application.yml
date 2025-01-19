@@ -1,0 +1,49 @@
+spring:
+  application:
+    name: kufarspy
+  profiles:
+    active: prod
+
+management:
+  metrics:
+    enable:
+      all: true
+  endpoints:
+    access:
+      default: unrestricted
+    web:
+      exposure:
+        include: metrics, health, info, env, prometheus, openapi, swagger-ui
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+        step: "5s"
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      access: unrestricted
+    scheduledtasks:
+      access: read_only
+    shutdown:
+      access: read_only
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+  show-actuator: false
+  api-docs:
+    enabled: true
+
+
+rest-client:
+  user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36
+
+telegram:
+  token: 7899332979:AAHbNgTpqFhNs3GSFggBduf-kPnLmAZOhPM
+  name: KufarSpy
+
+minio:
+  notification-image-bucket-name: notification-images

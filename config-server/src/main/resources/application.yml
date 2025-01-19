@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: configserver
+
+  cloud:
+    config:
+      discovery:
+        service-id: configserver
+      server:
+        git:
+          uri: https://github.com/ZemichPS/kufarspy-config
+          skipSslValidation: true
+          force-pull: true
+          ignore-local-ssh-settings: true
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+    serviceUrl:
+      defaultZone: http://service-discovery:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: false
+
+encrypt:
+  key: ${ENCRYPT_KEY:secret}
+
+server:
+  port: 8888
+  address: 0.0.0.0
