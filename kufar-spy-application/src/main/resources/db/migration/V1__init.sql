@@ -1,6 +1,7 @@
 SET timezone = 'Europe/Minsk';
 
-CREATE SCHEMA app;
+CREATE DATABASE kufardb;
+CREATE SCHEMA kufardb.app;
 
 CREATE TABLE app.advertisements
 (

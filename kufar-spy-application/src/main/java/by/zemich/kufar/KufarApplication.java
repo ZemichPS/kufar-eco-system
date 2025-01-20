@@ -17,7 +17,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 }
 )
 @EnableDiscoveryClient
-//@EnableCaching
 @SpringBootApplication
 public class KufarApplication {
 

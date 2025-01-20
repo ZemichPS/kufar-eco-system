@@ -20,9 +20,8 @@ public class RedisConnectionConfig {
 
     RedisStandaloneConfiguration configuration() {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
-        configuration.setHostName("localhost"); // заменить на in-memory-db из docker compose (название сервиса)
+        configuration.setHostName("redis");
         configuration.setPort(6379);
-
         return configuration;
     }
 

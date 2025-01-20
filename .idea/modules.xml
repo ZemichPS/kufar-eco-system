@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/kufar.iml" filepath="$PROJECT_DIR$/.idea/kufar.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/kufar-eco-system.iml" filepath="$PROJECT_DIR$/.idea/kufar-eco-system.iml" />
     </modules>
   </component>
 </project>

@@ -13,17 +13,6 @@ import javax.sql.DataSource;
 @EnableJpaRepositories(basePackages = "by.zemich.kufar.infrastructure.repository.jparepository")
 public class DatasourceProdConfig {
 
-    @Bean
-    @Profile("prod")
-    DataSource dataSource(){
-        HikariConfig config = new HikariConfig();
-        config.setDriverClassName("org.postgresql.Driver");
-        config.setJdbcUrl("jdbc:postgresql://localhost:5432/kufar_parser");
-        config.setUsername("postgres");
-        config.setPassword("postgres");
-        config.setSchema("app");
-        return new HikariDataSource(config);
-    }
 
     @Profile("test")
     @Bean

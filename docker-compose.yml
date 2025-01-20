@@ -14,9 +14,23 @@ services:
       - "8081:8081"
     depends_on:
       - config-server
+    environment:
+      DB_PASSWORD: postgresql
     networks:
       - application-net
 
+
+  kufarspy-db:
+    image: postgres
+    container_name: kufar_postgres_db
+    restart: always
+    environment:
+      DB_USERNAME: postgres_user_admin
+      DB_PASSWORD: postgres_db_password
+    volumes:
+      - d:/postgres_data:var/lib/postgresql/data
+    networks:
+      - application-net
 
   service-discovery:
     image: discovery-service:latest
@@ -75,6 +89,7 @@ services:
       - "6379:6379"
     networks:
       - application-net
+
 
   prometheus:
     container_name: prometheus
