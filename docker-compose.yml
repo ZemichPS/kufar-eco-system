@@ -28,7 +28,7 @@ services:
       DB_USERNAME: postgres_user_admin
       DB_PASSWORD: postgres_db_password
     volumes:
-      - d:/postgres_data:var/lib/postgresql/data
+      - D:/docker-data/kufarspy/db:var/lib/postgresql/data
     networks:
       - application-net
 
@@ -55,7 +55,6 @@ services:
       - service-discovery
     networks:
       - application-net
-
 
   grafana:
     image: grafana/grafana:latest
@@ -99,7 +98,7 @@ services:
       - "9090:9090"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
-      # - prometheus-data:/prometheus
+      - D:/docker-data/kufarspy/prometheus-data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.retention.time=90d'
