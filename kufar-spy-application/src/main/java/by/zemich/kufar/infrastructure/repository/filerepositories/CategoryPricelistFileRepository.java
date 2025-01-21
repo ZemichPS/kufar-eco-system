@@ -20,9 +20,9 @@ public class CategoryPricelistFileRepository implements CategoryPriceListReposit
 
     public Map<String, BigDecimal> getCategoryShoesPriceList() {
         try {
-            Path pathToFile = Path.of(ClassLoader.getSystemResource(SHOES_TYPE_PRICE_LIST_FILENAME)
-                    .toURI());
-
+            var resource = Thread.currentThread().getContextClassLoader().getResource(SHOES_TYPE_PRICE_LIST_FILENAME);
+            assert resource != null;
+            Path pathToFile = Path.of(resource.toURI());
             return Files.readAllLines(pathToFile).stream()
                     .map(String::toLowerCase)
                     .map(line -> line.split("-"))
@@ -38,9 +38,9 @@ public class CategoryPricelistFileRepository implements CategoryPriceListReposit
 
     public Map<String, BigDecimal> getCategoryClothesPriceList() {
         try {
-            Path pathToFile = Path.of(ClassLoader.getSystemResource(CLOTHING_TYPE_PRICE_LIST_FILENAME)
-                    .toURI());
-
+            var resource = Thread.currentThread().getContextClassLoader().getResource(CLOTHING_TYPE_PRICE_LIST_FILENAME);
+            assert resource != null;
+            Path pathToFile = Path.of(resource.toURI());
             return Files.readAllLines(pathToFile).stream()
                     .map(String::toLowerCase)
                     .map(line -> line.split("-"))

@@ -47,20 +47,6 @@ public class AdviceController {
         return ErrorResponse.of("METHOD_NOT_ALLOWED", "HTTP method not allowed", ex.getMessage());
     }
 
-    @ExceptionHandler(AccessDeniedException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ErrorResponse handleAccessDenied(AccessDeniedException ex) {
-        return ErrorResponse.of("ACCESS_DENIED", "Access denied", ex.getMessage());
-    }
-
-    @ExceptionHandler({
-            ResourceNotFoundException.class,
-            EntityNotFoundException.class
-    })
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleResourceNotFound(ResourceNotFoundException ex) {
-        return ErrorResponse.of("RESOURCE_NOT_FOUND", ex.getMessage());
-    }
 
     @ExceptionHandler(NoHandlerFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)

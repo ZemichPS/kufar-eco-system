@@ -13,24 +13,37 @@ services:
     ports:
       - "8081:8081"
     depends_on:
-      - config-server
+      service-discovery:
+        condition: service_healthy
+      kufarspy-db:
+        condition: service_healthy
     environment:
-      DB_PASSWORD: postgresql
+      DB_USERNAME: postgres_user_admin
+      DB_PASSWORD: postgres_db_password
+      FLYWAY_LOG_LEVEL: DEBUG
     networks:
       - application-net
 
 
   kufarspy-db:
-    image: postgres
+    image: postgres:17.2
     container_name: kufar_postgres_db
     restart: always
+    depends_on:
+      - service-discovery
     environment:
-      DB_USERNAME: postgres_user_admin
-      DB_PASSWORD: postgres_db_password
+      POSTGRES_USER: postgres_user_admin
+      POSTGRES_PASSWORD: postgres_db_password
+      POSTGRES_DB: kufardb
     volumes:
-      - D:/docker-data/kufarspy/db:var/lib/postgresql/data
+      - E:/docker-data/kufarspy/db:/var/lib/postgresql/data
     networks:
       - application-net
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres_user_admin -d kufardb || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   service-discovery:
     image: discovery-service:latest
@@ -44,6 +57,11 @@ services:
       - minio
     networks:
       - application-net
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8761/eureka/apps" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 
   config-server:
@@ -52,7 +70,8 @@ services:
     ports:
       - "8888:8888"
     depends_on:
-      - service-discovery
+      service-discovery:
+        condition: service_healthy
     networks:
       - application-net
 
@@ -98,7 +117,7 @@ services:
       - "9090:9090"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
-      - D:/docker-data/kufarspy/prometheus-data:/prometheus
+      - E:/docker-data/kufarspy/prometheus-data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.retention.time=90d'

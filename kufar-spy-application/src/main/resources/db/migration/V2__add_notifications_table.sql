@@ -1,4 +1,4 @@
-CREATE TABLE app.notifications
+CREATE TABLE IF NOT EXISTS app.notifications
 (
     id           uuid,
     title        varchar(100),

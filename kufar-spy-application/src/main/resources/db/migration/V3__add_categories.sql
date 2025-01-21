@@ -1,4 +1,4 @@
-CREATE TABLE app.categories
+CREATE TABLE IF NOT EXISTS app.categories
 (
     id      varchar(20) PRIMARY KEY,
     name    varchar(100),
@@ -6,7 +6,7 @@ CREATE TABLE app.categories
     ordered varchar(10)
 );
 
-CREATE TABLE app.subcategories
+CREATE TABLE IF NOT EXISTS app.subcategories
 (
     id       varchar(20) PRIMARY KEY,
     parent   varchar(100),

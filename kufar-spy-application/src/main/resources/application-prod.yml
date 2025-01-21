@@ -7,7 +7,7 @@ spring:
     password: ${DB_PASSWORD}
     hikari:
       pool-name: HikariPool
-      maximum-pool-size: 20 # Максимальное количество подключений в пуле
+      maximum-pool-size: 20 
       minimum-idle: 5       # Минимальное количество подключений в ожидании
       idle-timeout: 30000   # Тайм-аут ожидания (в миллисекундах) для неактивных соединений
       max-lifetime: 1800000 # Максимальное время жизни соединения (в миллисекундах)
@@ -29,12 +29,15 @@ spring:
         jdbc.lob.non_contextual_creation: true
         default_batch_fetch_size: 50 # Оптимизация пакетной выборки
         jdbc.batch_size: 30         # Оптимизация пакетных вставок
+        default_schema: app
 
   flyway:
     enabled: true
+    baseline-on-migrate: true
+
+
   config:
     import: "configserver:"
-
   cloud:
     config:
       discovery:

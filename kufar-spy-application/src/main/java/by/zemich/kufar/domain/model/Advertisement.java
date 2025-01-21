@@ -63,6 +63,7 @@ public class Advertisement {
         private String label;
     }
 
+
     public Optional<String> getBrand() {
         return this.parameters.stream()
                 .filter(param -> "phones_brand".equals(param.identity))

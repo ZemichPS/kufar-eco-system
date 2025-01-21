@@ -1,5 +1,7 @@
 package by.zemich.kufar.infrastructure.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -17,20 +19,21 @@ import java.time.Duration;
 @EnableCaching
 public class CacheConfig {
     @Bean
-    public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+    public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory, ObjectMapper objectMapper) {
         return RedisCacheManager.builder(connectionFactory)
-                .cacheDefaults(getRedisCacheConfig())
+                .cacheDefaults(getRedisCacheConfig(objectMapper))
                 .enableStatistics()
                 .transactionAware()
                 .build();
     }
 
-    private RedisCacheConfiguration getRedisCacheConfig() {
+    private RedisCacheConfiguration getRedisCacheConfig(ObjectMapper objectMapper) {
+
         return RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(Duration.ofMinutes(30))
                 .enableTimeToIdle()
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()))
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer(objectMapper)))
                 .disableCachingNullValues();
     }
 }

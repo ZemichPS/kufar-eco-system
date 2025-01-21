@@ -49,8 +49,8 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
     implementation 'org.springframework.retry:spring-retry'
     implementation 'org.flywaydb:flyway-core'
-
-
+    implementation 'org.flywaydb:flyway-database-postgresql'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.2' // НУЖЕН ЛИ?
 
     implementation 'org.telegram:telegrambots:6.9.7.1'
     implementation 'io.micrometer:micrometer-registry-prometheus'

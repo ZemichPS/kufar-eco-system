@@ -1,9 +1,8 @@
 SET timezone = 'Europe/Minsk';
 
-CREATE DATABASE kufardb;
-CREATE SCHEMA kufardb.app;
+CREATE SCHEMA IF NOT EXISTS app;
 
-CREATE TABLE app.advertisements
+CREATE TABLE IF NOT EXISTS app.advertisements
 (
     id           UUID PRIMARY KEY,
     ad_id        BIGSERIAL,
@@ -22,7 +21,7 @@ CREATE TABLE app.advertisements
     images TEXT
 );
 
-CREATE TABLE app.users
+CREATE TABLE IF NOT EXISTS app.users
 (
     id               UUID PRIMARY KEY,
     username         VARCHAR(50),
@@ -33,7 +32,7 @@ CREATE TABLE app.users
     CONSTRAINT unique_chat_id UNIQUE (telegram_chat_id)
 );
 
-CREATE TABLE app.geo
+CREATE TABLE IF NOT EXISTS app.geo
 (
     id     BIGSERIAL PRIMARY KEY,
     pid    BIGSERIAL,
@@ -44,13 +43,13 @@ CREATE TABLE app.geo
     area   INTEGER
 );
 
-CREATE TABLE app.manufactures
+CREATE TABLE IF NOT EXISTS app.manufactures
 (
     id   BIGSERIAL PRIMARY KEY,
     name VARCHAR(100)
 );
 
-CREATE TABLE app.models
+CREATE TABLE IF NOT EXISTS app.models
 (
     id             UUID PRIMARY KEY,
     kufar_id VARCHAR(100),

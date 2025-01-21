@@ -7,6 +7,7 @@ import by.zemich.kufar.domain.model.Notification;
 import by.zemich.kufar.domain.policy.*;
 import by.zemich.kufar.application.service.TelegramPostManager;
 import by.zemich.kufar.domain.policy.api.Policy;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -14,6 +15,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import java.math.BigDecimal;
 import java.util.List;
 
+@Slf4j
 @Component
 @Profile("prod")
 public class BrandedWomenClothesChannel extends TelegramChannel {
@@ -24,7 +26,7 @@ public class BrandedWomenClothesChannel extends TelegramChannel {
     private final CategoryPriceListRepository categoryPriceListRepository;
 
     public BrandedWomenClothesChannel(PhotoMessenger<SendPhoto> messenger,
-                                      PostManager<SendPhoto,Advertisement> telegramPostManager,
+                                      PostManager<SendPhoto, Advertisement> telegramPostManager,
                                       CategoryPriceListRepository categoryPriceListRepository,
                                       ClothesBrandsRepository clothesBrandsRepository,
                                       NotificationPostManager<SendPhoto, Notification> notificationPostManager
@@ -58,17 +60,23 @@ public class BrandedWomenClothesChannel extends TelegramChannel {
 
     @Override
     protected List<Policy<Advertisement>> createPolicies() {
-        return List.of(new OnlyDefiniteCategory("8110")
-                        .or(new OnlyDefiniteCategory("8080"))
-                        .or(new OnlyDefiniteCategory("8100"))
-                        .or(new OnlyDefiniteCategory("8020")),
-                new OnlyOwnersAds(),
-                new OnlyOriginalGoodsPolicy(),
-                new OnlyBrandClothesPolicy().or(new OnlyBrandWoomanShoesPolicy()),
-                new OnlyDefinedClothingBrandPolicy(clothesBrandsRepository.get()),
-                new MinPriceForNewGoodsPolicy(new BigDecimal(40)),
-                new WomenClothingPricePolicy(categoryPriceListRepository.getCategoryClothesPriceList())
-                        .or(new WomenShoesPricePolicy(categoryPriceListRepository.getCategoryShoesPriceList()))
-        );
+        try {
+            return List.of(new OnlyDefiniteCategory("8110")
+                            .or(new OnlyDefiniteCategory("8080"))
+                            .or(new OnlyDefiniteCategory("8100"))
+                            .or(new OnlyDefiniteCategory("8020")),
+                    new OnlyOwnersAds(),
+                    new OnlyOriginalGoodsPolicy(),
+                    new OnlyBrandClothesPolicy().or(new OnlyBrandWoomanShoesPolicy()),
+                    new OnlyDefinedClothingBrandPolicy(clothesBrandsRepository.get()),
+                    new MinPriceForNewGoodsPolicy(new BigDecimal(40)),
+                    new WomenClothingPricePolicy(categoryPriceListRepository.getCategoryClothesPriceList())
+                            .or(new WomenShoesPricePolicy(categoryPriceListRepository.getCategoryShoesPriceList()))
+            );
+        } catch (Exception e) {
+            log.error("Error initializing policies for channel: {}", getChannelName(), e);
+            throw e;
+        }
+
     }
 }

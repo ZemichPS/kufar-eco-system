@@ -11,11 +11,12 @@ import java.util.List;
 
 @Service
 public class ClothesBrandsFileRepository implements ClothesBrandsRepository {
-    private final String FILENAME = "clothes_brands";
+    private final String FILENAME = "clothes_brands.txt";
 
     public List<String> get() {
         try {
-            Path path = Path.of(ClassLoader.getSystemResource(FILENAME).toURI());
+            var resource = Thread.currentThread().getContextClassLoader().getResource(FILENAME);
+            Path path = Path.of(resource.toURI());
             return Files.readAllLines(path)
                     .stream()
                     .map(String::toLowerCase)
