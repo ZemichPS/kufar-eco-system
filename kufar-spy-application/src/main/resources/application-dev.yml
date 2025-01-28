@@ -1,0 +1,65 @@
+spring:
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/kufardb
+    username: postgres_user_admin
+    password: postgres_db_password
+    hikari:
+      pool-name: HikariPool
+      maximum-pool-size: 20 
+      minimum-idle: 5       # Минимальное количество подключений в ожидании
+      idle-timeout: 30000   # Тайм-аут ожидания (в миллисекундах) для неактивных соединений
+      max-lifetime: 1800000 # Максимальное время жизни соединения (в миллисекундах)
+      connection-timeout: 30000 # Тайм-аут для получения соединения из пула
+      validation-timeout: 5000 # Тайм-аут для проверки соединения
+      connection-test-query: SELECT 1
+  jpa:
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: io.hypersistence.utils.hibernate.naming.CamelCaseToSnakeCaseNamingStrategy
+    show-sql: false
+    database: postgresql
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+        use_sql_comments: false
+        jdbc.lob.non_contextual_creation: true
+        default_batch_fetch_size: 50 # Оптимизация пакетной выборки
+        jdbc.batch_size: 30         # Оптимизация пакетных вставок
+        default_schema: app
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+  config:
+    import: configserver:http://localhost:8888
+
+  data:
+    redis:
+      host: localhost       # Хост Redis-сервера
+      port: 6379            # Порт Redis (по умолчанию 6379)
+#      password: yourpassword # Пароль, если требуется (оставьте пустым, если нет)
+      database: 0           # Номер базы данных Redis (по умолчанию 0)
+      lettuce:
+        pool:
+          max-active: 8     # Максимальное количество подключений в пуле
+          max-idle: 8       # Максимальное количество простаивающих соединений в пуле
+          min-idle: 0       # Минимальное количество простаивающих соединений в пуле
+          time-between-eviction-runs: 1000ms # Частота проверки простаивающих соединений
+
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+    enabled: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
+server:
+  port: 8081

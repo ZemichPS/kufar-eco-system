@@ -4,7 +4,6 @@ networks:
   application-net:
     driver: bridge
 
-
 services:
 
   kufarspy:
@@ -24,7 +23,6 @@ services:
     networks:
       - application-net
 
-
   kufarspy-db:
     image: postgres:17.2
     container_name: kufar_postgres_db
@@ -36,14 +34,17 @@ services:
       POSTGRES_PASSWORD: postgres_db_password
       POSTGRES_DB: kufardb
     volumes:
-      - E:/docker-data/kufarspy/db:/var/lib/postgresql/data
+      - D:/docker-data/kufarspy/db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     networks:
       - application-net
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres_user_admin -d kufardb || exit 1" ]
-      interval: 10s
-      timeout: 5s
-      retries: 3
+      test: [ "CMD-SHELL", "pg_isready -U postgres_user_admin -d kufardb" ]
+      interval: 10s          # Интервал между проверками (здесь каждые 10 секунд)
+      timeout: 5s            # Таймаут команды проверки
+      retries: 3             # Количество попыток перед тем, как контейнер будет помечен как unhealthy
+      start_period: 30s      # Время ожидания перед первой проверкой (например, пока база поднимается)
 
   service-discovery:
     image: discovery-service:latest
@@ -74,6 +75,12 @@ services:
         condition: service_healthy
     networks:
       - application-net
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8888/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
 
   grafana:
     image: grafana/grafana:latest
@@ -117,7 +124,7 @@ services:
       - "9090:9090"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
-      - E:/docker-data/kufarspy/prometheus-data:/prometheus
+      - D:/docker-data/kufarspy/prometheus-data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.retention.time=90d'

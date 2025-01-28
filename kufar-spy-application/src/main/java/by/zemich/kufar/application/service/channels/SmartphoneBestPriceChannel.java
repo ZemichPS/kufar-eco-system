@@ -7,10 +7,10 @@ import by.zemich.kufar.domain.model.Advertisement;
 import by.zemich.kufar.domain.model.Notification;
 import by.zemich.kufar.domain.policy.*;
 import by.zemich.kufar.application.service.AdvertisementService;
-import by.zemich.kufar.application.service.TelegramPostManager;
 import by.zemich.kufar.domain.policy.api.Policy;
 import by.zemich.kufar.domain.service.PriceAnalyzer;
 import by.zemich.kufar.application.service.api.PhotoMessenger;
+import by.zemich.kufar.infrastructure.properties.ChannelsDelayProperty;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -18,10 +18,9 @@ import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static java.lang.Thread.sleep;
 
 @Component
-@Profile("prod")
+@Profile({"prod","dev"})
 public class SmartphoneBestPriceChannel extends TelegramChannel {
     private final String CHANNEL_CHAT_ID = "-1002367745711";
     private final String CHANNEL_CHAT_NANE = "Лушие цены на смартфоны c куфар";
@@ -32,9 +31,10 @@ public class SmartphoneBestPriceChannel extends TelegramChannel {
                                       PostManager<SendPhoto,Advertisement> postManager,
                                       PriceAnalyzer priceAnalyzer,
                                       AdvertisementService advertisementService,
-                                      NotificationPostManager<SendPhoto, Notification> notificationPostManager
+                                      NotificationPostManager<SendPhoto, Notification> notificationPostManager,
+                                      ChannelsDelayProperty channelsDelayProperty
     ) {
-        super(messenger, postManager, notificationPostManager);
+        super(messenger, postManager, notificationPostManager, channelsDelayProperty);
         this.priceAnalyzer = priceAnalyzer;
         this.advertisementService = advertisementService;
     }
@@ -69,7 +69,6 @@ public class SmartphoneBestPriceChannel extends TelegramChannel {
                         priceAnalyzer,
                         advertisementService
                 ),
-                // new OnlyOriginalGoodsPolicy().not(new FastSalesPolicy()),
                 new OnlyCorrectModelPolicy());
     }
 }

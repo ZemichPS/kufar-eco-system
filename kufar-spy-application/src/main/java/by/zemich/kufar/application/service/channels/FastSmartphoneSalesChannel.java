@@ -7,11 +7,10 @@ import by.zemich.kufar.domain.model.Advertisement;
 import by.zemich.kufar.domain.model.Notification;
 import by.zemich.kufar.domain.policy.*;
 import by.zemich.kufar.application.service.AdvertisementService;
-import by.zemich.kufar.application.service.TelegramPostManager;
 import by.zemich.kufar.domain.policy.api.Policy;
 import by.zemich.kufar.domain.service.PriceAnalyzer;
 import by.zemich.kufar.application.service.api.PhotoMessenger;
-import jakarta.annotation.PostConstruct;
+import by.zemich.kufar.infrastructure.properties.ChannelsDelayProperty;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -20,7 +19,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Component
-@Profile("prod")
+@Profile({"prod","dev"})
 public class FastSmartphoneSalesChannel extends TelegramChannel {
     private final String CHANNEL_CHAT_ID = "-1002499186724";
     private final String CHANNEL_CHAT_NANE = "Срочные продажи смартфонов";
@@ -31,9 +30,10 @@ public class FastSmartphoneSalesChannel extends TelegramChannel {
                                       PostManager<SendPhoto,Advertisement> postManager,
                                       PriceAnalyzer priceAnalyzer,
                                       AdvertisementService advertisementService,
-                                      NotificationPostManager<SendPhoto, Notification> notificationPostManager
+                                      NotificationPostManager<SendPhoto, Notification> notificationPostManager,
+                                      ChannelsDelayProperty channelsDelayProperty
     ) {
-         super(messenger, postManager, notificationPostManager);
+         super(messenger, postManager, notificationPostManager, channelsDelayProperty);
          this.priceAnalyzer = priceAnalyzer;
          this.advertisementService = advertisementService;
     }

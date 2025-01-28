@@ -1,5 +1,6 @@
 package by.zemich.kufar.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,10 +13,13 @@ import java.util.*;
 
 @Entity
 @Table(name = "advertisements", schema = "app")
-@Getter @Setter
-@AllArgsConstructor @NoArgsConstructor @Builder
-@EqualsAndHashCode
-@ToString(exclude = "parameters")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@EqualsAndHashCode(exclude = {"parameters", "seller"})
+@ToString(exclude = {"parameters", "seller"})
 public class Advertisement {
     @Id
     @UuidGenerator(style = UuidGenerator.Style.TIME)
@@ -33,7 +37,9 @@ public class Advertisement {
     private String details;
     private boolean fullyFunctional;
     private String images;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seller_id", referencedColumnName = "id")
+    private Seller seller;
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
     private List<Parameter> parameters = new ArrayList<>();
@@ -63,7 +69,7 @@ public class Advertisement {
         private String label;
     }
 
-
+    @JsonIgnore
     public Optional<String> getBrand() {
         return this.parameters.stream()
                 .filter(param -> "phones_brand".equals(param.identity))
@@ -71,6 +77,7 @@ public class Advertisement {
                 .findFirst();
     }
 
+    @JsonIgnore
     public Optional<String> getModel() {
         return this.parameters.stream()
                 .filter(param -> "phones_model".equals(param.identity))
@@ -78,6 +85,7 @@ public class Advertisement {
                 .findFirst();
     }
 
+    @JsonIgnore
     public Optional<String> getParameterValueByParameterName(String parameterName) {
         return this.parameters.stream()
                 .filter(param -> parameterName.equals(param.identity))
@@ -85,12 +93,14 @@ public class Advertisement {
                 .findFirst();
     }
 
+    @JsonIgnore
     public Optional<Parameter> getParameterByIdentity(String identity) {
         return this.parameters.stream()
                 .filter(param -> identity.equals(param.identity))
                 .findFirst();
     }
 
+    @JsonIgnore
     public String getFullAddress() {
         String region = this.parameters.stream()
                 .filter(param -> "region".equals(param.identity))
@@ -107,7 +117,8 @@ public class Advertisement {
         return area + ", " + region;
     }
 
-    public String getCondition(){
+    @JsonIgnore
+    public String getCondition() {
         return this.parameters.stream()
                 .filter(param -> "condition".equals(param.identity))
                 .map(param -> param.value)
@@ -115,16 +126,13 @@ public class Advertisement {
                 .orElse("");
     }
 
-    public List<String> getLinks(){
-        return Arrays.stream(this.images.split(";")).toList();
-    }
-
+    @JsonIgnore
     public Optional<String> getPhotoLink() {
         if (images.isEmpty()) return Optional.empty();
 
         String imageFilePath;
-        if(images.contains(";")) {
-            imageFilePath =  this.images.split(";")[0];
+        if (images.contains(";")) {
+            imageFilePath = this.images.split(";")[0];
         } else imageFilePath = images;
 
         String url = "https://rms.kufar.by/v1/gallery/{filename.jpg}".replace("{filename.jpg}", imageFilePath);

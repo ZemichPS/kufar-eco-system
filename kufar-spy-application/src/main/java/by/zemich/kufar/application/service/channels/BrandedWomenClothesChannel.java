@@ -5,8 +5,8 @@ import by.zemich.kufar.application.service.channels.api.TelegramChannel;
 import by.zemich.kufar.domain.model.Advertisement;
 import by.zemich.kufar.domain.model.Notification;
 import by.zemich.kufar.domain.policy.*;
-import by.zemich.kufar.application.service.TelegramPostManager;
 import by.zemich.kufar.domain.policy.api.Policy;
+import by.zemich.kufar.infrastructure.properties.ChannelsDelayProperty;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ import java.util.List;
 
 @Slf4j
 @Component
-@Profile("prod")
+@Profile({"prod","dev"})
 public class BrandedWomenClothesChannel extends TelegramChannel {
 
     private final String CHANNEL_CHAT_ID = "-1002270323996";
@@ -29,10 +29,11 @@ public class BrandedWomenClothesChannel extends TelegramChannel {
                                       PostManager<SendPhoto, Advertisement> telegramPostManager,
                                       CategoryPriceListRepository categoryPriceListRepository,
                                       ClothesBrandsRepository clothesBrandsRepository,
-                                      NotificationPostManager<SendPhoto, Notification> notificationPostManager
+                                      NotificationPostManager<SendPhoto, Notification> notificationPostManager,
+                                      ChannelsDelayProperty channelsDelayProperty
 
     ) {
-        super(messenger, telegramPostManager, notificationPostManager);
+        super(messenger, telegramPostManager, notificationPostManager, channelsDelayProperty);
         this.clothesBrandsRepository = clothesBrandsRepository;
         this.categoryPriceListRepository = categoryPriceListRepository;
 

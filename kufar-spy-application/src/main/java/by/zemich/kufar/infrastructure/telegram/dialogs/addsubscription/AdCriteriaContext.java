@@ -1,6 +1,6 @@
 package by.zemich.kufar.infrastructure.telegram.dialogs.addsubscription;
 
-import by.zemich.kufar.infrastructure.telegram.TelegramBot;
+import by.zemich.kufar.infrastructure.telegram.bots.TelegramBot;
 import by.zemich.kufar.infrastructure.telegram.dialogs.api.DialogContext;
 import by.zemich.kufar.infrastructure.telegram.sessions.DialogSession;
 import by.zemich.kufar.infrastructure.telegram.dialogs.api.DialogState;
