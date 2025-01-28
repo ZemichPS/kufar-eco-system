@@ -122,6 +122,8 @@ public class AdvertisementServiceFacade {
         List<BigDecimal> prices = advertisements.stream()
                 .filter(predicate)
                 .filter(ad -> ad.getCondition().equals(condition))
+                .sorted(Comparator.comparing(Advertisement::getPublishedAt).reversed())
+                .limit(35)
                 .map(Advertisement::getPriceInByn)
                 .toList();
 
