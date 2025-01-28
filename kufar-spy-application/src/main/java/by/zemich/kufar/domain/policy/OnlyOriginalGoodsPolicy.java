@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 
 public class OnlyOriginalGoodsPolicy implements Policy<Advertisement> {
 
-    // Паттерн для поиска копий или реплик
     private static final Pattern DEFECT_PATTERN = Pattern.compile(
             "(?i)(продам|продаётся)?\\s*(полная|точная)?\\s*(копи[ияю]|реплика|реплик[уа]|паль|под(д)?елка)"
     );
@@ -18,21 +17,22 @@ public class OnlyOriginalGoodsPolicy implements Policy<Advertisement> {
 
     @Override
     public boolean isSatisfiedBy(Advertisement advertisement) {
-        if (isOriginal(advertisement.getDetails())) return true;
-        return !containsDataAboutUnoriginality(advertisement.getDetails());
+        String details = advertisement.getDetails().trim().toLowerCase();
+        if (isOriginal(details)) return true;
+        return !containsDataAboutUnoriginality(details);
     }
 
     private boolean containsDataAboutUnoriginality(String adDetails) {
         if (adDetails == null || adDetails.trim().isEmpty()) {
-            return false;
+            return true;
         }
-        return DEFECT_PATTERN.matcher(adDetails.toLowerCase()).find();
+        return DEFECT_PATTERN.matcher(adDetails).find();
     }
 
     private boolean isOriginal(String adDetails) {
         if (adDetails == null || adDetails.trim().isEmpty()) {
-            return false;
+            return true;
         }
-        return ORIGINAL_PATTERN.matcher(adDetails.toLowerCase()).find();
+        return ORIGINAL_PATTERN.matcher(adDetails).find();
     }
 }

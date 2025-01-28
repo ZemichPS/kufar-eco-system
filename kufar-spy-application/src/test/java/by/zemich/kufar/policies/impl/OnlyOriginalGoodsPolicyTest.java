@@ -24,7 +24,7 @@ class OnlyOriginalGoodsPolicyTest {
 
     @ParameterizedTest
     @MethodSource("getNonRelevantDescriptions")
-    void isSatisfiedBy_WhenProductNotReplica_thenReturnTrue(String description) {
+    void isSatisfiedBy_WhenProductIsNotCopy_thenReturnTrue(String description) {
         Advertisement advertisement = getAdvertisement();
         advertisement.setDetails(description);
         Assertions.assertTrue(policy.isSatisfiedBy(advertisement));
@@ -51,7 +51,8 @@ class OnlyOriginalGoodsPolicyTest {
                 Arguments.of("подделка"),
                 Arguments.of("поделка"),
                 Arguments.of("хорошая реплика"),
-                Arguments.of("качественная реплика")
+                Arguments.of("качественная реплика"),
+                Arguments.of("ХОРОШАЯ КОПИЯ IPHONE")
         );
     }
 
