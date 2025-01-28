@@ -2,7 +2,7 @@ package by.zemich.kufar.application.service;
 
 import by.zemich.kufar.domain.model.Advertisement;
 import by.zemich.kufar.infrastructure.clients.dto.AdDetailsDTO;
-import by.zemich.kufar.domain.model.ComputedPriceStatistics;
+import by.zemich.kufar.domain.model.PriceStatistics;
 import by.zemich.kufar.domain.policy.MinimumRequredAmountOfDataForMarketPriceCountingPolicy;
 import by.zemich.kufar.domain.service.PriceAnalyzer;
 import by.zemich.kufar.domain.service.conditionanalizers.ConditionAnalyzer;
@@ -31,7 +31,7 @@ public class AdvertisementServiceFacade {
     private final Predicate<Advertisement> commerceAdPredicate = Advertisement::isCompanyAd;
     private final Predicate<Advertisement> notCommerceAdPredicate = advertisement -> !advertisement.isCompanyAd();
 
-    public Optional<ComputedPriceStatistics> getPriceStatisticsByModel(Advertisement advertisement) {
+    public Optional<PriceStatistics> getPriceStatisticsByModel(Advertisement advertisement) {
 
         if (!advertisement.isFullyFunctional()) return Optional.empty();
         if (advertisement.getBrand().isEmpty() || advertisement.getModel().isEmpty()) return Optional.empty();
@@ -61,7 +61,7 @@ public class AdvertisementServiceFacade {
                 advertisement.getCondition()
         );
 
-        return Optional.of(new ComputedPriceStatistics(
+        return Optional.of(new PriceStatistics(
                 marketPriceForCommerce,
                 marketPriceForNotCommerce,
                 commonMarketPrice)

@@ -8,6 +8,7 @@ import by.zemich.kufar.domain.policy.*;
 import by.zemich.kufar.application.service.TelegramPostManager;
 import by.zemich.kufar.domain.policy.api.Policy;
 import by.zemich.kufar.domain.service.PolicyChecker;
+import by.zemich.kufar.infrastructure.properties.ChannelsDelayProperty;
 import by.zemich.kufar.infrastructure.repository.filerepositories.CategoryPricelistFileRepository;
 import by.zemich.kufar.infrastructure.repository.filerepositories.ClothesBrandsFileRepository;
 import jakarta.annotation.PostConstruct;
@@ -37,9 +38,10 @@ public class TestChannel extends TelegramChannel {
                        PostManager<SendPhoto,Advertisement> postManager,
                        ClothesBrandsRepository clothesBrandsRepository,
                        CategoryPriceListRepository categoryPriceListRepository,
-                       NotificationPostManager<SendPhoto, Notification> notificationPostManager
+                       NotificationPostManager<SendPhoto, Notification> notificationPostManager,
+                       ChannelsDelayProperty channelsDelayProperty
     ) {
-        super(messenger, postManager, notificationPostManager);
+        super(messenger, postManager, notificationPostManager, channelsDelayProperty);
         this.clothesBrandsRepository = clothesBrandsRepository;
         this.categoryPriceListRepository = categoryPriceListRepository;
     }

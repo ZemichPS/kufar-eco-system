@@ -47,25 +47,6 @@ public class TelegramPostManager implements PostManager<SendPhoto, Advertisement
                 .build();
     }
 
-//    private SendPhoto createIfNotExists(Advertisement advertisement) {
-//        InputFile photo = advertisement.getPhotoLink()
-//                .map(fileLoader::downloadFileAsInputStream)
-//                .map(inputStream -> new InputFile(inputStream, UUID.randomUUID() + "jpg"))
-//                .orElseGet(() -> {
-//                    InputStream inputStream = fileLoader.loadResourcesFileAsInputStream("images/default.jpg");
-//                    return new InputFile(inputStream, UUID.randomUUID() + "jpg");
-//                });
-//        String text = processPostText(advertisement);
-//        return SendPhoto.builder()
-//                .photo(photo)
-//                .chatId("54504156056")
-//                .parseMode("HTML")
-//                .caption(text)
-//                .build();
-//    }
-
-
-
 
     private String processPostText(Advertisement advertisement) {
         return postTextProcessors.stream()

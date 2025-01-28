@@ -36,6 +36,7 @@ public class NIOKufarClient {
     private final String GET_PAGE_BY_FILTER_URL = "https://api.kufar.by/search-api/v2/search/rendered-paginated?cat=17010&cmp=0&cnd=1&lang=ru&pb=5&sort=lst.d";
     private final String GET_CATEGORIES_URL = "https://api.kufar.by/category-tree/v1/category_tree";
     private final String BASE_ADS_FILTER_URL = "https://api.kufar.by/search-api/v2/search/rendered-paginated";
+    private final String FEEDBACKS = "https://feedbacks.kufar.by/feedback-query/v3/accounts/{sellerId}/feedbacks";
 
     private final RestTemplate restTemplate;
     private final RetryTemplate retryTemplate;
@@ -53,6 +54,19 @@ public class NIOKufarClient {
         this.objectMapper = objectMapper;
         this.retryTemplate = retryTemplate;
         this.webClient = webClient;
+    }
+
+    public Mono<FeedbackResponse> getFeedbackBySellerId(String sellerId) {
+        URI uri = UriComponentsBuilder.fromHttpUrl(FEEDBACKS.replace("{sellerId}", sellerId))
+                .queryParam("offset", 0)
+                .queryParam("limit", "100")
+                .queryParam("sort_type", "created_desc")
+                .build().toUri();
+
+        return webClient.get().uri(uri).retrieve().bodyToMono(FeedbackResponse.class)
+                .timeout(Duration.ofSeconds(10))
+                .retryWhen( Retry.backoff(20, Duration.ofMillis(1_000))
+                        .maxBackoff(Duration.ofSeconds(10)));
     }
 
     public Mono<AdsDTO> getNewAdsByCategoryIdAndByLastSort(String categoryId) {

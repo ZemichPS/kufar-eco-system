@@ -1,19 +1,18 @@
 package by.zemich.kufar;
 
-import by.zemich.kufar.infrastructure.properties.CategoryParseListProperties;
-import by.zemich.kufar.infrastructure.properties.MinioProperties;
-import by.zemich.kufar.infrastructure.properties.TelegramProperties;
+import by.zemich.kufar.infrastructure.properties.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 
 @EnableConfigurationProperties({
         TelegramProperties.class,
         MinioProperties.class,
-        CategoryParseListProperties.class
+        CategoryParseListProperties.class,
+        ChannelsBotProperties.class,
+        ChannelsDelayProperty.class
 }
 )
 @EnableDiscoveryClient

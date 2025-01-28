@@ -1,7 +1,6 @@
 package by.zemich.kufar.domain.service.textpostprocessors;
 
 import by.zemich.kufar.domain.model.Advertisement;
-import by.zemich.kufar.domain.model.ComputedPriceStatistics;
 import by.zemich.kufar.application.service.AdvertisementServiceFacade;
 import by.zemich.kufar.domain.service.PriceAnalyzer;
 import by.zemich.kufar.domain.service.textpostprocessors.api.PostTextProcessor;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 @Component
 @RequiredArgsConstructor
@@ -25,41 +25,43 @@ public class MarketAveragePriceTextProcessor implements PostTextProcessor {
     @Override
     public String process(Advertisement advertisement) {
 
+
+        Predicate<BigDecimal> currentValueMoreThenZero = price -> price.compareTo(BigDecimal.ZERO) > 0;
         BigDecimal currentAdPrice = advertisement.getPriceInByn();
-        if (currentAdPrice.compareTo(BigDecimal.ZERO) == 0) return "";
 
-        Optional<ComputedPriceStatistics> optionalComputedPriceStatistics = advertisementServiceFacade.getPriceStatisticsByModel(advertisement);
-        if (optionalComputedPriceStatistics.isEmpty()) return "";
-        ComputedPriceStatistics computedPriceStatistics = optionalComputedPriceStatistics.get();
+        return advertisementServiceFacade.getPriceStatisticsByModel(advertisement)
+                .map(statistic -> {
+                    StringBuilder rezult = new StringBuilder("\uD83D\uDCC8 Средняя рыночная стоимость c учётом состояния и объёма памяти:\n");
 
-        if (computedPriceStatistics.commonMarketPrice().compareTo(BigDecimal.ZERO) == 0 &&
-                computedPriceStatistics.marketPriceForCommerce().compareTo(BigDecimal.ZERO) == 0 &&
-                computedPriceStatistics.marketPriceForNotCommerce().compareTo(BigDecimal.ZERO) == 0
-        ) return "";
+                    Optional.of(statistic.marketPriceForCommerce())
+                            .filter(currentValueMoreThenZero)
+                            .map(commerceMarketPrice -> rezult.append(" - %.0f (среди коммерческих объявлений). ".formatted(commerceMarketPrice))
+                                    .append(getPercentageDifference(commerceMarketPrice, currentAdPrice)));
 
-        StringBuilder rezult = new StringBuilder("\uD83D\uDCC8 Средняя рыночная стоимость c учётом состояния и объёма памяти:\n");
-        if (computedPriceStatistics.marketPriceForCommerce().compareTo(BigDecimal.ZERO) != 0) {
-            rezult.append(" - %.0f (среди коммерческих объявлений). ".formatted(computedPriceStatistics.marketPriceForCommerce()));
-            rezult.append("Разница %.0f%%; \n".formatted(priceAnalyzer.calculatePercentageDifference(computedPriceStatistics.marketPriceForCommerce(), currentAdPrice)));
-        }
+                    Optional.of(statistic.marketPriceForNotCommerce())
+                            .filter(currentValueMoreThenZero)
+                            .map(notCommerceMarketPrice -> rezult.append("\n - %.0f (среди частных объявлений). ".formatted(notCommerceMarketPrice))
+                                    .append(getPercentageDifference(notCommerceMarketPrice, currentAdPrice))
+                            );
+                    Optional.of(statistic.commonMarketPrice())
+                            .filter(currentValueMoreThenZero)
+                            .map(commonMarketPrice -> rezult.append("\n - %.0f (среди не коммерческих объявлений). ".formatted(commonMarketPrice))
+                                    .append(getPercentageDifference(commonMarketPrice, currentAdPrice)));
 
-        if (computedPriceStatistics.marketPriceForNotCommerce().compareTo(BigDecimal.ZERO) != 0) {
-            rezult.append(" - %.0f (среди не коммерческих объявлений). ".formatted(computedPriceStatistics.marketPriceForNotCommerce()));
-            rezult.append("Разница %.0f%%; \n".formatted(priceAnalyzer.calculatePercentageDifference(computedPriceStatistics.marketPriceForNotCommerce(), currentAdPrice)));
-        }
+                    return rezult.toString();
+                }).orElse("");
 
-        if (computedPriceStatistics.commonMarketPrice().compareTo(BigDecimal.ZERO) != 0) {
-            rezult.append(" - %.0f (среди коммерческих и не коммерческих объявлений). ".formatted(computedPriceStatistics.commonMarketPrice()));
-            rezult.append("Разница %.0f%%;".formatted(priceAnalyzer.calculatePercentageDifference(computedPriceStatistics.commonMarketPrice(), currentAdPrice)));
-        }
-
-        return rezult.toString();
     }
 
     @Override
     public boolean isApplicable(Advertisement advertisement) {
-        return advertisement.getBrand().isPresent() && advertisement.getModel().isPresent();
+        return advertisement.getBrand().isPresent()
+                && advertisement.getModel().isPresent()
+                && advertisement.getPriceInByn().compareTo(BigDecimal.ZERO) > 0;
     }
 
+    private String getPercentageDifference(BigDecimal comparePrice, BigDecimal currentPrice) {
+        return "Разница %.0f%%;".formatted(priceAnalyzer.calculatePercentageDifference(comparePrice, currentPrice));
+    }
 
 }

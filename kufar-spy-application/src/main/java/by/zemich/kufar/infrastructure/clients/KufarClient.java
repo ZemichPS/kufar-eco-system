@@ -126,6 +126,7 @@ public class KufarClient {
     }
 
 
+
     public AdsDTO getAdsByParameters(Map<String, String> paramMap) {
         String queryString = paramMap.entrySet().stream()
                 .map(entry -> entry.getKey() + "=" + entry.getValue())

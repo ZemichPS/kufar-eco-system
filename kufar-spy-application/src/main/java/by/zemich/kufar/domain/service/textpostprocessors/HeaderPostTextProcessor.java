@@ -24,7 +24,9 @@ public class HeaderPostTextProcessor implements PostTextProcessor {
         } else {
             header = advertisement.getSubject();
         }
-        return emojiService.getByCategory(advertisement.getCategory()) + " %s".formatted(getHtmlStyle(header));
+        header = PostTextProcessor.getBoldHtmlStyle(header);
+        header = PostTextProcessor.getTag(header);
+        return emojiService.getByCategory(advertisement.getCategory()) + " %s".formatted(header);
     }
 
     @Override
@@ -32,7 +34,4 @@ public class HeaderPostTextProcessor implements PostTextProcessor {
         return (advertisement.getBrand().isPresent() && advertisement.getModel().isPresent()) || advertisement.getSubject() != null;
     }
 
-    private String getHtmlStyle(String source) {
-        return "<b>" + source + "</b>";
-    }
 }

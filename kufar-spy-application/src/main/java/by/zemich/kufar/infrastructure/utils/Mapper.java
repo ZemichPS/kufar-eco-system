@@ -1,15 +1,19 @@
 package by.zemich.kufar.infrastructure.utils;
 
-import by.zemich.kufar.infrastructure.clients.dto.AdsDTO;
-import by.zemich.kufar.infrastructure.clients.dto.CategoriesDto;
-import by.zemich.kufar.infrastructure.clients.dto.Century21stGoodsPageDTO;
-import by.zemich.kufar.infrastructure.clients.dto.GeoDataDTO;
+import by.zemich.kufar.infrastructure.clients.dto.*;
 import by.zemich.kufar.application.service.api.MarketService;
 import by.zemich.kufar.infrastructure.clients.ManufacturerDto;
 import by.zemich.kufar.domain.model.*;
 import lombok.experimental.UtilityClass;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @UtilityClass
@@ -32,6 +36,33 @@ public class Mapper {
                 .priceInByn(source.getPriceByn())
                 .priceInUsd(source.getPriceUsd())
                 .fullyFunctional(false)
+                .seller(new Seller(source.getAccountId()))
+                .build();
+    }
+
+    public static Seller mapToEntity(FeedbackResponse feedbackResponse, String sellerId) {
+        List<FeedbackResponse.Feedback> feedbacks = feedbackResponse.getFeedbacks();
+
+        if(feedbacks.isEmpty()) return new Seller(sellerId);
+
+        Double score = feedbacks.stream()
+                .mapToDouble(feedback -> Double.parseDouble(feedback.getScore()))
+                .average()
+                .orElse(0.0);
+
+        ZonedDateTime firstFeedbackTime = Objects.requireNonNull(feedbacks.stream()
+                .map(FeedbackResponse.Feedback::getCreatedAt)
+                .filter(Objects::nonNull)
+                .sorted()
+                .findFirst()
+                .orElse(null));
+
+
+        return Seller.builder()
+                .rate(score.floatValue())
+                .id(sellerId)
+                .firstFeedbackCreatedAt(firstFeedbackTime.toLocalDateTime())
+                .feedbackCount(feedbacks.size())
                 .build();
     }
 
@@ -71,7 +102,7 @@ public class Mapper {
     }
 
 
-    public static MarketService.ProductDataDto mapToDto(Century21stGoodsPageDTO.ProductDTO source){
+    public static MarketService.ProductDataDto mapToDto(Century21stGoodsPageDTO.ProductDTO source) {
         return new MarketService.ProductDataDto(source.getLink(), source.getPrice());
     }
 

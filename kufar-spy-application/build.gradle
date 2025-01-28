@@ -52,6 +52,7 @@ dependencies {
     implementation 'org.flywaydb:flyway-database-postgresql'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.2' // НУЖЕН ЛИ?
 
+
     implementation 'org.telegram:telegrambots:6.9.7.1'
     implementation 'io.micrometer:micrometer-registry-prometheus'
     implementation 'io.hypersistence:hypersistence-utils-hibernate-63:3.9.0'
