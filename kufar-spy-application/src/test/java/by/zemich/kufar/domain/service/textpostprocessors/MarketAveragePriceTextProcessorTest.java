@@ -88,5 +88,31 @@ class MarketAveragePriceTextProcessorTest {
         Assertions.assertNotNull(result);
     }
 
+    @Test
+    void process_whenCommonMarketPriceAndCommerceMarketPriceOnlyProvided_thenOutputOnlyForCommerceAndCommon() {
+        PriceStatistics priceStatistics = new PriceStatistics(
+                new BigDecimal(2500),
+                BigDecimal.ZERO,
+                new BigDecimal(2500)
+        );
+        Advertisement advertisement = new Advertisement();
+        advertisement.setPriceInByn(new BigDecimal(1_900));
+        Mockito.when(advertisementServiceFacade.getPriceStatisticsByModel(Mockito.any())).thenReturn(Optional.of(priceStatistics));
+        String result = marketAveragePriceTextProcessor.process(advertisement);
+        System.out.printf("Result: %s\n", result);
+        Assertions.assertNotNull(result);
+    }
+
+
+    @Test
+    void process_whenPriceStatisticsEmpty_thenOutputEmpty() {
+        Advertisement advertisement = new Advertisement();
+        advertisement.setPriceInByn(new BigDecimal(1_900));
+        Mockito.when(advertisementServiceFacade.getPriceStatisticsByModel(Mockito.any())).thenReturn(Optional.empty());
+        String result = marketAveragePriceTextProcessor.process(advertisement);
+        System.out.printf("Result: %s\n", result);
+        Assertions.assertArrayEquals("".toCharArray(), result.toCharArray());
+    }
+
 
 }

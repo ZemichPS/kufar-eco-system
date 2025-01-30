@@ -31,21 +31,21 @@ public class MarketAveragePriceTextProcessor implements PostTextProcessor {
 
         return advertisementServiceFacade.getPriceStatisticsByModel(advertisement)
                 .map(statistic -> {
-                    StringBuilder rezult = new StringBuilder("\uD83D\uDCC8 Средняя рыночная стоимость c учётом состояния и объёма памяти:\n");
+                    StringBuilder rezult = new StringBuilder("\uD83D\uDCC8 Средняя рыночная стоимость c учётом состояния и объёма памяти:");
 
                     Optional.of(statistic.marketPriceForCommerce())
                             .filter(currentValueMoreThenZero)
-                            .map(commerceMarketPrice -> rezult.append(" - %.0f (среди коммерческих объявлений). ".formatted(commerceMarketPrice))
+                            .map(commerceMarketPrice -> rezult.append("\n - %.0f (для коммерческих объявлений). ".formatted(commerceMarketPrice))
                                     .append(getPercentageDifference(commerceMarketPrice, currentAdPrice)));
 
                     Optional.of(statistic.marketPriceForNotCommerce())
                             .filter(currentValueMoreThenZero)
-                            .map(notCommerceMarketPrice -> rezult.append("\n - %.0f (среди частных объявлений). ".formatted(notCommerceMarketPrice))
+                            .map(notCommerceMarketPrice -> rezult.append("\n - %.0f (для частных объявлений). ".formatted(notCommerceMarketPrice))
                                     .append(getPercentageDifference(notCommerceMarketPrice, currentAdPrice))
                             );
                     Optional.of(statistic.commonMarketPrice())
                             .filter(currentValueMoreThenZero)
-                            .map(commonMarketPrice -> rezult.append("\n - %.0f (среди не коммерческих объявлений). ".formatted(commonMarketPrice))
+                            .map(commonMarketPrice -> rezult.append("\n - %.0f (общая). ".formatted(commonMarketPrice))
                                     .append(getPercentageDifference(commonMarketPrice, currentAdPrice)));
 
                     return rezult.toString();
