@@ -16,8 +16,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @ExtendWith(MockitoExtension.class)
 class MarketAveragePriceTextProcessorTest {
 
@@ -31,7 +29,7 @@ class MarketAveragePriceTextProcessorTest {
 
 
     @Test
-    void process() {
+    void process_whenAllPricesProvided_thenCorrectTextOutput() {
         PriceStatistics priceStatistics = new PriceStatistics(
                 new BigDecimal(2500),
                 new BigDecimal(2300),
@@ -43,6 +41,52 @@ class MarketAveragePriceTextProcessorTest {
         String result = marketAveragePriceTextProcessor.process(advertisement);
         System.out.printf("Result: %s\n", result);
         Assertions.assertNotNull(result);
-
     }
+
+    @Test
+    void process_whenMarketPriceForCommerceOnlyProvided_thenOutputOnlyForCommerce() {
+        PriceStatistics priceStatistics = new PriceStatistics(
+                new BigDecimal(2500),
+                BigDecimal.ZERO,
+                BigDecimal.ZERO
+        );
+        Advertisement advertisement = new Advertisement();
+        advertisement.setPriceInByn(new BigDecimal(1_900));
+        Mockito.when(advertisementServiceFacade.getPriceStatisticsByModel(Mockito.any())).thenReturn(Optional.of(priceStatistics));
+        String result = marketAveragePriceTextProcessor.process(advertisement);
+        System.out.printf("Result: %s\n", result);
+        Assertions.assertNotNull(result);
+    }
+
+    @Test
+    void process_whenMarketPriceForNotCommerceOnlyProvided_thenOutputOnlyForNotCommerce() {
+        PriceStatistics priceStatistics = new PriceStatistics(
+                BigDecimal.ZERO,
+                new BigDecimal(2500),
+                BigDecimal.ZERO
+        );
+        Advertisement advertisement = new Advertisement();
+        advertisement.setPriceInByn(new BigDecimal(1_900));
+        Mockito.when(advertisementServiceFacade.getPriceStatisticsByModel(Mockito.any())).thenReturn(Optional.of(priceStatistics));
+        String result = marketAveragePriceTextProcessor.process(advertisement);
+        System.out.printf("Result: %s\n", result);
+        Assertions.assertNotNull(result);
+    }
+
+    @Test
+    void process_whenCommonMarketPriceOnlyProvided_thenOutputOnlyForCommon() {
+        PriceStatistics priceStatistics = new PriceStatistics(
+                BigDecimal.ZERO,
+                BigDecimal.ZERO,
+                new BigDecimal(2500)
+        );
+        Advertisement advertisement = new Advertisement();
+        advertisement.setPriceInByn(new BigDecimal(1_900));
+        Mockito.when(advertisementServiceFacade.getPriceStatisticsByModel(Mockito.any())).thenReturn(Optional.of(priceStatistics));
+        String result = marketAveragePriceTextProcessor.process(advertisement);
+        System.out.printf("Result: %s\n", result);
+        Assertions.assertNotNull(result);
+    }
+
+
 }

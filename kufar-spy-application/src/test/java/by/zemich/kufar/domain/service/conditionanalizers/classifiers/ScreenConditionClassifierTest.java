@@ -1,6 +1,5 @@
-package by.zemich.kufar.service.conditionanalizers;
+package by.zemich.kufar.domain.service.conditionanalizers.classifiers;
 
-import by.zemich.kufar.domain.service.conditionanalizers.classifiers.ScreenConditionClassifier;
 import by.zemich.kufar.domain.model.Advertisement;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;

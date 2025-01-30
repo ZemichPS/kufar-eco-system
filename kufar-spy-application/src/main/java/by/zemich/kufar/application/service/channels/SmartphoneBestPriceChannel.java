@@ -62,8 +62,8 @@ public class SmartphoneBestPriceChannel extends TelegramChannel {
     @Override
     protected List<Policy<Advertisement>> createPolicies() {
         return List.of(
-                new OnlyOriginalGoodsPolicy(),
                 new CategoryPolicy("17010"),
+                new OnlyOriginalGoodsPolicy(),
                 new MinPercentagePolicy(
                         BigDecimal.valueOf(-35),
                         priceAnalyzer,

@@ -8,6 +8,7 @@ services:
 
   kufarspy:
     image: kufarspy-application:latest
+    container_name: kufarspy-application
     restart: always
     ports:
       - "8081:8081"
