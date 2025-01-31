@@ -1,5 +1,6 @@
 package by.zemich.kufar.application.service.channels;
 
+import by.zemich.kufar.application.service.MarketPriceService;
 import by.zemich.kufar.application.service.api.NotificationPostManager;
 import by.zemich.kufar.application.service.api.PostManager;
 import by.zemich.kufar.application.service.channels.api.TelegramChannel;
@@ -19,23 +20,25 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Component
-@Profile({"prod","dev"})
+@Profile({"prod", "dev"})
 public class FastSmartphoneSalesChannel extends TelegramChannel {
     private final String CHANNEL_CHAT_ID = "-1002499186724";
     private final String CHANNEL_CHAT_NANE = "Срочные продажи смартфонов";
     private final PriceAnalyzer priceAnalyzer;
     private final AdvertisementService advertisementService;
+    private final MarketPriceService marketPriceService;
 
     public FastSmartphoneSalesChannel(PhotoMessenger<SendPhoto> messenger,
-                                      PostManager<SendPhoto,Advertisement> postManager,
+                                      PostManager<SendPhoto, Advertisement> postManager,
                                       PriceAnalyzer priceAnalyzer,
                                       AdvertisementService advertisementService,
                                       NotificationPostManager<SendPhoto, Notification> notificationPostManager,
-                                      ChannelsDelayProperty channelsDelayProperty
+                                      ChannelsDelayProperty channelsDelayProperty, MarketPriceService marketPriceService
     ) {
-         super(messenger, postManager, notificationPostManager, channelsDelayProperty);
-         this.priceAnalyzer = priceAnalyzer;
-         this.advertisementService = advertisementService;
+        super(messenger, postManager, notificationPostManager, channelsDelayProperty);
+        this.priceAnalyzer = priceAnalyzer;
+        this.advertisementService = advertisementService;
+        this.marketPriceService = marketPriceService;
     }
 
     @Override
@@ -66,7 +69,8 @@ public class FastSmartphoneSalesChannel extends TelegramChannel {
                 new MinPercentagePolicy(
                         BigDecimal.valueOf(-50),
                         priceAnalyzer,
-                        advertisementService
+                        advertisementService,
+                        marketPriceService
                 ),
                 new OnlyCorrectModelPolicy(),
                 new OnlyFullyFunctionalAdsPolicy(),

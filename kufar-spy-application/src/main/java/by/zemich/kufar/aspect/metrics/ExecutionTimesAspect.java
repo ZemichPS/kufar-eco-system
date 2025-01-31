@@ -53,7 +53,7 @@ public class ExecutionTimesAspect {
                 }
             });
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            log.error(e.getMessage());
             throw new RuntimeException("Unexpected exception during timer recording", e);
         }
 

@@ -1,18 +1,15 @@
 package by.zemich.kufar.infrastructure.utils;
 
+import by.zemich.kufar.application.service.DTO.SmartphonesAdsReport;
 import by.zemich.kufar.infrastructure.clients.dto.*;
 import by.zemich.kufar.application.service.api.MarketService;
 import by.zemich.kufar.infrastructure.clients.ManufacturerDto;
 import by.zemich.kufar.domain.model.*;
 import lombok.experimental.UtilityClass;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -38,6 +35,10 @@ public class Mapper {
                 .fullyFunctional(false)
                 .seller(new Seller(source.getAccountId()))
                 .build();
+    }
+
+    public SmartphonesAdsReport.PhoneData mapToData(Advertisement entity) {
+        return new SmartphonesAdsReport.PhoneData(entity.getPublishedAt(), entity.getPriceInByn());
     }
 
     public static Seller mapToEntity(FeedbackResponse feedbackResponse, String sellerId) {

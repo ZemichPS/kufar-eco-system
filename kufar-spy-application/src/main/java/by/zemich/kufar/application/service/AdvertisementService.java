@@ -6,15 +6,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -34,6 +32,10 @@ public class AdvertisementService {
 //    )
     public Page<Advertisement> get(Pageable pageable) {
         return adsRepository.findAll(pageable);
+    }
+
+    public Advertisement getByLink(String link) {
+        return adsRepository.findByLink(link);
     }
 
 //    @Cacheable("advertisements")
@@ -82,8 +84,12 @@ public class AdvertisementService {
         adsRepository.deleteById(id);
     }
 
-    public boolean existsByAdId(Long adId) {
+    public boolean existsByLink(Long adId) {
         return adsRepository.existsByAdId(adId);
+    }
+
+    public boolean existsByLink(String link) {
+        return adsRepository.existsByLink(link);
     }
 
 
@@ -93,6 +99,11 @@ public class AdvertisementService {
 //    )
     public boolean existsByPublishedAt(LocalDateTime dateTime, Long adId, String category) {
         return adsRepository.existsByPublishedAtAndAdIdAndCategory(dateTime, adId, category);
+    }
+
+
+    public Optional<Advertisement> getByPublishedAtdAndAdIdAndCategory(LocalDateTime dateTime, Long adId, String category) {
+        return adsRepository.getByPublishedAtdAndAdIdAndCategory(dateTime, adId, category);
     }
 
     private String createParameters(List<Advertisement.Parameter> parameters) {

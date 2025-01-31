@@ -1,5 +1,6 @@
 package by.zemich.kufar.domain.policy;
 
+import by.zemich.kufar.application.service.MarketPriceService;
 import by.zemich.kufar.domain.model.Advertisement;
 import by.zemich.kufar.application.service.AdvertisementService;
 import by.zemich.kufar.domain.service.PriceAnalyzer;
@@ -12,20 +13,22 @@ import java.util.function.Predicate;
 public class MinPercentagePolicy implements Policy<Advertisement> {
 
     private final BigDecimal minPercentage;
-    protected final PriceAnalyzer priceAnalyzer;
-    protected final AdvertisementService advertisementService;
-    protected final MinimumRequredAmountOfDataForMarketPriceCountingPolicy minDataSize = new MinimumRequredAmountOfDataForMarketPriceCountingPolicy();
+    private final PriceAnalyzer priceAnalyzer;
+    private final AdvertisementService advertisementService;
+    private final MinimumRequredAmountOfDataForMarketPriceCountingPolicy minDataSize = new MinimumRequredAmountOfDataForMarketPriceCountingPolicy();
+    private final MarketPriceService marketPriceService;
 
     protected final Predicate<Advertisement> fullFunctionalPredicate = Advertisement::isFullyFunctional;
 
 
     public MinPercentagePolicy(BigDecimal minPercentage,
                                PriceAnalyzer priceAnalyzer,
-                               AdvertisementService advertisementService
+                               AdvertisementService advertisementService, MarketPriceService marketPriceService
     ) {
         this.minPercentage = minPercentage;
         this.priceAnalyzer = priceAnalyzer;
         this.advertisementService = advertisementService;
+        this.marketPriceService = marketPriceService;
     }
 
     @Override
@@ -44,27 +47,20 @@ public class MinPercentagePolicy implements Policy<Advertisement> {
         List<Advertisement> advertisements = advertisementService.getAllByBrandAndModelWithMemoryAmount(brand, model, memoryAmount);
         if (!minDataSize.isSatisfiedBy(advertisements.size())) return false;
 
-        BigDecimal marketPriceForCommerce = getMarketPrice(
-                advertisements,
-                fullFunctionalPredicate,
-                advertisement.getCondition()
-        );
+        BigDecimal marketPriceForCommerce;
+        try {
+            marketPriceForCommerce = marketPriceService.getMarketPrice(
+                    advertisements,
+                    fullFunctionalPredicate,
+                    advertisement.getCondition()
+            );
+        } catch (Exception e) {
+            return false;
+        }
 
         BigDecimal percentageDifference = priceAnalyzer.calculatePercentageDifference(marketPriceForCommerce, currentAdPrice);
         return percentageDifference.compareTo(BigDecimal.ZERO) == -1
                 && percentageDifference.compareTo(minPercentage) == -1;
     }
 
-
-    protected BigDecimal getMarketPrice(List<Advertisement> advertisements,
-                                        Predicate<Advertisement> predicate,
-                                        String condition
-    ) {
-        List<BigDecimal> prices = advertisements.stream()
-                .filter(predicate)
-                .filter(ad -> ad.getCondition().equals(condition))
-                .map(Advertisement::getPriceInByn)
-                .toList();
-        return priceAnalyzer.getMarketPrice(prices);
-    }
 }

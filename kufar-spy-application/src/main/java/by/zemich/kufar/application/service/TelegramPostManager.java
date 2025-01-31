@@ -8,6 +8,7 @@ import by.zemich.kufar.domain.service.textpostprocessors.api.PostTextProcessor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
@@ -21,14 +22,21 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@CacheConfig(
+        cacheManager = "caffeineCacheManagerForPostManager",
+        cacheNames = "telegramposts"
+)
 public class TelegramPostManager implements PostManager<SendPhoto, Advertisement> {
 
     private final List<PostTextProcessor> postTextProcessors;
-    private final PostLimitedCache<UUID, SendPhoto> postLimitedCache = new PostLimitedCache<>(500);
     private final FileLoader fileLoader;
 
+    @Cacheable(
+            key = "#advertisement.id",
+            sync = true
+    )
     public SendPhoto create(Advertisement advertisement) {
-        return postLimitedCache.computeIfAbsent(advertisement.getId(), id -> createIfNotExists(advertisement));
+        return createIfNotExists(advertisement);
     }
 
     private SendPhoto createIfNotExists(Advertisement advertisement) {

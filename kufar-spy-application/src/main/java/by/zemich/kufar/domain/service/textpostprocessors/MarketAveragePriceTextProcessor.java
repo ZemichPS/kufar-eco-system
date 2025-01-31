@@ -1,7 +1,7 @@
 package by.zemich.kufar.domain.service.textpostprocessors;
 
 import by.zemich.kufar.domain.model.Advertisement;
-import by.zemich.kufar.application.service.AdvertisementServiceFacade;
+import by.zemich.kufar.application.service.SmartphonesService;
 import by.zemich.kufar.domain.service.PriceAnalyzer;
 import by.zemich.kufar.domain.service.textpostprocessors.api.PostTextProcessor;
 import lombok.RequiredArgsConstructor;
@@ -19,17 +19,16 @@ import java.util.function.Predicate;
 @Order(value = 6)
 public class MarketAveragePriceTextProcessor implements PostTextProcessor {
 
-    private final AdvertisementServiceFacade advertisementServiceFacade;
+    private final SmartphonesService smartphonesService;
     private final PriceAnalyzer priceAnalyzer;
 
     @Override
     public String process(Advertisement advertisement) {
 
-
         Predicate<BigDecimal> currentValueMoreThenZero = price -> price.compareTo(BigDecimal.ZERO) > 0;
         BigDecimal currentAdPrice = advertisement.getPriceInByn();
 
-        return advertisementServiceFacade.getPriceStatisticsByModel(advertisement)
+        return smartphonesService.getPriceStatisticsByModel(advertisement)
                 .map(statistic -> {
                     StringBuilder rezult = new StringBuilder("\uD83D\uDCC8 Средняя рыночная стоимость c учётом состояния и объёма памяти:");
 
@@ -57,8 +56,7 @@ public class MarketAveragePriceTextProcessor implements PostTextProcessor {
     public boolean isApplicable(Advertisement advertisement) {
         return advertisement.getBrand().isPresent()
                 && advertisement.getModel().isPresent()
-                && advertisement.getPriceInByn().compareTo(BigDecimal.ZERO) > 0
-                && advertisement.isFullyFunctional();
+                && advertisement.getPriceInByn().compareTo(BigDecimal.ZERO) > 0;
     }
 
     private String getPercentageDifference(BigDecimal comparePrice, BigDecimal currentPrice) {

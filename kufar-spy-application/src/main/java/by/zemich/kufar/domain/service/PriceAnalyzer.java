@@ -1,5 +1,6 @@
 package by.zemich.kufar.domain.service;
 
+import by.zemich.kufar.domain.policy.MinimumRequredAmountOfDataForMarketPriceCountingPolicy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,13 +14,15 @@ import java.util.stream.Collectors;
 public class PriceAnalyzer {
 
     private static final BigDecimal OUTLIER_MULTIPLIER = BigDecimal.valueOf(1.5);
+    private final MinimumRequredAmountOfDataForMarketPriceCountingPolicy minDataSizePolicy = new MinimumRequredAmountOfDataForMarketPriceCountingPolicy();
 
     /**
      * Вычисляет рыночную цену как среднее значение между средней ценой и медианной ценой
      * после удаления выбросов.
      */
-    public BigDecimal getMarketPrice(List<BigDecimal> prices) {
-        if (prices == null || prices.isEmpty()) {
+    public BigDecimal getMarketPrice(List<BigDecimal> prices) throws Exception {
+
+        if (prices == null || !minDataSizePolicy.isSatisfiedBy(prices.size()) ) {
             throw new IllegalArgumentException("Prices list cannot be null or empty");
         }
 
@@ -31,10 +34,9 @@ public class PriceAnalyzer {
         BigDecimal medianPrice = calculateMedian(filteredPrices);
 
         // Рыночная цена как среднее между средней и медианной
-        BigDecimal marketPrice = meanPrice.add(medianPrice)
-                .divide(BigDecimal.valueOf(2), RoundingMode.HALF_UP);
 
-        return marketPrice;
+        return meanPrice.add(medianPrice)
+                .divide(BigDecimal.valueOf(2), RoundingMode.HALF_UP);
     }
 
     /**

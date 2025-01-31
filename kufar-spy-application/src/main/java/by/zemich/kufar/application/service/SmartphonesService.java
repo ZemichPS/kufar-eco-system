@@ -1,12 +1,14 @@
 package by.zemich.kufar.application.service;
 
+import by.zemich.kufar.application.service.DTO.SmartphonesAdsReport;
 import by.zemich.kufar.domain.model.Advertisement;
+import by.zemich.kufar.domain.model.Manufacturer;
+import by.zemich.kufar.domain.model.Model;
 import by.zemich.kufar.infrastructure.clients.dto.AdDetailsDTO;
 import by.zemich.kufar.domain.model.PriceStatistics;
-import by.zemich.kufar.domain.policy.MinimumRequredAmountOfDataForMarketPriceCountingPolicy;
-import by.zemich.kufar.domain.service.PriceAnalyzer;
 import by.zemich.kufar.domain.service.conditionanalizers.ConditionAnalyzer;
 import by.zemich.kufar.infrastructure.clients.KufarClient;
+import by.zemich.kufar.infrastructure.clients.dto.AdsDTO;
 import by.zemich.kufar.infrastructure.utils.Mapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +17,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -25,13 +28,14 @@ import java.util.function.Predicate;
         cacheManager = "caffeineCacheManager",
         cacheNames = "priceStatistics"
 )
-public class AdvertisementServiceFacade {
+public class SmartphonesService {
     private final AdvertisementService advertisementService;
     private final ConditionAnalyzer conditionAnalyzer;
     private final KufarClient kufarClient;
     private final ModelService modelService;
-    private final PriceAnalyzer priceAnalyzer;
-    private final MinimumRequredAmountOfDataForMarketPriceCountingPolicy minDataSizePolicy = new MinimumRequredAmountOfDataForMarketPriceCountingPolicy();
+    private final ManufactureService manufactureService;
+    private final MarketPriceService marketPriceService;
+
 
     private final Predicate<Advertisement> fullFunctionalPredicate = Advertisement::isFullyFunctional;
     private final Predicate<Advertisement> commerceAdPredicate = Advertisement::isCompanyAd;
@@ -44,7 +48,6 @@ public class AdvertisementServiceFacade {
     )
     public Optional<PriceStatistics> getPriceStatisticsByModel(Advertisement advertisement) {
 
-        if (!advertisement.isFullyFunctional()) return Optional.empty();
         if (advertisement.getBrand().isEmpty() || advertisement.getModel().isEmpty()) return Optional.empty();
 
         String brand = advertisement.getBrand().orElse("");
@@ -54,23 +57,43 @@ public class AdvertisementServiceFacade {
         if (memoryAmount.isEmpty()) return Optional.empty();
 
         List<Advertisement> advertisements = advertisementService.getAllByBrandAndModelWithMemoryAmount(brand, model, memoryAmount);
-        if (!minDataSizePolicy.isSatisfiedBy(advertisements.size())) return Optional.empty();
 
-        BigDecimal marketPriceForCommerce = getMarketPrice(
-                advertisements,
-                fullFunctionalPredicate.and(commerceAdPredicate),
-                advertisement.getCondition()
-        );
-        BigDecimal marketPriceForNotCommerce = getMarketPrice(
-                advertisements,
-                fullFunctionalPredicate.and(notCommerceAdPredicate),
-                advertisement.getCondition()
-        );
-        BigDecimal commonMarketPrice = getMarketPrice(
-                advertisements,
-                fullFunctionalPredicate,
-                advertisement.getCondition()
-        );
+        BigDecimal marketPriceForCommerce;
+        try {
+            marketPriceForCommerce = marketPriceService.getMarketPrice(
+                    advertisements,
+                    fullFunctionalPredicate.and(commerceAdPredicate),
+                    advertisement.getCondition()
+            );
+        } catch (Exception e) {
+            marketPriceForCommerce = BigDecimal.ZERO;
+        }
+
+        BigDecimal marketPriceForNotCommerce;
+        try {
+            marketPriceForNotCommerce = marketPriceService.getMarketPrice(
+                    advertisements,
+                    fullFunctionalPredicate.and(notCommerceAdPredicate),
+                    advertisement.getCondition()
+            );
+        } catch (Exception e) {
+            marketPriceForNotCommerce = BigDecimal.ZERO;
+        }
+
+        BigDecimal commonMarketPrice;
+        try {
+            commonMarketPrice = marketPriceService.getMarketPrice(
+                    advertisements,
+                    fullFunctionalPredicate,
+                    advertisement.getCondition());
+        } catch (Exception e) {
+            commonMarketPrice = BigDecimal.ZERO;
+        }
+
+        if (marketPriceForCommerce.compareTo(BigDecimal.ZERO) == 0
+                & marketPriceForNotCommerce.compareTo(BigDecimal.ZERO) == 0
+                & commonMarketPrice.compareTo(BigDecimal.ZERO) == 0
+        ) return Optional.empty();
 
         return Optional.of(new PriceStatistics(
                 marketPriceForCommerce,
@@ -109,7 +132,7 @@ public class AdvertisementServiceFacade {
                 .filter(Objects::nonNull)
                 .flatMap(adsDTO -> adsDTO.getAds().stream().parallel())
                 .filter(Objects::nonNull)
-                .filter(adsDTO -> !advertisementService.existsByAdId(adsDTO.getAdId()))
+                .filter(adsDTO -> !advertisementService.existsByLink(adsDTO.getAdId()))
                 .map(adDTO -> {
                     Advertisement advertisement = Mapper.mapToEntity(adDTO);
                     adDTO.getAdParameters().stream()
@@ -126,21 +149,58 @@ public class AdvertisementServiceFacade {
                 .forEach(advertisementService::save);
     }
 
-    private BigDecimal getMarketPrice(List<Advertisement> advertisements,
-                                      Predicate<Advertisement> predicate,
-                                      String condition
-    ) {
-        List<BigDecimal> prices = advertisements.stream()
-                .filter(predicate)
-                .filter(ad -> ad.getCondition().equalsIgnoreCase(condition))
-                .sorted(Comparator.comparing(Advertisement::getPublishedAt).reversed())
-                .limit(35)
-                .map(Advertisement::getPriceInByn)
+    public SmartphonesAdsReport getReport(String brandName, String modelName) {
+        Manufacturer manufacturer = manufactureService.getByName(brandName).orElseThrow();
+        Long manufacturerId = manufacturer.getId();
+
+        Model model = manufacturer.getModels().stream()
+                .filter(model1 -> model1.getName().equalsIgnoreCase(modelName))
+                .findFirst().orElseThrow();
+        String kufarId = model.getKufarId();
+
+
+        AdsDTO adsDTO = kufarClient.getAdsByParameters(getParamMap(manufacturerId.toString(), kufarId));
+
+        List<SmartphonesAdsReport.PhoneData> advertisements = adsDTO.getAds().stream()
+                .map(adDTO -> advertisementService.getByPublishedAtdAndAdIdAndCategory(adDTO.getListTime(), adDTO.getAdId(), "17010"))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .filter(Advertisement::isFullyFunctional)
+                .map(Mapper::mapToData)
                 .toList();
 
-        if (!minDataSizePolicy.isSatisfiedBy(prices.size())) return BigDecimal.ZERO;
-        if (prices.isEmpty()) return BigDecimal.ZERO;
-        return priceAnalyzer.getMarketPrice(prices);
+        List<BigDecimal> prices = advertisements.stream()
+                .map(SmartphonesAdsReport.PhoneData::getPrice)
+                .toList();
+
+        BigDecimal marketPrice;
+        try {
+            marketPrice = marketPriceService.getMarketPrice(prices);
+        } catch (Exception e) {
+            marketPrice = BigDecimal.ZERO;
+        }
+
+        return SmartphonesAdsReport.builder()
+                .brand(manufacturer.getName())
+                .model(model.getName())
+                .marketPrice(marketPrice)
+                .adsCount(adsDTO.getTotal())
+                .startDate(LocalDateTime.now())
+                .phoneDataList(advertisements)
+                .build();
     }
 
+    private Map<String, String> getParamMap(String manufactureId, String modelId) {
+        return Map.of(
+                "cat", "17010",
+                "cmp", "0",
+                "cnd", "1",
+                "lang", "ru",
+                "pb", manufactureId,
+                "phm", modelId,
+                "prn", "17000",
+                "size", "600",
+                "sort", "lst.d"
+        );
+    }
 }

@@ -40,6 +40,10 @@ public class ManufactureService {
         return manufacturerRepository.findById(id);
     }
 
+    public Optional<Manufacturer> getByName(String name) {
+        return manufacturerRepository.findByName(name);
+    }
+
     public Manufacturer save(Manufacturer manufacturer) {
         return manufacturerRepository.save(manufacturer);
     }

@@ -1,5 +1,6 @@
 package by.zemich.kufar.application.service.channels;
 
+import by.zemich.kufar.application.service.MarketPriceService;
 import by.zemich.kufar.application.service.api.NotificationPostManager;
 import by.zemich.kufar.application.service.api.PostManager;
 import by.zemich.kufar.application.service.channels.api.TelegramChannel;
@@ -26,17 +27,19 @@ public class SmartphoneBestPriceChannel extends TelegramChannel {
     private final String CHANNEL_CHAT_NANE = "Лушие цены на смартфоны c куфар";
     private final PriceAnalyzer priceAnalyzer;
     private final AdvertisementService advertisementService;
+    private final MarketPriceService marketPriceService;
 
     public SmartphoneBestPriceChannel(PhotoMessenger<SendPhoto> messenger,
                                       PostManager<SendPhoto,Advertisement> postManager,
                                       PriceAnalyzer priceAnalyzer,
                                       AdvertisementService advertisementService,
                                       NotificationPostManager<SendPhoto, Notification> notificationPostManager,
-                                      ChannelsDelayProperty channelsDelayProperty
+                                      ChannelsDelayProperty channelsDelayProperty, MarketPriceService marketPriceService
     ) {
         super(messenger, postManager, notificationPostManager, channelsDelayProperty);
         this.priceAnalyzer = priceAnalyzer;
         this.advertisementService = advertisementService;
+        this.marketPriceService = marketPriceService;
     }
 
     @Override
@@ -67,7 +70,8 @@ public class SmartphoneBestPriceChannel extends TelegramChannel {
                 new MinPercentagePolicy(
                         BigDecimal.valueOf(-35),
                         priceAnalyzer,
-                        advertisementService
+                        advertisementService,
+                        marketPriceService
                 ),
                 new OnlyCorrectModelPolicy());
     }

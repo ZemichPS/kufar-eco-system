@@ -21,6 +21,7 @@ services:
       DB_USERNAME: postgres_user_admin
       DB_PASSWORD: postgres_db_password
       FLYWAY_LOG_LEVEL: DEBUG
+      SPRING_PROFILES_ACTIVE: prod
     networks:
       - application-net
 
