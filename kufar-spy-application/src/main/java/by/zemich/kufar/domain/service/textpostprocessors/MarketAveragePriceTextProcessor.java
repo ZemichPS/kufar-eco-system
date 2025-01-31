@@ -57,7 +57,8 @@ public class MarketAveragePriceTextProcessor implements PostTextProcessor {
     public boolean isApplicable(Advertisement advertisement) {
         return advertisement.getBrand().isPresent()
                 && advertisement.getModel().isPresent()
-                && advertisement.getPriceInByn().compareTo(BigDecimal.ZERO) > 0;
+                && advertisement.getPriceInByn().compareTo(BigDecimal.ZERO) > 0
+                && advertisement.isFullyFunctional();
     }
 
     private String getPercentageDifference(BigDecimal comparePrice, BigDecimal currentPrice) {

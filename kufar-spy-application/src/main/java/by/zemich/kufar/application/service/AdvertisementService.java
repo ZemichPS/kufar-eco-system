@@ -23,28 +23,28 @@ public class AdvertisementService {
     private final AdvertisementRepository adsRepository;
     private final ObjectMapper jsonMapper;
 
-    @CachePut(value = "advertisements", key = "#advertisement.id")
+//    @CachePut(value = "advertisements", key = "#advertisement.id")
     public Advertisement save(Advertisement advertisement) {
         return adsRepository.save(advertisement);
     }
 
-    @Cacheable(
-            value = "advertisements",
-            key = "'pageable-' + #pageable.pageNumber + '-' + #pageable.pageSize"
-    )
+//    @Cacheable(
+//            value = "advertisements",
+//            key = "'pageable-' + #pageable.pageNumber + '-' + #pageable.pageSize"
+//    )
     public Page<Advertisement> get(Pageable pageable) {
         return adsRepository.findAll(pageable);
     }
 
-    @Cacheable("advertisements")
+//    @Cacheable("advertisements")
     public List<Advertisement> getAll() {
         return adsRepository.findAll();
     }
 
-    @Cacheable(
-            value = "advertisements",
-            key = "'brand-' + #brand + '-model-' + #model"
-    )
+//    @Cacheable(
+//            value = "advertisements",
+//            key = "'brand-' + #brand + '-model-' + #model"
+//    )
     public List<Advertisement> getAllByBrandAndModel(String brand, String model) {
         String parameters = createParameters(
                 List.of(new Advertisement.Parameter("phones_brand", brand),
@@ -53,10 +53,10 @@ public class AdvertisementService {
         return adsRepository.findAllByParameters(parameters);
     }
 
-    @Cacheable(
-            value = "advertisements",
-            key = "'brand-' + #brand + '-model-' + #model + '-memory-' + #memoryAmount"
-    )
+//    @Cacheable(
+//            value = "advertisements",
+//            key = "'brand-' + #brand + '-model-' + #model + '-memory-' + #memoryAmount"
+//    )
     public List<Advertisement> getAllByBrandAndModelWithMemoryAmount(String brand, String model, String memoryAmount) {
         String parameters = createParameters(
                 List.of(new Advertisement.Parameter("phones_brand", brand),
@@ -67,17 +67,17 @@ public class AdvertisementService {
         return adsRepository.findAllByParameters(parameters);
     }
 
-    @Cacheable(value = "advertisements", key = "'params-' + #parameters.hashCode()")
+//    @Cacheable(value = "advertisements", key = "'params-' + #parameters.hashCode()")
     public List<Advertisement> getAllByParameters(List<Advertisement.Parameter> parameters) {
         return adsRepository.findAllByParameters(createParameters(parameters));
     }
 
-    @Cacheable(value = "advertisements", key = "#id")
+//    @Cacheable(value = "advertisements", key = "#id")
     public Advertisement getById(UUID id) {
         return adsRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Advertisement not found"));
     }
 
-    @CacheEvict(value = "advertisements", key = "#id")
+//    @CacheEvict(value = "advertisements", key = "#id")
     public void delete(UUID id) {
         adsRepository.deleteById(id);
     }
@@ -87,10 +87,10 @@ public class AdvertisementService {
     }
 
 
-    @Cacheable(
-            value = "advertisements",
-            key = "'publishedAt-' + #dateTime + '-adId-' + #adId + '-category-' + #category"
-    )
+//    @Cacheable(
+//            value = "advertisements",
+//            key = "'publishedAt-' + #dateTime + '-adId-' + #adId + '-category-' + #category"
+//    )
     public boolean existsByPublishedAt(LocalDateTime dateTime, Long adId, String category) {
         return adsRepository.existsByPublishedAtAndAdIdAndCategory(dateTime, adId, category);
     }

@@ -7,6 +7,7 @@ import by.zemich.kufar.domain.model.Notification;
 import by.zemich.kufar.domain.service.textpostprocessors.api.PostTextProcessor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
@@ -27,8 +28,7 @@ public class TelegramPostManager implements PostManager<SendPhoto, Advertisement
     private final FileLoader fileLoader;
 
     public SendPhoto create(Advertisement advertisement) {
-        SendPhoto sendPhoto = postLimitedCache.computeIfAbsent(advertisement.getId(), id -> createIfNotExists(advertisement));
-        return sendPhoto;
+        return postLimitedCache.computeIfAbsent(advertisement.getId(), id -> createIfNotExists(advertisement));
     }
 
     private SendPhoto createIfNotExists(Advertisement advertisement) {
@@ -52,7 +52,7 @@ public class TelegramPostManager implements PostManager<SendPhoto, Advertisement
         return postTextProcessors.stream()
                 .filter(postTextProcessor -> postTextProcessor.isApplicable(advertisement))
                 .map(processor -> processor.process(advertisement))
-                .filter(s -> !s.isEmpty() && !s.isBlank())
+                .filter(s -> !s.isBlank())
                 .collect(Collectors.joining("\n"));
     }
 }

@@ -20,7 +20,7 @@ public class PriceAnalyzer {
      */
     public BigDecimal getMarketPrice(List<BigDecimal> prices) {
         if (prices == null || prices.isEmpty()) {
-            throw new IllegalArgumentException("Price isFullyFunctional exception. Prices list cannot be null or empty");
+            throw new IllegalArgumentException("Prices list cannot be null or empty");
         }
 
         // Фильтрация цен от выбросов

@@ -10,6 +10,8 @@ import by.zemich.kufar.infrastructure.clients.KufarClient;
 import by.zemich.kufar.infrastructure.utils.Mapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -19,6 +21,10 @@ import java.util.function.Predicate;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@CacheConfig(
+        cacheManager = "caffeineCacheManager",
+        cacheNames = "priceStatistics"
+)
 public class AdvertisementServiceFacade {
     private final AdvertisementService advertisementService;
     private final ConditionAnalyzer conditionAnalyzer;
@@ -31,6 +37,11 @@ public class AdvertisementServiceFacade {
     private final Predicate<Advertisement> commerceAdPredicate = Advertisement::isCompanyAd;
     private final Predicate<Advertisement> notCommerceAdPredicate = advertisement -> !advertisement.isCompanyAd();
 
+    @Cacheable(
+            key = "#advertisement.brand.get() + '-' + #advertisement.model.get() + '-' + #advertisement.getParameterValueByParameterName('phablet_phones_memory').get()",
+            sync = true,
+            condition = "#advertisement.brand.isPresent() and #advertisement.model.isPresent() and #advertisement.getParameterValueByParameterName('phablet_phones_memory').isPresent()"
+    )
     public Optional<PriceStatistics> getPriceStatisticsByModel(Advertisement advertisement) {
 
         if (!advertisement.isFullyFunctional()) return Optional.empty();
@@ -121,13 +132,14 @@ public class AdvertisementServiceFacade {
     ) {
         List<BigDecimal> prices = advertisements.stream()
                 .filter(predicate)
-                .filter(ad -> ad.getCondition().equals(condition))
+                .filter(ad -> ad.getCondition().equalsIgnoreCase(condition))
                 .sorted(Comparator.comparing(Advertisement::getPublishedAt).reversed())
                 .limit(35)
                 .map(Advertisement::getPriceInByn)
                 .toList();
 
         if (!minDataSizePolicy.isSatisfiedBy(prices.size())) return BigDecimal.ZERO;
+        if (prices.isEmpty()) return BigDecimal.ZERO;
         return priceAnalyzer.getMarketPrice(prices);
     }
 

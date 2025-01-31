@@ -2,7 +2,7 @@ spring:
   application:
     name: kufarspy
   profiles:
-    active: prod
+    active: dev
 
 management:
   metrics:

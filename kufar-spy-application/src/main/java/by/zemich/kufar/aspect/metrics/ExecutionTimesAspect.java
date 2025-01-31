@@ -4,6 +4,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.Tags;
 import io.micrometer.core.instrument.Timer;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Aspect
 @Component
 public class ExecutionTimesAspect {
@@ -51,6 +53,7 @@ public class ExecutionTimesAspect {
                 }
             });
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             throw new RuntimeException("Unexpected exception during timer recording", e);
         }
 
