@@ -1,7 +1,7 @@
 package by.zemich.telegrambotservice.application.service;
 
-import by.zemich.kufar.application.service.api.AdvertisementPublisher;
-import by.zemich.kufar.domain.model.Advertisement;
+import by.zemich.telegrambotservice.application.service.api.AdvertisementPublisher;
+import by.zemich.telegrambotservice.domain.model.Advertisement;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class PublishService {
                                     .doBeforeRetry(retrySignal ->
                                             log.warn("Retry to send advertisement... attempt {}, cause: {}", retrySignal.totalRetries(), retrySignal.failure().getMessage()))
                     )
-                    .doOnError(e -> log.error("Failed to publish advertisement with id: {}", ad.getId(), e))
+                    .doOnError(e -> log.error("Failed to publish advertisement with id: {}", ad.getAdId(), e))
                     .subscribe();
         });
     }

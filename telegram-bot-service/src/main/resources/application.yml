@@ -1,0 +1,77 @@
+spring:
+  application:
+    name: telegram-bot-service
+
+  profiles:
+    active: dev
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: io.hypersistence.utils.hibernate.naming.CamelCaseToSnakeCaseNamingStrategy
+    show-sql: false
+    database: postgresql
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+        use_sql_comments: false
+        jdbc.lob.non_contextual_creation: true
+        default_batch_fetch_size: 50
+        jdbc.batch_size: 30
+        default_schema: app
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connectTimeout: 5000
+            readTimeout: 5000
+            loggerLevel: basic
+
+management:
+  metrics:
+    enable:
+      all: true
+  endpoints:
+    access:
+      default: unrestricted
+    web:
+      exposure:
+        include: metrics, health, info, env, prometheus, openapi, swagger-ui, refresh
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+        step: "5s"
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      access: unrestricted
+    scheduledtasks:
+      access: read_only
+    shutdown:
+      access: read_only
+    refresh:
+      access: unrestricted
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+  show-actuator: false
+  api-docs:
+    enabled: true
+
+telegram:
+  bots:
+    KufarSpy: 7899332979:AAHbNgTpqFhNs3GSFggBduf-kPnLmAZOhPM
+    kufar-assistant: 7154289150:AAHvRug9PYcG6TZHCjseCBQZ3euIAZQTZns
+
+server:
+  port: 8087
