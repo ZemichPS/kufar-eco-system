@@ -1,20 +1,18 @@
 package by.zemich.kufar.application.service.channels;
 
 import by.zemich.kufar.application.service.MarketPriceService;
-import by.zemich.kufar.application.service.api.NotificationPostManager;
-import by.zemich.kufar.application.service.api.PostManager;
+import by.zemich.kufar.application.service.NotificationPostManager;
+import by.zemich.kufar.application.service.PostManager;
 import by.zemich.kufar.application.service.channels.api.TelegramChannel;
 import by.zemich.kufar.domain.model.Advertisement;
-import by.zemich.kufar.domain.model.Notification;
 import by.zemich.kufar.domain.policy.*;
 import by.zemich.kufar.application.service.AdvertisementService;
 import by.zemich.kufar.domain.policy.api.Policy;
 import by.zemich.kufar.domain.service.PriceAnalyzer;
-import by.zemich.kufar.application.service.api.PhotoMessenger;
 import by.zemich.kufar.infrastructure.properties.ChannelsDelayProperty;
+import by.zemich.kufar.infrastructure.telegram.bots.TelegramBotService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -28,17 +26,19 @@ public class FastSmartphoneSalesChannel extends TelegramChannel {
     private final AdvertisementService advertisementService;
     private final MarketPriceService marketPriceService;
 
-    public FastSmartphoneSalesChannel(PhotoMessenger<SendPhoto> messenger,
-                                      PostManager<SendPhoto, Advertisement> postManager,
+    public FastSmartphoneSalesChannel(TelegramBotService telegramBotService,
+                                      PostManager postManager,
                                       PriceAnalyzer priceAnalyzer,
                                       AdvertisementService advertisementService,
-                                      NotificationPostManager<SendPhoto, Notification> notificationPostManager,
-                                      ChannelsDelayProperty channelsDelayProperty, MarketPriceService marketPriceService
+                                      NotificationPostManager notificationPostManager,
+                                      ChannelsDelayProperty channelsDelayProperty,
+                                      MarketPriceService marketPriceService
     ) {
-        super(messenger, postManager, notificationPostManager, channelsDelayProperty);
+        super(telegramBotService, postManager, notificationPostManager, channelsDelayProperty);
         this.priceAnalyzer = priceAnalyzer;
         this.advertisementService = advertisementService;
         this.marketPriceService = marketPriceService;
+
     }
 
     @Override

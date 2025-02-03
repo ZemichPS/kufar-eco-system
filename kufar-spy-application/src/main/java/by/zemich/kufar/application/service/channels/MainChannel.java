@@ -1,18 +1,16 @@
 package by.zemich.kufar.application.service.channels;
 
-import by.zemich.kufar.application.service.api.NotificationPostManager;
-import by.zemich.kufar.application.service.api.PostManager;
+import by.zemich.kufar.application.service.NotificationPostManager;
+import by.zemich.kufar.application.service.PostManager;
 import by.zemich.kufar.application.service.channels.api.TelegramChannel;
 import by.zemich.kufar.domain.model.Advertisement;
-import by.zemich.kufar.domain.model.Notification;
 import by.zemich.kufar.domain.policy.CategoryPolicy;
 import by.zemich.kufar.domain.policy.OnlyOriginalGoodsPolicy;
-import by.zemich.kufar.application.service.api.PhotoMessenger;
 import by.zemich.kufar.domain.policy.api.Policy;
 import by.zemich.kufar.infrastructure.properties.ChannelsDelayProperty;
+import by.zemich.kufar.infrastructure.telegram.bots.TelegramBotService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 
 import java.util.List;
 
@@ -22,12 +20,12 @@ public class MainChannel extends TelegramChannel {
     private final String CHANNEL_CHAT_ID = "-1002385506241";
     private final String CHANNEL_CHAT_NANE = "Выгодные объявления с Kufar";
 
-    public MainChannel(PhotoMessenger<SendPhoto> messenger,
-                       NotificationPostManager<SendPhoto, Notification> notificationPostManager,
-                       PostManager<SendPhoto,Advertisement> postManager,
+    public MainChannel(TelegramBotService telegramBotService,
+                       NotificationPostManager notificationPostManager,
+                       PostManager postManager,
                        ChannelsDelayProperty channelsDelayProperty
     ) {
-        super(messenger, postManager, notificationPostManager, channelsDelayProperty);
+        super(telegramBotService, postManager, notificationPostManager, channelsDelayProperty);
     }
 
     @Override

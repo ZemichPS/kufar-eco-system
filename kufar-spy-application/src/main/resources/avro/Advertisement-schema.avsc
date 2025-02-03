@@ -1,0 +1,103 @@
+{
+  "type": "record",
+  "name": "AdvertisementCreatedEvent",
+  "namespace": "by.zemich.kufar.domain.model.events",
+  "fields": [
+    {
+      "name": "id",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
+    {
+      "name": "kufarId",
+      "type": "long"
+    },
+    {
+      "name": "link",
+      "type": "string"
+    },
+    {
+      "name": "category",
+      "type": "string"
+    },
+    {
+      "name": "commerce",
+      "type": "boolean"
+    },
+    {
+      "name": "subject",
+      "type": "string"
+    },
+    {
+      "name": "publishedAt",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-micros"
+      }
+    },
+    {
+      "name": "type",
+      "type": "string"
+    },
+    {
+      "name": "priceInByn",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 10,
+        "scale": 2
+      }
+    },
+    {
+      "name": "priceInUsd",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 10,
+        "scale": 2
+      }
+    },
+    {
+      "name": "details",
+      "type": "string"
+    },
+    {
+      "name": "fullyFunctional",
+      "type": "boolean"
+    },
+    {
+      "name": "images",
+      "type": "string"
+    },
+    {
+      "name": "sellerId",
+      "type": "string"
+    },
+    {
+      "name": "parameters",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "name": "Parameter",
+          "fields": [
+            {
+              "name": "identity",
+              "type": "string"
+            },
+            {
+              "name": "value",
+              "type": "string"
+            },
+            {
+              "name": "label",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

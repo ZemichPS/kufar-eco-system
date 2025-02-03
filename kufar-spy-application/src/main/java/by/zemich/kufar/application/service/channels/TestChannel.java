@@ -1,29 +1,18 @@
 package by.zemich.kufar.application.service.channels;
 
-import by.zemich.kufar.application.service.api.*;
+import by.zemich.kufar.application.service.NotificationPostManager;
+import by.zemich.kufar.application.service.api.CategoryPriceListRepository;
+import by.zemich.kufar.application.service.api.ClothesBrandsRepository;
 import by.zemich.kufar.application.service.channels.api.TelegramChannel;
 import by.zemich.kufar.domain.model.Advertisement;
-import by.zemich.kufar.domain.model.Notification;
-import by.zemich.kufar.domain.policy.*;
-import by.zemich.kufar.application.service.TelegramPostManager;
+import by.zemich.kufar.application.service.PostManager;
 import by.zemich.kufar.domain.policy.api.Policy;
-import by.zemich.kufar.domain.service.PolicyChecker;
 import by.zemich.kufar.infrastructure.properties.ChannelsDelayProperty;
-import by.zemich.kufar.infrastructure.repository.filerepositories.CategoryPricelistFileRepository;
-import by.zemich.kufar.infrastructure.repository.filerepositories.ClothesBrandsFileRepository;
-import jakarta.annotation.PostConstruct;
+import by.zemich.kufar.infrastructure.telegram.bots.TelegramBotService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Component
 @Profile("test")
@@ -34,14 +23,14 @@ public class TestChannel extends TelegramChannel {
     private final ClothesBrandsRepository clothesBrandsRepository;
     private final CategoryPriceListRepository categoryPriceListRepository;
 
-    public TestChannel(PhotoMessenger<SendPhoto> messenger,
-                       PostManager<SendPhoto,Advertisement> postManager,
+    public TestChannel(TelegramBotService telegramBotService,
+                       PostManager postManager,
                        ClothesBrandsRepository clothesBrandsRepository,
                        CategoryPriceListRepository categoryPriceListRepository,
-                       NotificationPostManager<SendPhoto, Notification> notificationPostManager,
+                       NotificationPostManager notificationPostManager,
                        ChannelsDelayProperty channelsDelayProperty
     ) {
-        super(messenger, postManager, notificationPostManager, channelsDelayProperty);
+        super(telegramBotService, postManager, notificationPostManager, channelsDelayProperty);
         this.clothesBrandsRepository = clothesBrandsRepository;
         this.categoryPriceListRepository = categoryPriceListRepository;
     }

@@ -21,14 +21,14 @@ public class NotificationService {
 
     private final NotificationRepository notificationRepository;
     private final UserService userService;
-    private final TelegramPostManager telegramPostManager;
+    private final PostManager postManager;
     private final NotificationPostManager<SendPhoto, Notification> notificationNotificationPostManager;
     private final PhotoMessenger<SendPhoto> telegramPhotoMessenger;
     private final List<Notifiable> notifiable;
 
     public void notifyUserMatchingAd(UUID userId, Advertisement advertisement) {
         Long chatId = userService.getById(userId).map(User::getTelegramChatId).orElseThrow();
-        SendPhoto adPost = telegramPostManager.create(advertisement);
+        SendPhoto adPost = postManager.create(advertisement);
         adPost.setChatId(chatId.toString());
         telegramPhotoMessenger.sendPhoto(adPost);
     }

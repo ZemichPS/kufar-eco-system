@@ -1,12 +1,12 @@
 package by.zemich.kufar.application.service.channels.api;
 
-import by.zemich.kufar.application.service.TelegramPostManager;
-import by.zemich.kufar.application.service.api.NotificationPostManager;
+import by.zemich.kufar.application.service.NotificationPostManager;
+import by.zemich.kufar.application.service.PostManager;
 import by.zemich.kufar.application.service.api.PhotoMessenger;
-import by.zemich.kufar.application.service.api.PostManager;
 import by.zemich.kufar.domain.model.Advertisement;
 import by.zemich.kufar.domain.model.Notification;
 import by.zemich.kufar.infrastructure.properties.ChannelsDelayProperty;
+import by.zemich.kufar.infrastructure.telegram.bots.TelegramBotService;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 
@@ -17,19 +17,19 @@ import static java.lang.Thread.sleep;
 
 @Slf4j
 public abstract class TelegramChannel extends Channel {
-    private final PhotoMessenger<SendPhoto> photoMessenger;
-    private final PostManager<SendPhoto, Advertisement> postManager;
-    private final NotificationPostManager<SendPhoto, Notification> notificationPostManager;
+    private final TelegramBotService telegramBotService;
+    private final PostManager postManager;
+    private final NotificationPostManager notificationPostManager;
     private final ChannelsDelayProperty channelsDelayProperty;
 
 
-    protected TelegramChannel(PhotoMessenger<SendPhoto> photoMessenger,
-                              PostManager<SendPhoto, Advertisement> postManager,
-                              NotificationPostManager<SendPhoto, Notification> notificationPostManager,
+    protected TelegramChannel(TelegramBotService telegramBotService,
+                              PostManager postManager,
+                              NotificationPostManager notificationPostManager,
                               ChannelsDelayProperty channelsDelayProperty
     ) {
         super();
-        this.photoMessenger = photoMessenger;
+        this.telegramBotService = telegramBotService;
         this.postManager = postManager;
         this.notificationPostManager = notificationPostManager;
         this.channelsDelayProperty = channelsDelayProperty;
@@ -41,7 +41,7 @@ public abstract class TelegramChannel extends Channel {
         doDelay();
         SendPhoto photoPost = postManager.create(advertisement);
         photoPost.setChatId(getChannelId());
-        photoMessenger.sendPhoto(photoPost);
+        telegramBotService.sendPhoto(photoPost);
         return true;
     }
 
@@ -49,7 +49,7 @@ public abstract class TelegramChannel extends Channel {
     public void notify(Notification notification) {
         SendPhoto photoPost = notificationPostManager.create(notification);
         photoPost.setChatId(getChannelId());
-        photoMessenger.sendPhoto(photoPost);
+        telegramBotService.sendPhoto(photoPost);
     }
 
     private void doDelay() {

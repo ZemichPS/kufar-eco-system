@@ -7,7 +7,8 @@ networks:
 services:
 
   kufarspy:
-    image: kufarspy-application:latest
+    # image: kufarspy-application:latest // стабильная версия
+    image: kufarspy-application:0.0.1
     container_name: kufarspy-application
     restart: always
     ports:
@@ -36,7 +37,7 @@ services:
       POSTGRES_PASSWORD: postgres_db_password
       POSTGRES_DB: kufardb
     volumes:
-      - D:/docker-data/kufarspy/db:/var/lib/postgresql/data
+      - D:/docker-data/kufarspy/kufar-application-db:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     networks:
@@ -47,6 +48,30 @@ services:
       timeout: 5s            # Таймаут команды проверки
       retries: 3             # Количество попыток перед тем, как контейнер будет помечен как unhealthy
       start_period: 30s      # Время ожидания перед первой проверкой (например, пока база поднимается)
+
+  telegram-bot-db:
+    image: postgres:17.2
+    container_name: telegram_bot_ms_postgres_db
+    restart: always
+    depends_on:
+      - service-discovery
+    environment:
+      POSTGRES_USER: postgres_user_admin
+      POSTGRES_PASSWORD: postgres_db_password
+      POSTGRES_DB: telegram-bot-db
+    volumes:
+      - D:/docker-data/kufarspy/kufar-bot-db:/var/lib/postgresql/data
+    ports:
+      - "5435:5432"
+    networks:
+      - application-net
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres_user_admin -d telegram-bot-db" ]
+      interval: 10s          # Интервал между проверками (здесь каждые 10 секунд)
+      timeout: 5s            # Таймаут команды проверки
+      retries: 3             # Количество попыток перед тем, как контейнер будет помечен как unhealthy
+      start_period: 30s      # Время ожидания перед первой проверкой (например, пока база поднимается)
+
 
   service-discovery:
     image: discovery-service:latest
