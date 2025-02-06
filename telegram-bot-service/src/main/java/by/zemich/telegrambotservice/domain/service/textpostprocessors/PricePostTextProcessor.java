@@ -1,7 +1,7 @@
 package by.zemich.telegrambotservice.domain.service.textpostprocessors;
 
-import by.zemich.kufar.domain.model.Advertisement;
-import by.zemich.kufar.domain.service.textpostprocessors.api.PostTextProcessor;
+import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
+import by.zemich.telegrambotservice.domain.service.textpostprocessors.api.PostTextProcessor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Order(value = 11)
 public class PricePostTextProcessor implements PostTextProcessor {
     @Override
-    public String process(Advertisement advertisement) {
+    public String process(KufarAdvertisement advertisement) {
         StringBuilder sb = new StringBuilder();
         BigDecimal price = advertisement.getPriceInByn();
 
@@ -29,7 +29,7 @@ public class PricePostTextProcessor implements PostTextProcessor {
     }
 
     @Override
-    public boolean isApplicable(Advertisement advertisement) {
+    public boolean isApplicable(KufarAdvertisement advertisement) {
         return true;
     }
 }

@@ -1,7 +1,7 @@
 package by.zemich.telegrambotservice.application.service;
 
 import by.zemich.telegrambotservice.application.service.api.AdvertisementPublisher;
-import by.zemich.telegrambotservice.domain.model.Advertisement;
+import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import java.util.List;
 public class PublishService {
     private final List<AdvertisementPublisher> advertisementPublishers;
 
-    public void publish(Advertisement ad) {
+    public void publish(KufarAdvertisement ad) {
         advertisementPublishers.forEach(publisher -> {
             Mono.defer(() -> Mono.fromRunnable(()-> publisher.publish(ad)))
                     .retryWhen(

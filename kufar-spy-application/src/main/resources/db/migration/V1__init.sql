@@ -2,7 +2,7 @@ SET timezone = 'Europe/Minsk';
 
 CREATE SCHEMA IF NOT EXISTS app;
 
-CREATE TABLE IF NOT EXISTS app.advertisements
+CREATE TABLE IF NOT EXISTS app.kufarAdvertisements
 (
     id           UUID PRIMARY KEY,
     ad_id        BIGSERIAL,

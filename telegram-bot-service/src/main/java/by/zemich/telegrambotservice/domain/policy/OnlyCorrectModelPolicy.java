@@ -1,13 +1,14 @@
 package by.zemich.telegrambotservice.domain.policy;
 
-import by.zemich.kufar.domain.model.Advertisement;
-import by.zemich.kufar.domain.policy.api.Policy;
 
-public class OnlyCorrectModelPolicy implements Policy<Advertisement> {
+import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
+import by.zemich.telegrambotservice.domain.policy.api.Policy;
+
+public class OnlyCorrectModelPolicy implements Policy<KufarAdvertisement> {
 
     @Override
-    public boolean isSatisfiedBy(Advertisement advertisement) {
-        return advertisement.getModel()
+    public boolean isSatisfiedBy(KufarAdvertisement kufarAdvertisement) {
+        return kufarAdvertisement.getModel()
                 .filter("другая"::equalsIgnoreCase)
                 .isEmpty();
 

@@ -2,55 +2,53 @@ package by.zemich.telegrambotservice.domain.policy;
 
 
 import by.zemich.telegrambotservice.application.service.MarketPriceService;
-import by.zemich.telegrambotservice.domain.model.Advertisement;
+import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
 import by.zemich.telegrambotservice.domain.policy.api.Policy;
+import by.zemich.telegrambotservice.infrastructure.clients.AdvertisementClient;
+import by.zemich.telegrambotservice.infrastructure.clients.AdvertisementDevicesServiceFeignClient;
+import org.glassfish.grizzly.utils.Futures;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.function.Predicate;
 
-public class MinPercentagePolicy implements Policy<Advertisement> {
+public class MinPercentagePolicy implements Policy<KufarAdvertisement> {
 
-    private final BigDecimal minPercentage;
-    private final AdvertisementService advertisementService;
     private final MinimumRequredAmountOfDataForMarketPriceCountingPolicy minDataSize = new MinimumRequredAmountOfDataForMarketPriceCountingPolicy();
+    private final BigDecimal minPercentage;
+    private final AdvertisementClient advertisementClient;
     private final MarketPriceService marketPriceService;
 
-    protected final Predicate<Advertisement> fullFunctionalPredicate = Advertisement::isFullyFunctional;
-
     public MinPercentagePolicy(BigDecimal minPercentage,
-                               AdvertisementService advertisementService,
+                               AdvertisementClient advertisementClient,
                                MarketPriceService marketPriceService
     ) {
         this.minPercentage = minPercentage;
-        this.advertisementService = advertisementService;
+        this.advertisementClient = advertisementClient;
         this.marketPriceService = marketPriceService;
     }
 
 
     @Override
-    public boolean isSatisfiedBy(Advertisement advertisement) {
-        BigDecimal currentAdPrice = advertisement.getPriceInByn();
+    public boolean isSatisfiedBy(KufarAdvertisement kufarAdvertisement) {
+        BigDecimal currentAdPrice = kufarAdvertisement.getPriceInByn();
 
         if (currentAdPrice.compareTo(BigDecimal.ZERO) == 0) return false;
-        if (advertisement.getBrand().isEmpty() || advertisement.getModel().isEmpty()) return false;
+        if (kufarAdvertisement.getBrand().isEmpty() || kufarAdvertisement.getModel().isEmpty()) return false;
 
-        String memoryAmount = advertisement.getParameterValueByParameterName("phablet_phones_memory").orElse("");
+        String memoryAmount = kufarAdvertisement.getParameterValueByParameterName("phablet_phones_memory").orElse("");
+        String ram = kufarAdvertisement.getParameterValueByParameterName("ram").orElse("");
         if (memoryAmount.isEmpty()) return false;
 
-        String brand = advertisement.getBrand().orElse("");
-        String model = advertisement.getModel().orElse("");
+        String brand = kufarAdvertisement.getBrand().orElse("");
+        String model = kufarAdvertisement.getModel().orElse("");
 
-        List<Advertisement> advertisements = advertisementService.getAllByBrandAndModelWithMemoryAmount(brand, model, memoryAmount);
-        if (!minDataSize.isSatisfiedBy(advertisements.size())) return false;
+        List<BigDecimal> prices = (, model, memoryAmount)
+                .getPricesInByn();
+        if (!minDataSize.isSatisfiedBy(prices.size())) return false;
 
         BigDecimal marketPriceForCommerce;
         try {
-            marketPriceForCommerce = marketPriceService.getMarketPrice(
-                    advertisements,
-                    fullFunctionalPredicate,
-                    advertisement.getCondition()
-            );
+            marketPriceForCommerce = marketPriceService.getMarketPrice(prices);
         } catch (Exception e) {
             return false;
         }

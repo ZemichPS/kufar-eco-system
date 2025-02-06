@@ -1,11 +1,12 @@
 package by.zemich.telegrambotservice.domain.policy;
 
-import by.zemich.kufar.domain.model.Advertisement;
-import by.zemich.kufar.domain.policy.api.Policy;
+
+import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
+import by.zemich.telegrambotservice.domain.policy.api.Policy;
 
 import java.util.List;
 
-public class OnlyDefiniteBrandAndModelAdsPolicy implements Policy<Advertisement> {
+public class OnlyDefiniteBrandAndModelAdsPolicy implements Policy<KufarAdvertisement> {
 
     private final String BRAND_NAME;
     private final List<String> models;
@@ -16,9 +17,9 @@ public class OnlyDefiniteBrandAndModelAdsPolicy implements Policy<Advertisement>
     }
 
     @Override
-    public boolean isSatisfiedBy(Advertisement advertisement) {
-        String model = advertisement.getModel().orElse("");
-        String brand = advertisement.getBrand().orElse("");
+    public boolean isSatisfiedBy(KufarAdvertisement kufarAdvertisement) {
+        String model = kufarAdvertisement.getModel().orElse("");
+        String brand = kufarAdvertisement.getBrand().orElse("");
         return brand.equalsIgnoreCase(BRAND_NAME) &&  models.contains(model);
     }
 }

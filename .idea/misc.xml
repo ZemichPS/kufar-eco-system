@@ -5,7 +5,9 @@
     <file type="web" url="file://$PROJECT_DIR$/analytics-service" />
     <file type="web" url="file://$PROJECT_DIR$/config-server" />
     <file type="web" url="file://$PROJECT_DIR$/discoveryms" />
+    <file type="web" url="file://$PROJECT_DIR$/kufar-parser" />
     <file type="web" url="file://$PROJECT_DIR$/kufar-spy-application" />
+    <file type="web" url="file://$PROJECT_DIR$/telegram-bot-service" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_21" project-jdk-name="corretto-21" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />

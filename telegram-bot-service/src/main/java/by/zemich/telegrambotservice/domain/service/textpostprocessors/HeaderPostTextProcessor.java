@@ -1,8 +1,8 @@
 package by.zemich.telegrambotservice.domain.service.textpostprocessors;
 
-import by.zemich.kufar.domain.model.Advertisement;
-import by.zemich.kufar.domain.service.EmojiService;
-import by.zemich.kufar.domain.service.textpostprocessors.api.PostTextProcessor;
+import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
+import by.zemich.telegrambotservice.domain.service.EmojiService;
+import by.zemich.telegrambotservice.domain.service.textpostprocessors.api.PostTextProcessor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ public class HeaderPostTextProcessor implements PostTextProcessor {
     private final EmojiService emojiService;
 
     @Override
-    public String process(Advertisement advertisement) {
+    public String process(KufarAdvertisement advertisement) {
         String header;
         if (advertisement.getBrand().isPresent()) {
             String brand = advertisement.getBrand().orElse("");
@@ -30,7 +30,7 @@ public class HeaderPostTextProcessor implements PostTextProcessor {
     }
 
     @Override
-    public boolean isApplicable(Advertisement advertisement) {
+    public boolean isApplicable(KufarAdvertisement advertisement) {
         return (advertisement.getBrand().isPresent() && advertisement.getModel().isPresent()) || advertisement.getSubject() != null;
     }
 

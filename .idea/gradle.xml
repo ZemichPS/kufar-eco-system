@@ -28,10 +28,26 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/kufar-parser" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/kufar-parser" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/kufar-spy-application" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/kufar-spy-application" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/telegram-bot-service" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/telegram-bot-service" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -1,12 +1,13 @@
 package by.zemich.telegrambotservice.domain.policy;
 
-import by.zemich.kufar.domain.model.Advertisement;
-import by.zemich.kufar.domain.policy.api.Policy;
 
-public class OnlyBrandWoomanShoesPolicy implements Policy<Advertisement> {
+import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
+import by.zemich.telegrambotservice.domain.policy.api.Policy;
+
+public class OnlyBrandWoomanShoesPolicy implements Policy<KufarAdvertisement> {
     @Override
-    public boolean isSatisfiedBy(Advertisement advertisement) {
-        return "8100".equalsIgnoreCase(advertisement.getCategory())
-                && advertisement.getParameterValueByParameterName("women_shoes_brand").isPresent();
+    public boolean isSatisfiedBy(KufarAdvertisement kufarAdvertisement) {
+        return "8100".equalsIgnoreCase(kufarAdvertisement.getCategory())
+                && kufarAdvertisement.getParameterValueByParameterName("women_shoes_brand").isPresent();
     }
 }

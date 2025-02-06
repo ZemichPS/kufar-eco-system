@@ -6,9 +6,9 @@ CREATE TABLE app.sellers
     rate                      REAL
 );
 
-ALTER TABLE app.advertisements
+ALTER TABLE app.kufarAdvertisements
     ADD seller_id VARCHAR(200);
 
-ALTER TABLE app.advertisements
+ALTER TABLE app.kufarAdvertisements
     ADD CONSTRAINT fk_seller FOREIGN KEY (seller_id) REFERENCES app.sellers(id)
 

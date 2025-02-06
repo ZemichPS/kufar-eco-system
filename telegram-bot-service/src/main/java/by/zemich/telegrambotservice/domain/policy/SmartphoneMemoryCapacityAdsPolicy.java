@@ -1,11 +1,12 @@
 package by.zemich.telegrambotservice.domain.policy;
 
-import by.zemich.kufar.domain.model.Advertisement;
-import by.zemich.kufar.domain.policy.api.Policy;
+
+import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
+import by.zemich.telegrambotservice.domain.policy.api.Policy;
 
 import java.util.List;
 
-public class SmartphoneMemoryCapacityAdsPolicy implements Policy<Advertisement> {
+public class SmartphoneMemoryCapacityAdsPolicy implements Policy<KufarAdvertisement> {
 
     private final List<String> memoryCapacities;
 
@@ -14,8 +15,8 @@ public class SmartphoneMemoryCapacityAdsPolicy implements Policy<Advertisement> 
     }
 
     @Override
-    public boolean isSatisfiedBy(Advertisement advertisement) {
-        String memoryCapacity = advertisement.getParameterValueByParameterName("phablet_phones_memory")
+    public boolean isSatisfiedBy(KufarAdvertisement kufarAdvertisement) {
+        String memoryCapacity = kufarAdvertisement.getParameterValueByParameterName("phablet_phones_memory")
                 .map(value -> value.split(" ")[0])
                 .orElse("");
         return memoryCapacities.contains(memoryCapacity);

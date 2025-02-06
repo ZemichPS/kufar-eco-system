@@ -4,14 +4,13 @@ import by.zemich.telegrambotservice.application.service.NotificationPostManager;
 import by.zemich.telegrambotservice.application.service.PostManager;
 import by.zemich.telegrambotservice.application.service.bots.TelegramBotService;
 import by.zemich.telegrambotservice.application.service.channels.api.AbstractTelegramChannel;
-import by.zemich.telegrambotservice.domain.model.Advertisement;
+import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
 import by.zemich.telegrambotservice.domain.policy.CategoryPolicy;
 import by.zemich.telegrambotservice.domain.policy.OnlyOriginalGoodsPolicy;
 import by.zemich.telegrambotservice.domain.policy.api.Policy;
 import by.zemich.telegrambotservice.infrastructure.properties.ChannelsDelayProperty;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 
 import java.util.List;
 
@@ -45,7 +44,7 @@ public class MainChannel extends AbstractTelegramChannel {
     }
 
     @Override
-    protected List<Policy<Advertisement>> createPolicies() {
+    protected List<Policy<KufarAdvertisement>> createPolicies() {
         return List.of(
                 new OnlyOriginalGoodsPolicy(),
                 new CategoryPolicy("17010")

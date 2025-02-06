@@ -1,6 +1,10 @@
 package by.zemich.telegrambotservice.application.service;
 
 import by.zemich.telegrambotservice.application.service.api.FilesHandler;
+import by.zemich.telegrambotservice.application.service.exception.FileHandlerException;
+import io.minio.GetObjectArgs;
+import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

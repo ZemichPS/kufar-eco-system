@@ -1,6 +1,7 @@
 package by.zemich.telegrambotservice.domain.policy;
 
-import by.zemich.kufar.domain.policy.api.Policy;
+
+import by.zemich.telegrambotservice.domain.policy.api.Policy;
 
 public class MinimumRequredAmountOfDataForMarketPriceCountingPolicy implements Policy<Integer> {
     private final Integer NEEDED_ARRAY_SIZE = 20;

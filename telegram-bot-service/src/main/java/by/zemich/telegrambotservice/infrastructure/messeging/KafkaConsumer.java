@@ -1,7 +1,7 @@
 package by.zemich.telegrambotservice.infrastructure.messeging;
 
 import by.zemich.telegrambotservice.application.service.PublishService;
-import by.zemich.telegrambotservice.domain.model.Advertisement;
+import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class KafkaConsumer {
     private final PublishService publishService;
 
-    public void consume(Advertisement advertisement) {
-        publishService.publish(advertisement);
+    public void consume(KufarAdvertisement kufarAdvertisement) {
+        publishService.publish(kufarAdvertisement);
     }
 }

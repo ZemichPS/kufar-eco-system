@@ -1,7 +1,7 @@
 package by.zemich.telegrambotservice.domain.service.textpostprocessors;
 
-import by.zemich.kufar.domain.model.Advertisement;
-import by.zemich.kufar.domain.service.textpostprocessors.api.PostTextProcessor;
+import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
+import by.zemich.telegrambotservice.domain.service.textpostprocessors.api.PostTextProcessor;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -11,14 +11,14 @@ public class ShoesSizePostTextProcessor implements PostTextProcessor {
 
 
     @Override
-    public String process(Advertisement advertisement) {
+    public String process(KufarAdvertisement advertisement) {
         String size = advertisement.getParameterValueByParameterName("women_shoes_size").get();
         size = prepare(size);
         return "▫\uFE0F" + PostTextProcessor.getBoldHtmlStyle(" Размер: ") + size;
     }
 
     @Override
-    public boolean isApplicable(Advertisement advertisement) {
+    public boolean isApplicable(KufarAdvertisement advertisement) {
         return advertisement.getParameterValueByParameterName("women_shoes_size").isPresent();
     }
 

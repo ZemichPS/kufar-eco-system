@@ -1,12 +1,13 @@
 package by.zemich.telegrambotservice.domain.policy;
 
-import by.zemich.kufar.domain.model.Advertisement;
-import by.zemich.kufar.domain.policy.api.Policy;
+
+import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
+import by.zemich.telegrambotservice.domain.policy.api.Policy;
 
 import java.util.Objects;
 import java.util.Optional;
 
-public class AreaPolicy implements Policy<Advertisement> {
+public class AreaPolicy implements Policy<KufarAdvertisement> {
 
     private final String targetArea;
 
@@ -15,16 +16,16 @@ public class AreaPolicy implements Policy<Advertisement> {
     }
 
     @Override
-    public boolean isSatisfiedBy(Advertisement advertisement) {
-        if(!isApplicable(advertisement)) return false;
+    public boolean isSatisfiedBy(KufarAdvertisement kufarAdvertisement) {
+        if(!isApplicable(kufarAdvertisement)) return false;
 
-        Optional<Advertisement.Parameter> areaParameter = advertisement.getParameterByIdentity("area");
+        Optional<KufarAdvertisement.Parameter> areaParameter = kufarAdvertisement.getParameterByIdentity("area");
         return areaParameter.map(param-> param.getValue()
                 .equalsIgnoreCase(targetArea))
                 .orElse(false);
     }
 
-    private boolean isApplicable(Advertisement advertisement) {
-        return advertisement.getParameterByIdentity("area").isPresent();
+    private boolean isApplicable(KufarAdvertisement kufarAdvertisement) {
+        return kufarAdvertisement.getParameterByIdentity("area").isPresent();
     }
 }

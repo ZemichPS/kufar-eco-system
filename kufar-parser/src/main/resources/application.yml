@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: kufar-parser-service
+  profiles:
+    active: dev
+
+management:
+  metrics:
+    enable:
+      all: true
+  endpoints:
+    access:
+      default: unrestricted
+    web:
+      exposure:
+        include: metrics, health, info, env, prometheus, openapi, swagger-ui, refresh
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+        step: "5s"
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      access: unrestricted
+    scheduledtasks:
+      access: read_only
+    shutdown:
+      access: read_only
+    refresh:
+      access: unrestricted
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+  show-actuator: false
+  api-docs:
+    enabled: true
+
+
+rest-client:
+  user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36
+
+telegram:
+  bots:
+    KufarSpy: 7899332979:AAHbNgTpqFhNs3GSFggBduf-kPnLmAZOhPM
+    kufar-assistant: 7154289150:AAHvRug9PYcG6TZHCjseCBQZ3euIAZQTZns
+
+minio:
+  notification-image-bucket-name: notification-images

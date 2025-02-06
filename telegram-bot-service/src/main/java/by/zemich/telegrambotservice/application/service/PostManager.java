@@ -1,6 +1,6 @@
 package by.zemich.telegrambotservice.application.service;
 
-import by.zemich.telegrambotservice.domain.model.Advertisement;
+import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
 import by.zemich.telegrambotservice.domain.service.textpostprocessors.api.PostTextProcessor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,21 +28,21 @@ public class PostManager {
     private final FileLoader fileLoader;
 
     @Cacheable(
-            key = "#advertisement.id",
+            key = "#kufarAdvertisement.id",
             sync = true
     )
-    public SendPhoto create(Advertisement advertisement) {
-        return createIfNotExists(advertisement);
+    public SendPhoto create(KufarAdvertisement kufarAdvertisement) {
+        return createIfNotExists(kufarAdvertisement);
     }
 
-    private SendPhoto createIfNotExists(Advertisement advertisement) {
-        InputFile photo = advertisement.getPhotoLink()
+    private SendPhoto createIfNotExists(KufarAdvertisement kufarAdvertisement) {
+        InputFile photo = kufarAdvertisement.getPhotoLink()
                 .map(InputFile::new)
                 .orElseGet(() -> {
                     InputStream inputStream = fileLoader.loadResourcesFileAsInputStream("images/default.jpg");
                     return new InputFile(inputStream, UUID.randomUUID() + "jpg");
                 });
-        String text = processPostText(advertisement);
+        String text = processPostText(kufarAdvertisement);
         return SendPhoto.builder()
                 .photo(photo)
                 .chatId("54504156056")
@@ -52,10 +52,10 @@ public class PostManager {
     }
 
 
-    private String processPostText(Advertisement advertisement) {
+    private String processPostText(KufarAdvertisement kufarAdvertisement) {
         return postTextProcessors.stream()
-                .filter(postTextProcessor -> postTextProcessor.isApplicable(advertisement))
-                .map(processor -> processor.process(advertisement))
+                .filter(postTextProcessor -> postTextProcessor.isApplicable(kufarAdvertisement))
+                .map(processor -> processor.process(kufarAdvertisement))
                 .filter(s -> !s.isBlank())
                 .collect(Collectors.joining("\n"));
     }

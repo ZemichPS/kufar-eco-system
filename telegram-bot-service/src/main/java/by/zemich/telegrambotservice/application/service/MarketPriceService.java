@@ -1,9 +1,7 @@
 package by.zemich.telegrambotservice.application.service;
 
-import by.zemich.telegrambotservice.domain.model.Advertisement;
-import by.zemich.telegrambotservice.infrastructure.clients.AnalyticServiceFeignClient;
-import by.zemich.telegrambotservice.infrastructure.clients.dto.MarketPriceRequest;
-import by.zemich.telegrambotservice.infrastructure.clients.dto.PercentageDifferenceRequest;
+import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
+import by.zemich.telegrambotservice.domain.service.PriceAnalyzer;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,29 +13,29 @@ import java.util.function.Predicate;
 @Service
 @AllArgsConstructor
 public class MarketPriceService {
-    private final AnalyticServiceFeignClient analyticServiceClient;
     private final int adsCountForMarketPriceAnalyze = 35;
+    private final PriceAnalyzer priceAnalyzer;
 
 
-    public BigDecimal getMarketPrice(List<Advertisement> advertisements,
-                                      Predicate<Advertisement> predicate,
+    public BigDecimal getMarketPrice(List<KufarAdvertisement> kufarAdvertisements,
+                                      Predicate<KufarAdvertisement> predicate,
                                       String condition
     ) throws Exception {
-        List<BigDecimal> prices = advertisements.stream()
+        List<BigDecimal> prices = kufarAdvertisements.stream()
                 .filter(predicate)
                 .filter(ad -> ad.getCondition().equalsIgnoreCase(condition))
-                .sorted(Comparator.comparing(Advertisement::getPublishedAt).reversed())
+                .sorted(Comparator.comparing(KufarAdvertisement::getPublishedAt).reversed())
                 .limit(adsCountForMarketPriceAnalyze)
-                .map(Advertisement::getPriceInByn)
+                .map(KufarAdvertisement::getPriceInByn)
                 .toList();
-        return analyticServiceClient.getMarketPrice(new MarketPriceRequest(prices));
+        return priceAnalyzer.getMarketPrice(prices);
     }
 
     public BigDecimal getMarketPrice(List<BigDecimal> prices) throws Exception {
-        return analyticServiceClient.getMarketPrice(new MarketPriceRequest(prices));
+        return priceAnalyzer.getMarketPrice(prices);
     }
 
-    public BigDecimal calculatePercentageDifference(BigDecimal marketPriceForCommerce, BigDecimal currentAdPrice){
-        return analyticServiceClient.getPercentageDifference(new PercentageDifferenceRequest(marketPriceForCommerce, currentAdPrice));
+    public BigDecimal calculatePercentageDifference(BigDecimal val1, BigDecimal val2){
+        return priceAnalyzer.calculatePercentageDifference(val1, val2);
     }
 }

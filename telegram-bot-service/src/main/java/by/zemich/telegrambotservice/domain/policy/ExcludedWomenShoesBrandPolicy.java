@@ -1,12 +1,13 @@
 package by.zemich.telegrambotservice.domain.policy;
 
-import by.zemich.kufar.domain.model.Advertisement;
-import by.zemich.kufar.domain.policy.api.Policy;
+
+import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
+import by.zemich.telegrambotservice.domain.policy.api.Policy;
 
 import java.util.List;
 import java.util.Objects;
 
-public class ExcludedWomenShoesBrandPolicy implements Policy<Advertisement> {
+public class ExcludedWomenShoesBrandPolicy implements Policy<KufarAdvertisement> {
     private final List<String> excludedBrands;
 
     public ExcludedWomenShoesBrandPolicy(List<String> excludedBrands) {
@@ -14,10 +15,10 @@ public class ExcludedWomenShoesBrandPolicy implements Policy<Advertisement> {
     }
 
     @Override
-    public boolean isSatisfiedBy(Advertisement advertisement) {
-        if (!isApplicable(advertisement)) return false;
+    public boolean isSatisfiedBy(KufarAdvertisement kufarAdvertisement) {
+        if (!isApplicable(kufarAdvertisement)) return false;
 
-        return advertisement.getParameterByIdentity("women_shoes_brand")
+        return kufarAdvertisement.getParameterByIdentity("women_shoes_brand")
                 .map(param -> excludedBrands.stream()
                         .map(String::toLowerCase)
                         .noneMatch(b -> b.equals(param.getValue().toLowerCase())))
@@ -25,9 +26,9 @@ public class ExcludedWomenShoesBrandPolicy implements Policy<Advertisement> {
 
     }
 
-    private boolean isApplicable(Advertisement advertisement) {
-        if (Objects.isNull(advertisement)) return false;
-        return advertisement.getParameterValueByParameterName("women_shoes_brand")
+    private boolean isApplicable(KufarAdvertisement kufarAdvertisement) {
+        if (Objects.isNull(kufarAdvertisement)) return false;
+        return kufarAdvertisement.getParameterValueByParameterName("women_shoes_brand")
                 .map(param -> !param.isEmpty() && !param.isBlank())
                 .orElse(false);
     }

@@ -1,11 +1,12 @@
 package by.zemich.telegrambotservice.domain.policy;
 
-import by.zemich.kufar.domain.model.Advertisement;
-import by.zemich.kufar.domain.policy.api.Policy;
+
+import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
+import by.zemich.telegrambotservice.domain.policy.api.Policy;
 
 import java.util.regex.Pattern;
 
-public class OnlyOriginalGoodsPolicy implements Policy<Advertisement> {
+public class OnlyOriginalGoodsPolicy implements Policy<KufarAdvertisement> {
 
     private static final Pattern DEFECT_PATTERN = Pattern.compile(
             "(?i)(продам|продаётся)?\\s*(полная|точная)?\\s*(копи[ияю]|реплика|реплик[уа]|паль|под(д)?елка)"
@@ -16,8 +17,8 @@ public class OnlyOriginalGoodsPolicy implements Policy<Advertisement> {
     );
 
     @Override
-    public boolean isSatisfiedBy(Advertisement advertisement) {
-        String details = advertisement.getDetails().trim().toLowerCase();
+    public boolean isSatisfiedBy(KufarAdvertisement kufarAdvertisement) {
+        String details = kufarAdvertisement.getDetails().trim().toLowerCase();
         if (isOriginal(details)) return true;
         return !containsDataAboutUnoriginality(details);
     }

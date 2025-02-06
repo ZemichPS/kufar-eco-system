@@ -1,9 +1,8 @@
 package by.zemich.telegrambotservice.domain.service.textpostprocessors;
 
-import by.zemich.kufar.application.service.SmartphonesService;
-import by.zemich.kufar.domain.model.Advertisement;
-import by.zemich.kufar.domain.service.PriceAnalyzer;
-import by.zemich.kufar.domain.service.textpostprocessors.api.PostTextProcessor;
+import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
+import by.zemich.telegrambotservice.domain.service.PriceAnalyzer;
+import by.zemich.telegrambotservice.domain.service.textpostprocessors.api.PostTextProcessor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.annotation.Order;
@@ -23,7 +22,7 @@ public class MarketAveragePriceTextProcessor implements PostTextProcessor {
     private final PriceAnalyzer priceAnalyzer;
 
     @Override
-    public String process(Advertisement advertisement) {
+    public String process(KufarAdvertisement advertisement) {
 
         Predicate<BigDecimal> currentValueMoreThenZero = price -> price.compareTo(BigDecimal.ZERO) > 0;
         BigDecimal currentAdPrice = advertisement.getPriceInByn();
@@ -53,7 +52,7 @@ public class MarketAveragePriceTextProcessor implements PostTextProcessor {
     }
 
     @Override
-    public boolean isApplicable(Advertisement advertisement) {
+    public boolean isApplicable(KufarAdvertisement advertisement) {
         return advertisement.getBrand().isPresent()
                 && advertisement.getModel().isPresent()
                 && advertisement.getPriceInByn().compareTo(BigDecimal.ZERO) > 0;

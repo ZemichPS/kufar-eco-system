@@ -1,8 +1,8 @@
 package by.zemich.telegrambotservice.application.service.api;
 
 
-import by.zemich.telegrambotservice.domain.model.Advertisement;
+import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
 
 public interface AdvertisementPublisher {
-    boolean publish(Advertisement advertisement);
+    boolean publish(KufarAdvertisement kufarAdvertisement);
 }

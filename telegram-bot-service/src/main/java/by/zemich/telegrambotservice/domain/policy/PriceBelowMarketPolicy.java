@@ -1,41 +1,42 @@
 package by.zemich.telegrambotservice.domain.policy;
 
-import by.zemich.kufar.application.service.AdvertisementService;
-import by.zemich.kufar.domain.model.Advertisement;
-import by.zemich.kufar.domain.policy.api.Policy;
-import by.zemich.kufar.domain.service.PriceAnalyzer;
+import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
+import by.zemich.telegrambotservice.domain.policy.api.Policy;
+import by.zemich.telegrambotservice.domain.service.PriceAnalyzer;
+import by.zemich.telegrambotservice.infrastructure.clients.AdvertisementDevicesServiceFeignClient;
+import lombok.SneakyThrows;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.stream.Collectors;
 
-public class PriceBelowMarketPolicy implements Policy<Advertisement> {
+public class PriceBelowMarketPolicy implements Policy<KufarAdvertisement> {
     private final PriceAnalyzer priceAnalyzer;
-    private final AdvertisementService advertisementService;
+    private final AdvertisementDevicesServiceFeignClient advertisementService;
 
-    public PriceBelowMarketPolicy(PriceAnalyzer priceAnalyzer, AdvertisementService advertisementService) {
+    public PriceBelowMarketPolicy(PriceAnalyzer priceAnalyzer, AdvertisementDevicesServiceFeignClient advertisementService) {
         this.priceAnalyzer = priceAnalyzer;
         this.advertisementService = advertisementService;
     }
 
+
+    @SneakyThrows
     @Override
-    public boolean isSatisfiedBy(Advertisement advertisement) {
-        BigDecimal productPrice = advertisement.getPriceInByn();
+    public boolean isSatisfiedBy(KufarAdvertisement kufarAdvertisement) {
+        BigDecimal productPrice = kufarAdvertisement.getPriceInByn();
 
-        if(advertisement.getModel().isEmpty()) return false;
-        if(advertisement.getBrand().isEmpty()) return false;
+        if(kufarAdvertisement.getModel().isEmpty()) return false;
+        if(kufarAdvertisement.getBrand().isEmpty()) return false;
+        // TODO ЗАМЕНИТЬ параметр
+        if(kufarAdvertisement.getParameterByIdentity("phablet_phones_memory").isEmpty()) return false;
 
-        String model = advertisement.getModel().get();
-        String brand = advertisement.getBrand().get();
+        String model = kufarAdvertisement.getModel().get();
+        String brand = kufarAdvertisement.getBrand().get();
+        String memory = kufarAdvertisement.getParameterByIdentity("phablet_phones_memory").get().getValue();
 
-        List<BigDecimal> prices = advertisementService.getAllByBrandAndModel(brand, model).stream()
-                .map(Advertisement::getPriceInByn)
+        BigDecimal marketPrice = advertisementService.getAdvertisementPriceListByBranModelMemoryAmount(brand, model, memory).getPricesInByn().stream()
                 .filter(price -> price.compareTo(BigDecimal.ZERO) > 0)
-                .toList();
-        try {
-            BigDecimal marketPrice = priceAnalyzer.getMarketPrice(prices);
+                .collect(Collectors.collectingAndThen(Collectors.toList(), priceAnalyzer::getMarketPrice));
+
             return marketPrice.compareTo(productPrice) >= 0;
-        } catch (Exception e) {
-            return false;
-        }
     }
 }

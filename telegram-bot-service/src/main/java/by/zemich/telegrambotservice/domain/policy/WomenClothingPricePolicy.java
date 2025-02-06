@@ -1,12 +1,13 @@
 package by.zemich.telegrambotservice.domain.policy;
 
-import by.zemich.kufar.domain.model.Advertisement;
-import by.zemich.kufar.domain.policy.api.Policy;
+
+import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
+import by.zemich.telegrambotservice.domain.policy.api.Policy;
 
 import java.math.BigDecimal;
 import java.util.Map;
 
-public class WomenClothingPricePolicy implements Policy<Advertisement> {
+public class WomenClothingPricePolicy implements Policy<KufarAdvertisement> {
 
     private final Map<String, BigDecimal> pricesMap;
 
@@ -15,19 +16,19 @@ public class WomenClothingPricePolicy implements Policy<Advertisement> {
     }
 
     @Override
-    public boolean isSatisfiedBy(Advertisement advertisement) {
-        if (!isApplicable(advertisement)) return false;
-        BigDecimal currentPriceOfClothing = advertisement.getPriceInByn();
+    public boolean isSatisfiedBy(KufarAdvertisement kufarAdvertisement) {
+        if (!isApplicable(kufarAdvertisement)) return false;
+        BigDecimal currentPriceOfClothing = kufarAdvertisement.getPriceInByn();
 
-        return advertisement.getParameterByIdentity("women_clothes_type")
-                .map(Advertisement.Parameter::getValue)
+        return kufarAdvertisement.getParameterByIdentity("women_clothes_type")
+                .map(KufarAdvertisement.Parameter::getValue)
                 .map(String::toLowerCase)
                 .map(clothingType -> pricesMap.getOrDefault(clothingType, new BigDecimal(50)))
                 .map(maxPrice -> currentPriceOfClothing.compareTo(maxPrice) <= 0)
                 .orElse(false);
     }
 
-    private boolean isApplicable(Advertisement advertisement) {
-        return advertisement.getParameterByIdentity("women_clothes_type").isPresent();
+    private boolean isApplicable(KufarAdvertisement kufarAdvertisement) {
+        return kufarAdvertisement.getParameterByIdentity("women_clothes_type").isPresent();
     }
 }

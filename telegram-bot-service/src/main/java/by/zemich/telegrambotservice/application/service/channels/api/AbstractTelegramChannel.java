@@ -3,7 +3,7 @@ package by.zemich.telegrambotservice.application.service.channels.api;
 import by.zemich.telegrambotservice.application.service.NotificationPostManager;
 import by.zemich.telegrambotservice.application.service.PostManager;
 import by.zemich.telegrambotservice.application.service.bots.TelegramBotService;
-import by.zemich.telegrambotservice.domain.model.Advertisement;
+import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
 import by.zemich.telegrambotservice.domain.model.Notification;
 import by.zemich.telegrambotservice.infrastructure.properties.ChannelsDelayProperty;
 import lombok.extern.slf4j.Slf4j;
@@ -35,10 +35,10 @@ public abstract class AbstractTelegramChannel extends Channel {
     }
 
     @Override
-    public boolean publish(Advertisement advertisement) {
-        if (!super.checkPolicies(advertisement)) return false;
+    public boolean publish(KufarAdvertisement kufarAdvertisement) {
+        if (!super.checkPolicies(kufarAdvertisement)) return false;
         doDelay();
-        SendPhoto photoPost = postManager.create(advertisement);
+        SendPhoto photoPost = postManager.create(kufarAdvertisement);
         photoPost.setChatId(getChannelId());
         telegramBotService.sendPhoto(photoPost);
         return true;

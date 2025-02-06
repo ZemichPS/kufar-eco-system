@@ -4,7 +4,7 @@
 //import by.zemich.telegrambotservice.application.service.PostManager;
 //import by.zemich.telegrambotservice.application.service.bots.TelegramBotService;
 //import by.zemich.telegrambotservice.application.service.channels.api.AbstractTelegramChannel;
-//import by.zemich.telegrambotservice.domain.model.Advertisement;
+//import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
 //import by.zemich.telegrambotservice.domain.policy.*;
 //import by.zemich.telegrambotservice.domain.policy.api.Policy;
 //import by.zemich.telegrambotservice.infrastructure.properties.ChannelsDelayProperty;
@@ -42,7 +42,7 @@
 //
 //
 //    @Override
-//    public boolean publish(Advertisement advertisement) {
+//    public boolean publish(KufarAdvertisement advertisement) {
 //        return super.publish(advertisement);
 //    }
 //
@@ -62,7 +62,7 @@
 //    }
 //
 //    @Override
-//    protected List<Policy<Advertisement>> createPolicies() {
+//    protected List<Policy<KufarAdvertisement>> createPolicies() {
 //        try {
 //            return List.of(new OnlyDefiniteCategory("8080")
 //                            .or(new OnlyDefiniteCategory("8110"))

@@ -1,11 +1,12 @@
 package by.zemich.telegrambotservice.domain.policy;
 
-import by.zemich.kufar.domain.model.Advertisement;
-import by.zemich.kufar.domain.policy.api.Policy;
+
+import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
+import by.zemich.telegrambotservice.domain.policy.api.Policy;
 
 import java.math.BigDecimal;
 
-public class MinPriceForNewGoodsPolicy implements Policy<Advertisement> {
+public class MinPriceForNewGoodsPolicy implements Policy<KufarAdvertisement> {
 
     private final BigDecimal minPrice;
 
@@ -14,8 +15,8 @@ public class MinPriceForNewGoodsPolicy implements Policy<Advertisement> {
     }
 
     @Override
-    public boolean isSatisfiedBy(Advertisement advertisement) {
-        return !advertisement.getCondition().equalsIgnoreCase("новое") ||
-                advertisement.getPriceInByn().compareTo(minPrice) >= 0;
+    public boolean isSatisfiedBy(KufarAdvertisement kufarAdvertisement) {
+        return !kufarAdvertisement.getCondition().equalsIgnoreCase("новое") ||
+                kufarAdvertisement.getPriceInByn().compareTo(minPrice) >= 0;
     }
 }

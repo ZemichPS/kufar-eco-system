@@ -1,12 +1,12 @@
 package by.zemich.telegrambotservice.domain.service.textpostprocessors.api;
 
 
-import by.zemich.telegrambotservice.domain.model.Advertisement;
+import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
 
 public interface PostTextProcessor {
-    String process(Advertisement advertisement);
+    String process(KufarAdvertisement kufarAdvertisement);
 
-    boolean isApplicable(Advertisement advertisement);
+    boolean isApplicable(KufarAdvertisement kufarAdvertisement);
 
     static String getItalicHtmlStyle(String source) {
         return "<i>" + source + "</i>";

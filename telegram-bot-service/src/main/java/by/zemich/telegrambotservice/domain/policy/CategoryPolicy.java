@@ -1,9 +1,10 @@
 package by.zemich.telegrambotservice.domain.policy;
 
-import by.zemich.kufar.domain.model.Advertisement;
-import by.zemich.kufar.domain.policy.api.Policy;
 
-public class CategoryPolicy implements Policy<Advertisement> {
+import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
+import by.zemich.telegrambotservice.domain.policy.api.Policy;
+
+public class CategoryPolicy implements Policy<KufarAdvertisement> {
     private final String categoryId;
 
     public CategoryPolicy(String categoryId) {
@@ -11,17 +12,17 @@ public class CategoryPolicy implements Policy<Advertisement> {
     }
 
     @Override
-    public boolean isSatisfiedBy(Advertisement advertisement) {
-        if (!isApplicable(advertisement)) return false;
-        return advertisement.getCategory().equalsIgnoreCase(categoryId);
+    public boolean isSatisfiedBy(KufarAdvertisement kufarAdvertisement) {
+        if (!isApplicable(kufarAdvertisement)) return false;
+        return kufarAdvertisement.getCategory().equalsIgnoreCase(categoryId);
     }
 
-    private boolean isApplicable(Advertisement advertisement) {
-        if (advertisement == null) {
+    private boolean isApplicable(KufarAdvertisement kufarAdvertisement) {
+        if (kufarAdvertisement == null) {
             return false;
         }
 
-        String category = advertisement.getCategory();
+        String category = kufarAdvertisement.getCategory();
         return category != null && !category.trim().isEmpty();
     }
 }

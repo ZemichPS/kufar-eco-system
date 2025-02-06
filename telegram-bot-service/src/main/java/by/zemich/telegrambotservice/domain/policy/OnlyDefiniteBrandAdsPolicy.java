@@ -1,9 +1,10 @@
 package by.zemich.telegrambotservice.domain.policy;
 
-import by.zemich.kufar.domain.model.Advertisement;
-import by.zemich.kufar.domain.policy.api.Policy;
 
-public class OnlyDefiniteBrandAdsPolicy implements Policy<Advertisement> {
+import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
+import by.zemich.telegrambotservice.domain.policy.api.Policy;
+
+public class OnlyDefiniteBrandAdsPolicy implements Policy<KufarAdvertisement> {
 
     private final String BRAND_NAME;
 
@@ -12,7 +13,7 @@ public class OnlyDefiniteBrandAdsPolicy implements Policy<Advertisement> {
     }
 
     @Override
-    public boolean isSatisfiedBy(Advertisement advertisement) {
-        return advertisement.getBrand().equals(BRAND_NAME);
+    public boolean isSatisfiedBy(KufarAdvertisement kufarAdvertisement) {
+        return kufarAdvertisement.getBrand().equals(BRAND_NAME);
     }
 }
