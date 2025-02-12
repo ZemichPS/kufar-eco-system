@@ -6,6 +6,7 @@ import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.TopicBuilder;
@@ -20,13 +21,17 @@ import java.util.Map;
 @Configuration
 public class KafkaConfig {
 
-    private final String bootstrapServers = "localhost:9092";
-    private final String schemaRegistryUrl = "http://localhost:8085";
+    @Value("${spring.kafka.bootstrap-servers}")
+    private String bootstrapServers;
+
+    @Value("${spring.kafka.properties.schema.registry.url}")
+    private String schemaRegistryUrl;
+
 
     @Bean
     public KafkaAdmin admin() {
         Map<String, Object> configs = new HashMap<>();
-        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         return new KafkaAdmin(configs);
     }
 
@@ -55,7 +60,7 @@ public class KafkaConfig {
 
     @Bean
     public NewTopic adsTopic() {
-        return TopicBuilder.name("advertisement-events")
+        return TopicBuilder.name("advertisement.created")
                 .partitions(3)
                 .replicas(1)
                 .compact()

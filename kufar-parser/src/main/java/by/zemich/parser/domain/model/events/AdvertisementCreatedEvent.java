@@ -14,10 +14,10 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class AdvertisementCreatedEvent extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 6366016209561063444L;
+  private static final long serialVersionUID = 8783224658720171754L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"AdvertisementCreatedEvent\",\"namespace\":\"by.zemich.parser.domain.model.events\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"kufarId\",\"type\":\"long\"},{\"name\":\"link\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"parentCategory\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"category\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"commerce\",\"type\":\"boolean\"},{\"name\":\"subject\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"publishedAt\",\"type\":{\"type\":\"long\",\"logicalType\":\"timestamp-micros\"}},{\"name\":\"type\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"priceInByn\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":2}},{\"name\":\"priceInUsd\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":2}},{\"name\":\"details\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"fullyFunctional\",\"type\":\"boolean\"},{\"name\":\"images\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"sellerId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"parameters\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"Parameter\",\"fields\":[{\"name\":\"identity\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"value\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"label\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}}}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"AdvertisementCreatedEvent\",\"namespace\":\"by.zemich.parser.domain.model.events\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"kufarId\",\"type\":\"long\"},{\"name\":\"link\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"parentCategory\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"default\":\"unknown\"},{\"name\":\"category\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"default\":\"unknown\"},{\"name\":\"commerce\",\"type\":\"boolean\"},{\"name\":\"subject\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"publishedAt\",\"type\":{\"type\":\"long\",\"logicalType\":\"timestamp-micros\"}},{\"name\":\"type\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"priceInByn\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":0}},{\"name\":\"priceInUsd\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":0}},{\"name\":\"commerceMarketPrice\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":0},\"default\":\"\\u0000\"},{\"name\":\"nonCommerceMarketPrice\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":0},\"default\":\"\\u0000\"},{\"name\":\"details\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"fullyFunctional\",\"type\":\"boolean\"},{\"name\":\"images\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"sellerId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"parameters\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"Parameter\",\"fields\":[{\"name\":\"identity\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"value\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"label\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -89,6 +89,8 @@ public class AdvertisementCreatedEvent extends org.apache.avro.specific.Specific
   private java.lang.String type;
   private java.math.BigDecimal priceInByn;
   private java.math.BigDecimal priceInUsd;
+  private java.math.BigDecimal commerceMarketPrice;
+  private java.math.BigDecimal nonCommerceMarketPrice;
   private java.lang.String details;
   private boolean fullyFunctional;
   private java.lang.String images;
@@ -115,13 +117,15 @@ public class AdvertisementCreatedEvent extends org.apache.avro.specific.Specific
    * @param type The new value for type
    * @param priceInByn The new value for priceInByn
    * @param priceInUsd The new value for priceInUsd
+   * @param commerceMarketPrice The new value for commerceMarketPrice
+   * @param nonCommerceMarketPrice The new value for nonCommerceMarketPrice
    * @param details The new value for details
    * @param fullyFunctional The new value for fullyFunctional
    * @param images The new value for images
    * @param sellerId The new value for sellerId
    * @param parameters The new value for parameters
    */
-  public AdvertisementCreatedEvent(java.util.UUID id, java.lang.Long kufarId, java.lang.String link, java.lang.String parentCategory, java.lang.String category, java.lang.Boolean commerce, java.lang.String subject, java.time.Instant publishedAt, java.lang.String type, java.math.BigDecimal priceInByn, java.math.BigDecimal priceInUsd, java.lang.String details, java.lang.Boolean fullyFunctional, java.lang.String images, java.lang.String sellerId, java.util.List<by.zemich.parser.domain.model.events.Parameter> parameters) {
+  public AdvertisementCreatedEvent(java.util.UUID id, java.lang.Long kufarId, java.lang.String link, java.lang.String parentCategory, java.lang.String category, java.lang.Boolean commerce, java.lang.String subject, java.time.Instant publishedAt, java.lang.String type, java.math.BigDecimal priceInByn, java.math.BigDecimal priceInUsd, java.math.BigDecimal commerceMarketPrice, java.math.BigDecimal nonCommerceMarketPrice, java.lang.String details, java.lang.Boolean fullyFunctional, java.lang.String images, java.lang.String sellerId, java.util.List<by.zemich.parser.domain.model.events.Parameter> parameters) {
     this.id = id;
     this.kufarId = kufarId;
     this.link = link;
@@ -133,6 +137,8 @@ public class AdvertisementCreatedEvent extends org.apache.avro.specific.Specific
     this.type = type;
     this.priceInByn = priceInByn;
     this.priceInUsd = priceInUsd;
+    this.commerceMarketPrice = commerceMarketPrice;
+    this.nonCommerceMarketPrice = nonCommerceMarketPrice;
     this.details = details;
     this.fullyFunctional = fullyFunctional;
     this.images = images;
@@ -161,11 +167,13 @@ public class AdvertisementCreatedEvent extends org.apache.avro.specific.Specific
     case 8: return type;
     case 9: return priceInByn;
     case 10: return priceInUsd;
-    case 11: return details;
-    case 12: return fullyFunctional;
-    case 13: return images;
-    case 14: return sellerId;
-    case 15: return parameters;
+    case 11: return commerceMarketPrice;
+    case 12: return nonCommerceMarketPrice;
+    case 13: return details;
+    case 14: return fullyFunctional;
+    case 15: return images;
+    case 16: return sellerId;
+    case 17: return parameters;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -181,6 +189,8 @@ public class AdvertisementCreatedEvent extends org.apache.avro.specific.Specific
       null,
       new org.apache.avro.data.TimeConversions.TimestampMicrosConversion(),
       null,
+      new org.apache.avro.Conversions.DecimalConversion(),
+      new org.apache.avro.Conversions.DecimalConversion(),
       new org.apache.avro.Conversions.DecimalConversion(),
       new org.apache.avro.Conversions.DecimalConversion(),
       null,
@@ -212,11 +222,13 @@ public class AdvertisementCreatedEvent extends org.apache.avro.specific.Specific
     case 8: type = value$ != null ? value$.toString() : null; break;
     case 9: priceInByn = (java.math.BigDecimal)value$; break;
     case 10: priceInUsd = (java.math.BigDecimal)value$; break;
-    case 11: details = value$ != null ? value$.toString() : null; break;
-    case 12: fullyFunctional = (java.lang.Boolean)value$; break;
-    case 13: images = value$ != null ? value$.toString() : null; break;
-    case 14: sellerId = value$ != null ? value$.toString() : null; break;
-    case 15: parameters = (java.util.List<by.zemich.parser.domain.model.events.Parameter>)value$; break;
+    case 11: commerceMarketPrice = (java.math.BigDecimal)value$; break;
+    case 12: nonCommerceMarketPrice = (java.math.BigDecimal)value$; break;
+    case 13: details = value$ != null ? value$.toString() : null; break;
+    case 14: fullyFunctional = (java.lang.Boolean)value$; break;
+    case 15: images = value$ != null ? value$.toString() : null; break;
+    case 16: sellerId = value$ != null ? value$.toString() : null; break;
+    case 17: parameters = (java.util.List<by.zemich.parser.domain.model.events.Parameter>)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -409,6 +421,40 @@ public class AdvertisementCreatedEvent extends org.apache.avro.specific.Specific
   }
 
   /**
+   * Gets the value of the 'commerceMarketPrice' field.
+   * @return The value of the 'commerceMarketPrice' field.
+   */
+  public java.math.BigDecimal getCommerceMarketPrice() {
+    return commerceMarketPrice;
+  }
+
+
+  /**
+   * Sets the value of the 'commerceMarketPrice' field.
+   * @param value the value to set.
+   */
+  public void setCommerceMarketPrice(java.math.BigDecimal value) {
+    this.commerceMarketPrice = value;
+  }
+
+  /**
+   * Gets the value of the 'nonCommerceMarketPrice' field.
+   * @return The value of the 'nonCommerceMarketPrice' field.
+   */
+  public java.math.BigDecimal getNonCommerceMarketPrice() {
+    return nonCommerceMarketPrice;
+  }
+
+
+  /**
+   * Sets the value of the 'nonCommerceMarketPrice' field.
+   * @param value the value to set.
+   */
+  public void setNonCommerceMarketPrice(java.math.BigDecimal value) {
+    this.nonCommerceMarketPrice = value;
+  }
+
+  /**
    * Gets the value of the 'details' field.
    * @return The value of the 'details' field.
    */
@@ -545,6 +591,8 @@ public class AdvertisementCreatedEvent extends org.apache.avro.specific.Specific
     private java.lang.String type;
     private java.math.BigDecimal priceInByn;
     private java.math.BigDecimal priceInUsd;
+    private java.math.BigDecimal commerceMarketPrice;
+    private java.math.BigDecimal nonCommerceMarketPrice;
     private java.lang.String details;
     private boolean fullyFunctional;
     private java.lang.String images;
@@ -606,25 +654,33 @@ public class AdvertisementCreatedEvent extends org.apache.avro.specific.Specific
         this.priceInUsd = data().deepCopy(fields()[10].schema(), other.priceInUsd);
         fieldSetFlags()[10] = other.fieldSetFlags()[10];
       }
-      if (isValidValue(fields()[11], other.details)) {
-        this.details = data().deepCopy(fields()[11].schema(), other.details);
+      if (isValidValue(fields()[11], other.commerceMarketPrice)) {
+        this.commerceMarketPrice = data().deepCopy(fields()[11].schema(), other.commerceMarketPrice);
         fieldSetFlags()[11] = other.fieldSetFlags()[11];
       }
-      if (isValidValue(fields()[12], other.fullyFunctional)) {
-        this.fullyFunctional = data().deepCopy(fields()[12].schema(), other.fullyFunctional);
+      if (isValidValue(fields()[12], other.nonCommerceMarketPrice)) {
+        this.nonCommerceMarketPrice = data().deepCopy(fields()[12].schema(), other.nonCommerceMarketPrice);
         fieldSetFlags()[12] = other.fieldSetFlags()[12];
       }
-      if (isValidValue(fields()[13], other.images)) {
-        this.images = data().deepCopy(fields()[13].schema(), other.images);
+      if (isValidValue(fields()[13], other.details)) {
+        this.details = data().deepCopy(fields()[13].schema(), other.details);
         fieldSetFlags()[13] = other.fieldSetFlags()[13];
       }
-      if (isValidValue(fields()[14], other.sellerId)) {
-        this.sellerId = data().deepCopy(fields()[14].schema(), other.sellerId);
+      if (isValidValue(fields()[14], other.fullyFunctional)) {
+        this.fullyFunctional = data().deepCopy(fields()[14].schema(), other.fullyFunctional);
         fieldSetFlags()[14] = other.fieldSetFlags()[14];
       }
-      if (isValidValue(fields()[15], other.parameters)) {
-        this.parameters = data().deepCopy(fields()[15].schema(), other.parameters);
+      if (isValidValue(fields()[15], other.images)) {
+        this.images = data().deepCopy(fields()[15].schema(), other.images);
         fieldSetFlags()[15] = other.fieldSetFlags()[15];
+      }
+      if (isValidValue(fields()[16], other.sellerId)) {
+        this.sellerId = data().deepCopy(fields()[16].schema(), other.sellerId);
+        fieldSetFlags()[16] = other.fieldSetFlags()[16];
+      }
+      if (isValidValue(fields()[17], other.parameters)) {
+        this.parameters = data().deepCopy(fields()[17].schema(), other.parameters);
+        fieldSetFlags()[17] = other.fieldSetFlags()[17];
       }
     }
 
@@ -678,25 +734,33 @@ public class AdvertisementCreatedEvent extends org.apache.avro.specific.Specific
         this.priceInUsd = data().deepCopy(fields()[10].schema(), other.priceInUsd);
         fieldSetFlags()[10] = true;
       }
-      if (isValidValue(fields()[11], other.details)) {
-        this.details = data().deepCopy(fields()[11].schema(), other.details);
+      if (isValidValue(fields()[11], other.commerceMarketPrice)) {
+        this.commerceMarketPrice = data().deepCopy(fields()[11].schema(), other.commerceMarketPrice);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.fullyFunctional)) {
-        this.fullyFunctional = data().deepCopy(fields()[12].schema(), other.fullyFunctional);
+      if (isValidValue(fields()[12], other.nonCommerceMarketPrice)) {
+        this.nonCommerceMarketPrice = data().deepCopy(fields()[12].schema(), other.nonCommerceMarketPrice);
         fieldSetFlags()[12] = true;
       }
-      if (isValidValue(fields()[13], other.images)) {
-        this.images = data().deepCopy(fields()[13].schema(), other.images);
+      if (isValidValue(fields()[13], other.details)) {
+        this.details = data().deepCopy(fields()[13].schema(), other.details);
         fieldSetFlags()[13] = true;
       }
-      if (isValidValue(fields()[14], other.sellerId)) {
-        this.sellerId = data().deepCopy(fields()[14].schema(), other.sellerId);
+      if (isValidValue(fields()[14], other.fullyFunctional)) {
+        this.fullyFunctional = data().deepCopy(fields()[14].schema(), other.fullyFunctional);
         fieldSetFlags()[14] = true;
       }
-      if (isValidValue(fields()[15], other.parameters)) {
-        this.parameters = data().deepCopy(fields()[15].schema(), other.parameters);
+      if (isValidValue(fields()[15], other.images)) {
+        this.images = data().deepCopy(fields()[15].schema(), other.images);
         fieldSetFlags()[15] = true;
+      }
+      if (isValidValue(fields()[16], other.sellerId)) {
+        this.sellerId = data().deepCopy(fields()[16].schema(), other.sellerId);
+        fieldSetFlags()[16] = true;
+      }
+      if (isValidValue(fields()[17], other.parameters)) {
+        this.parameters = data().deepCopy(fields()[17].schema(), other.parameters);
+        fieldSetFlags()[17] = true;
       }
     }
 
@@ -1138,6 +1202,86 @@ public class AdvertisementCreatedEvent extends org.apache.avro.specific.Specific
     }
 
     /**
+      * Gets the value of the 'commerceMarketPrice' field.
+      * @return The value.
+      */
+    public java.math.BigDecimal getCommerceMarketPrice() {
+      return commerceMarketPrice;
+    }
+
+
+    /**
+      * Sets the value of the 'commerceMarketPrice' field.
+      * @param value The value of 'commerceMarketPrice'.
+      * @return This builder.
+      */
+    public by.zemich.parser.domain.model.events.AdvertisementCreatedEvent.Builder setCommerceMarketPrice(java.math.BigDecimal value) {
+      validate(fields()[11], value);
+      this.commerceMarketPrice = value;
+      fieldSetFlags()[11] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'commerceMarketPrice' field has been set.
+      * @return True if the 'commerceMarketPrice' field has been set, false otherwise.
+      */
+    public boolean hasCommerceMarketPrice() {
+      return fieldSetFlags()[11];
+    }
+
+
+    /**
+      * Clears the value of the 'commerceMarketPrice' field.
+      * @return This builder.
+      */
+    public by.zemich.parser.domain.model.events.AdvertisementCreatedEvent.Builder clearCommerceMarketPrice() {
+      commerceMarketPrice = null;
+      fieldSetFlags()[11] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'nonCommerceMarketPrice' field.
+      * @return The value.
+      */
+    public java.math.BigDecimal getNonCommerceMarketPrice() {
+      return nonCommerceMarketPrice;
+    }
+
+
+    /**
+      * Sets the value of the 'nonCommerceMarketPrice' field.
+      * @param value The value of 'nonCommerceMarketPrice'.
+      * @return This builder.
+      */
+    public by.zemich.parser.domain.model.events.AdvertisementCreatedEvent.Builder setNonCommerceMarketPrice(java.math.BigDecimal value) {
+      validate(fields()[12], value);
+      this.nonCommerceMarketPrice = value;
+      fieldSetFlags()[12] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'nonCommerceMarketPrice' field has been set.
+      * @return True if the 'nonCommerceMarketPrice' field has been set, false otherwise.
+      */
+    public boolean hasNonCommerceMarketPrice() {
+      return fieldSetFlags()[12];
+    }
+
+
+    /**
+      * Clears the value of the 'nonCommerceMarketPrice' field.
+      * @return This builder.
+      */
+    public by.zemich.parser.domain.model.events.AdvertisementCreatedEvent.Builder clearNonCommerceMarketPrice() {
+      nonCommerceMarketPrice = null;
+      fieldSetFlags()[12] = false;
+      return this;
+    }
+
+    /**
       * Gets the value of the 'details' field.
       * @return The value.
       */
@@ -1152,9 +1296,9 @@ public class AdvertisementCreatedEvent extends org.apache.avro.specific.Specific
       * @return This builder.
       */
     public by.zemich.parser.domain.model.events.AdvertisementCreatedEvent.Builder setDetails(java.lang.String value) {
-      validate(fields()[11], value);
+      validate(fields()[13], value);
       this.details = value;
-      fieldSetFlags()[11] = true;
+      fieldSetFlags()[13] = true;
       return this;
     }
 
@@ -1163,7 +1307,7 @@ public class AdvertisementCreatedEvent extends org.apache.avro.specific.Specific
       * @return True if the 'details' field has been set, false otherwise.
       */
     public boolean hasDetails() {
-      return fieldSetFlags()[11];
+      return fieldSetFlags()[13];
     }
 
 
@@ -1173,7 +1317,7 @@ public class AdvertisementCreatedEvent extends org.apache.avro.specific.Specific
       */
     public by.zemich.parser.domain.model.events.AdvertisementCreatedEvent.Builder clearDetails() {
       details = null;
-      fieldSetFlags()[11] = false;
+      fieldSetFlags()[13] = false;
       return this;
     }
 
@@ -1192,9 +1336,9 @@ public class AdvertisementCreatedEvent extends org.apache.avro.specific.Specific
       * @return This builder.
       */
     public by.zemich.parser.domain.model.events.AdvertisementCreatedEvent.Builder setFullyFunctional(boolean value) {
-      validate(fields()[12], value);
+      validate(fields()[14], value);
       this.fullyFunctional = value;
-      fieldSetFlags()[12] = true;
+      fieldSetFlags()[14] = true;
       return this;
     }
 
@@ -1203,7 +1347,7 @@ public class AdvertisementCreatedEvent extends org.apache.avro.specific.Specific
       * @return True if the 'fullyFunctional' field has been set, false otherwise.
       */
     public boolean hasFullyFunctional() {
-      return fieldSetFlags()[12];
+      return fieldSetFlags()[14];
     }
 
 
@@ -1212,7 +1356,7 @@ public class AdvertisementCreatedEvent extends org.apache.avro.specific.Specific
       * @return This builder.
       */
     public by.zemich.parser.domain.model.events.AdvertisementCreatedEvent.Builder clearFullyFunctional() {
-      fieldSetFlags()[12] = false;
+      fieldSetFlags()[14] = false;
       return this;
     }
 
@@ -1231,9 +1375,9 @@ public class AdvertisementCreatedEvent extends org.apache.avro.specific.Specific
       * @return This builder.
       */
     public by.zemich.parser.domain.model.events.AdvertisementCreatedEvent.Builder setImages(java.lang.String value) {
-      validate(fields()[13], value);
+      validate(fields()[15], value);
       this.images = value;
-      fieldSetFlags()[13] = true;
+      fieldSetFlags()[15] = true;
       return this;
     }
 
@@ -1242,7 +1386,7 @@ public class AdvertisementCreatedEvent extends org.apache.avro.specific.Specific
       * @return True if the 'images' field has been set, false otherwise.
       */
     public boolean hasImages() {
-      return fieldSetFlags()[13];
+      return fieldSetFlags()[15];
     }
 
 
@@ -1252,7 +1396,7 @@ public class AdvertisementCreatedEvent extends org.apache.avro.specific.Specific
       */
     public by.zemich.parser.domain.model.events.AdvertisementCreatedEvent.Builder clearImages() {
       images = null;
-      fieldSetFlags()[13] = false;
+      fieldSetFlags()[15] = false;
       return this;
     }
 
@@ -1271,9 +1415,9 @@ public class AdvertisementCreatedEvent extends org.apache.avro.specific.Specific
       * @return This builder.
       */
     public by.zemich.parser.domain.model.events.AdvertisementCreatedEvent.Builder setSellerId(java.lang.String value) {
-      validate(fields()[14], value);
+      validate(fields()[16], value);
       this.sellerId = value;
-      fieldSetFlags()[14] = true;
+      fieldSetFlags()[16] = true;
       return this;
     }
 
@@ -1282,7 +1426,7 @@ public class AdvertisementCreatedEvent extends org.apache.avro.specific.Specific
       * @return True if the 'sellerId' field has been set, false otherwise.
       */
     public boolean hasSellerId() {
-      return fieldSetFlags()[14];
+      return fieldSetFlags()[16];
     }
 
 
@@ -1292,7 +1436,7 @@ public class AdvertisementCreatedEvent extends org.apache.avro.specific.Specific
       */
     public by.zemich.parser.domain.model.events.AdvertisementCreatedEvent.Builder clearSellerId() {
       sellerId = null;
-      fieldSetFlags()[14] = false;
+      fieldSetFlags()[16] = false;
       return this;
     }
 
@@ -1311,9 +1455,9 @@ public class AdvertisementCreatedEvent extends org.apache.avro.specific.Specific
       * @return This builder.
       */
     public by.zemich.parser.domain.model.events.AdvertisementCreatedEvent.Builder setParameters(java.util.List<by.zemich.parser.domain.model.events.Parameter> value) {
-      validate(fields()[15], value);
+      validate(fields()[17], value);
       this.parameters = value;
-      fieldSetFlags()[15] = true;
+      fieldSetFlags()[17] = true;
       return this;
     }
 
@@ -1322,7 +1466,7 @@ public class AdvertisementCreatedEvent extends org.apache.avro.specific.Specific
       * @return True if the 'parameters' field has been set, false otherwise.
       */
     public boolean hasParameters() {
-      return fieldSetFlags()[15];
+      return fieldSetFlags()[17];
     }
 
 
@@ -1332,7 +1476,7 @@ public class AdvertisementCreatedEvent extends org.apache.avro.specific.Specific
       */
     public by.zemich.parser.domain.model.events.AdvertisementCreatedEvent.Builder clearParameters() {
       parameters = null;
-      fieldSetFlags()[15] = false;
+      fieldSetFlags()[17] = false;
       return this;
     }
 
@@ -1352,11 +1496,13 @@ public class AdvertisementCreatedEvent extends org.apache.avro.specific.Specific
         record.type = fieldSetFlags()[8] ? this.type : (java.lang.String) defaultValue(fields()[8]);
         record.priceInByn = fieldSetFlags()[9] ? this.priceInByn : (java.math.BigDecimal) defaultValue(fields()[9]);
         record.priceInUsd = fieldSetFlags()[10] ? this.priceInUsd : (java.math.BigDecimal) defaultValue(fields()[10]);
-        record.details = fieldSetFlags()[11] ? this.details : (java.lang.String) defaultValue(fields()[11]);
-        record.fullyFunctional = fieldSetFlags()[12] ? this.fullyFunctional : (java.lang.Boolean) defaultValue(fields()[12]);
-        record.images = fieldSetFlags()[13] ? this.images : (java.lang.String) defaultValue(fields()[13]);
-        record.sellerId = fieldSetFlags()[14] ? this.sellerId : (java.lang.String) defaultValue(fields()[14]);
-        record.parameters = fieldSetFlags()[15] ? this.parameters : (java.util.List<by.zemich.parser.domain.model.events.Parameter>) defaultValue(fields()[15]);
+        record.commerceMarketPrice = fieldSetFlags()[11] ? this.commerceMarketPrice : (java.math.BigDecimal) defaultValue(fields()[11]);
+        record.nonCommerceMarketPrice = fieldSetFlags()[12] ? this.nonCommerceMarketPrice : (java.math.BigDecimal) defaultValue(fields()[12]);
+        record.details = fieldSetFlags()[13] ? this.details : (java.lang.String) defaultValue(fields()[13]);
+        record.fullyFunctional = fieldSetFlags()[14] ? this.fullyFunctional : (java.lang.Boolean) defaultValue(fields()[14]);
+        record.images = fieldSetFlags()[15] ? this.images : (java.lang.String) defaultValue(fields()[15]);
+        record.sellerId = fieldSetFlags()[16] ? this.sellerId : (java.lang.String) defaultValue(fields()[16]);
+        record.parameters = fieldSetFlags()[17] ? this.parameters : (java.util.List<by.zemich.parser.domain.model.events.Parameter>) defaultValue(fields()[17]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;

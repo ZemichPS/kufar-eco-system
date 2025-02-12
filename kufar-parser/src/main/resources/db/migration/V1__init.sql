@@ -2,16 +2,7 @@ SET timezone = 'Europe/Minsk';
 
 CREATE SCHEMA IF NOT EXISTS app;
 
-CREATE TABLE IF NOT EXISTS app.sellers
-(
-    id                        VARCHAR(200) PRIMARY KEY,
-    feedback_count            INTEGER,
-    first_feedback_created_at TIMESTAMP WITH TIME ZONE,
-    rate                      REAL
-);
-
-
-CREATE TABLE IF NOT EXISTS app.kufarAdvertisements
+CREATE TABLE IF NOT EXISTS app.advertisements
 (
     id               UUID PRIMARY KEY,
     ad_id            BIGSERIAL,
@@ -28,9 +19,18 @@ CREATE TABLE IF NOT EXISTS app.kufarAdvertisements
     parameters       JSONB,
     fully_functional BOOLEAN,
     images           TEXT,
-    seller_id        VARCHAR(200),
-    CONSTRAINT fk_seller FOREIGN KEY (seller_id) REFERENCES app.sellers (id)
+    seller_id        VARCHAR(200)
 );
+
+CREATE TABLE IF NOT EXISTS app.sellers
+(
+    id                        VARCHAR(200) PRIMARY KEY,
+    feedback_count            INTEGER,
+    first_feedback_created_at TIMESTAMP WITH TIME ZONE,
+    rate                      REAL
+);
+
+ALTER TABLE app.advertisements ADD CONSTRAINT fk_seller FOREIGN KEY (seller_id) REFERENCES app.sellers (id);
 
 CREATE TABLE IF NOT EXISTS app.geo
 (

@@ -22,7 +22,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @CacheConfig(
-        cacheManager =  "caffeineCacheManager",
+        cacheManager =  "advertisementServiceCaffeineCacheManager",
         cacheNames = "advertisements"
 )
 public class AdvertisementService {
@@ -98,9 +98,6 @@ public class AdvertisementService {
     }
 
 
-    @Cacheable(
-            key = "'publishedAt-' + #dateTime + '-adId-' + #adId + '-category-' + #category"
-    )
     public boolean existsByPublishedAt(LocalDateTime dateTime, Long adId, String category) {
         return adsRepository.existsByPublishedAtAndAdIdAndCategory(dateTime, adId, category);
     }

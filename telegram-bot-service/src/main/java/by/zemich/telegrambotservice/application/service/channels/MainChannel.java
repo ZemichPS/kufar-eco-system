@@ -47,7 +47,7 @@ public class MainChannel extends AbstractTelegramChannel {
     protected List<Policy<KufarAdvertisement>> createPolicies() {
         return List.of(
                 new OnlyOriginalGoodsPolicy(),
-                new CategoryPolicy("17010")
+                new CategoryPolicy("Мобильные телефоны")
         );
     }
 }

@@ -1,7 +1,7 @@
 package by.zemich.parser.infrastructure.messaging.kafka.mapper;
 
 
-import by.zemich.parser.application.service.CategoryService;
+import by.zemich.parser.application.service.SmartphoneAdvertisementService;
 import by.zemich.parser.application.service.SubCategoryService;
 import by.zemich.parser.domain.model.Advertisement;
 import by.zemich.parser.domain.model.Category;
@@ -10,6 +10,7 @@ import by.zemich.parser.domain.model.events.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.ZoneOffset;
 import java.util.List;
 
@@ -17,15 +18,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdvertisementMapper {
 
-    private final CategoryService categoryService;
+    private final SmartphoneAdvertisementService smartphoneAdvertisementService;
     private final SubCategoryService subCategoryService;
 
     public AdvertisementCreatedEvent mapToEvent(Advertisement advertisement) {
         List<Parameter> parameters = advertisement.getParameters().stream()
                 .map(AdvertisementMapper::mapToParameter)
                 .toList();
-
-
         AdvertisementCreatedEvent event = AdvertisementCreatedEvent.newBuilder()
                 .setId(advertisement.getId())
                 .setKufarId(advertisement.getAdId())
@@ -45,6 +44,7 @@ public class AdvertisementMapper {
 
         String categoryId = advertisement.getCategory();
         setCategory(event, categoryId);
+        setMarketPrices(advertisement, event);
         return event;
     }
 
@@ -57,7 +57,6 @@ public class AdvertisementMapper {
     }
 
     private void setCategory(AdvertisementCreatedEvent event, String categoryId) {
-
         subCategoryService.getById(categoryId).ifPresentOrElse(
                 subcategory -> {
                     Category category = subcategory.getCategory();
@@ -67,7 +66,12 @@ public class AdvertisementMapper {
                     event.setCategory("Unknown");
                     event.setParentCategory("Unknown");
                 });
+    }
 
-
+    private void setMarketPrices(Advertisement advertisement, AdvertisementCreatedEvent event) {
+        BigDecimal commerceMarketPrice = smartphoneAdvertisementService.getMarketCommercePriceByAdvertisement(advertisement).orElse(BigDecimal.ZERO);
+        BigDecimal unCommerceMarketPrice = smartphoneAdvertisementService.getMarketUnCommercePriceByAdvertisement(advertisement).orElse(BigDecimal.ZERO);
+        event.setCommerceMarketPrice(commerceMarketPrice);
+        event.setNonCommerceMarketPrice(unCommerceMarketPrice);
     }
 }

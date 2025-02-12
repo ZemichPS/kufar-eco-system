@@ -122,10 +122,10 @@ public class PriceAnalyzer {
 
     public BigDecimal calculatePercentageDifference(BigDecimal val1, BigDecimal value2) {
         if (val1 == null || val1.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Стоимость нового товара должна быть больше 0");
+            throw new IllegalArgumentException("First arg must be greater 0");
         }
         if (value2 == null || value2.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Стоимость б/у товара должна быть больше 0");
+            throw new IllegalArgumentException("Second arg must be greater 0");
         }
 
         // Разница: (б/у цена - новая цена) / новая цена * 100

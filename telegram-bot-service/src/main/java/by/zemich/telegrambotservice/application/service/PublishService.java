@@ -28,13 +28,13 @@ public class PublishService {
                                     .doBeforeRetry(retrySignal ->
                                             log.warn("Retry to send advertisement... attempt {}, cause: {}", retrySignal.totalRetries(), retrySignal.failure().getMessage()))
                     )
-                    .doOnError(e -> log.error("Failed to publish advertisement with id: {}", ad.getAdId(), e))
+                    .doOnError(e -> log.error("Failed to publish advertisement with id: {}", ad.getKufarId(), e))
                     .subscribe();
         });
     }
 
     private boolean allowRetry(Throwable throwable) {
-        boolean allowed = throwable instanceof RuntimeException || throwable instanceof TelegramApiException;
+        boolean allowed = throwable instanceof TelegramApiException;
         if (!allowed) log.warn("Exception not allowed for trying publish. Cause: {}", throwable.getMessage());
         return allowed;
     }

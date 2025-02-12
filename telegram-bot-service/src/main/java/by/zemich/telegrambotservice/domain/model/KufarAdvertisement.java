@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -14,7 +15,8 @@ import java.util.Optional;
 @NoArgsConstructor
 @Builder
 public class KufarAdvertisement {
-    private Long adId;
+    private UUID id;
+    private Long kufarId;
     private String link;
     private String category;
     private String parentCategory;
@@ -24,6 +26,8 @@ public class KufarAdvertisement {
     private String type;
     private BigDecimal priceInByn;
     private BigDecimal priceInUsd;
+    private BigDecimal commerceMarketPrice;
+    private BigDecimal nonCommerceMarketPrice;
     private String details;
     private boolean fullyFunctional;
     private String images;
@@ -51,6 +55,14 @@ public class KufarAdvertisement {
                 .filter(param -> "phones_brand".equals(param.identity))
                 .map(param -> param.value)
                 .findFirst();
+    }
+
+    public Optional<BigDecimal> getNonCommerceMarketPrice() {
+        return Optional.ofNullable(this.nonCommerceMarketPrice);
+    }
+
+    public Optional<BigDecimal> getCommerceMarketPrice() {
+        return Optional.ofNullable(this.commerceMarketPrice);
     }
 
     public Optional<String> getModel() {

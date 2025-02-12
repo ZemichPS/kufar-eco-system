@@ -4,6 +4,7 @@ import by.zemich.parser.domain.model.Subcategory;
 import by.zemich.parser.infrastructure.repository.jparepository.SubcategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -12,6 +13,7 @@ import java.util.Optional;
 public class SubCategoryService {
     private final SubcategoryRepository subCategoryRepository;
 
+    @Transactional
     public Optional<Subcategory> getById(String id) {
         return subCategoryRepository.findById(id);
     }

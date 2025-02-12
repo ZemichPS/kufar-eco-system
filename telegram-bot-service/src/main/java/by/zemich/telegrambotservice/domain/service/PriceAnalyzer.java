@@ -122,16 +122,14 @@ public class PriceAnalyzer {
         }
     }
 
-    public BigDecimal calculatePercentageDifference(BigDecimal val1, BigDecimal value2) {
+    public BigDecimal calculatePercentageDifference(BigDecimal val1, BigDecimal val2) {
         if (val1 == null || val1.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Стоимость нового товара должна быть больше 0");
+            throw new IllegalArgumentException("The first arg must be greater 0");
         }
-        if (value2 == null || value2.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Стоимость б/у товара должна быть больше 0");
+        if (val2 == null || val2.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("The first arg must be greater 0");
         }
-
-        // Разница: (б/у цена - новая цена) / новая цена * 100
-        BigDecimal difference = value2.subtract(val1);
+        BigDecimal difference = val2.subtract(val1);
         return difference
                 .divide(val1, 2, RoundingMode.HALF_UP)
                 .multiply(BigDecimal.valueOf(100));

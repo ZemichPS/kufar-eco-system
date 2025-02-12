@@ -18,8 +18,16 @@ public class CaffeineCacheConfig {
 
     @Bean
     @Primary
-    public CacheManager caffeineCacheManager() {
-        CaffeineCacheManager cacheManager = new CaffeineCacheManager("priceStatistics", "advertisements");
+    public CacheManager advertisementServiceCaffeineCacheManager() {
+        CaffeineCacheManager cacheManager = new CaffeineCacheManager("advertisements");
+        cacheManager.setCaffeine(caffeineConfigForAdvertisementsServiceCacheManager());
+        cacheManager.setAsyncCacheMode(true);
+        return cacheManager;
+    }
+
+    @Bean
+    public CacheManager smartphoneAdvertisementServiceCacheManager() {
+        CaffeineCacheManager cacheManager = new CaffeineCacheManager("marketPrices");
         cacheManager.setCaffeine(caffeineConfig());
         cacheManager.setAsyncCacheMode(true);
         return cacheManager;
@@ -28,24 +36,18 @@ public class CaffeineCacheConfig {
     public Caffeine<Object, Object> caffeineConfig() {
         return Caffeine.newBuilder()
                 .maximumSize(10_000) // Максимальный размер кэша (количество записей)
-                .expireAfterWrite(30, TimeUnit.MINUTES) // Время жизни записей после записи
-                .expireAfterAccess(20, TimeUnit.MINUTES) // Удаление неиспользуемых данных
+                .expireAfterWrite(10, TimeUnit.MINUTES) // Время жизни записей после записи
+                .expireAfterAccess(10, TimeUnit.MINUTES) // Удаление неиспользуемых данных
                 .recordStats(); // Включаем статистику (для мониторинга)
     }
 
-    @Bean
-    public CacheManager caffeineCacheManagerForPostManager() {
-        CaffeineCacheManager cacheManager = new CaffeineCacheManager("telegramposts");
-        cacheManager.setCaffeine(caffeineConfigForPostManager());
-        cacheManager.setAsyncCacheMode(true);
-        return cacheManager;
+    public Caffeine<Object, Object> caffeineConfigForAdvertisementsServiceCacheManager() {
+        return Caffeine.newBuilder()
+                .maximumSize(10_000) // Максимальный размер кэша (количество записей)
+                .expireAfterWrite(10, TimeUnit.MINUTES) // Время жизни записей после записи
+                .expireAfterAccess(10, TimeUnit.MINUTES) // Удаление неиспользуемых данных
+                .recordStats(); // Включаем статистику (для мониторинга)
     }
 
-    public Caffeine<Object, Object> caffeineConfigForPostManager() {
-        return Caffeine.newBuilder()
-                .maximumSize(1_000)
-                .expireAfterWrite(10, TimeUnit.MINUTES)
-                .recordStats();
-    }
 
 }

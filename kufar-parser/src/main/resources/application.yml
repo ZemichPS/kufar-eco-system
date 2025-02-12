@@ -4,6 +4,34 @@ spring:
   profiles:
     active: dev
 
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      pool-name: HikariPool
+      maximum-pool-size: 20
+      minimum-idle: 5       # Минимальное количество подключений в ожидании
+      idle-timeout: 30000   # Тайм-аут ожидания (в миллисекундах) для неактивных соединений
+      max-lifetime: 1800000 # Максимальное время жизни соединения (в миллисекундах)
+      connection-timeout: 30000 # Тайм-аут для получения соединения из пула
+      validation-timeout: 5000 # Тайм-аут для проверки соединения
+      connection-test-query: SELECT 1
+  jpa:
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: io.hypersistence.utils.hibernate.naming.CamelCaseToSnakeCaseNamingStrategy
+    show-sql: false
+    database: postgresql
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+        use_sql_comments: false
+        jdbc.lob.non_contextual_creation: true
+        default_batch_fetch_size: 50 # Оптимизация пакетной выборки
+        jdbc.batch_size: 30         # Оптимизация пакетных вставок
+        default_schema: app
+
 management:
   metrics:
     enable:
@@ -39,14 +67,6 @@ springdoc:
   api-docs:
     enabled: true
 
-
 rest-client:
   user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36
 
-telegram:
-  bots:
-    KufarSpy: 7899332979:AAHbNgTpqFhNs3GSFggBduf-kPnLmAZOhPM
-    kufar-assistant: 7154289150:AAHvRug9PYcG6TZHCjseCBQZ3euIAZQTZns
-
-minio:
-  notification-image-bucket-name: notification-images

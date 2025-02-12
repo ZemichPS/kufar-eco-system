@@ -28,7 +28,7 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, UU
     
     @Query(value = """
             SELECT a.*
-            FROM app.kufarAdvertisements a
+            FROM app.advertisements a
             WHERE a.parameters @> CAST(:parameters AS jsonb)
             """, nativeQuery = true)
     List<Advertisement> findAllByParameters(@Param("parameters") String parameters);

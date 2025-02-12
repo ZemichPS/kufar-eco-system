@@ -6,8 +6,8 @@ spring:
     active: dev
 
   flyway:
-    enabled: true
-    baseline-on-migrate: true
+    enabled: false
+    baseline-on-migrate: false
 
   jpa:
     hibernate:
@@ -72,6 +72,7 @@ telegram:
   bots:
     KufarSpy: 7899332979:AAHbNgTpqFhNs3GSFggBduf-kPnLmAZOhPM
     kufar-assistant: 7154289150:AAHvRug9PYcG6TZHCjseCBQZ3euIAZQTZns
+
 
 server:
   port: 8087

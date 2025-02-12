@@ -1,7 +1,7 @@
 {
   "type": "record",
   "name": "AdvertisementCreatedEvent",
-  "namespace": "by.zemich.parser.domain.model.events",
+  "namespace": "by.zemich.telegrambotservice.domain.model.events",
   "fields": [
     {
       "name": "id",
@@ -53,7 +53,7 @@
         "type": "bytes",
         "logicalType": "decimal",
         "precision": 10,
-        "scale": 0
+        "scale": 2
       }
     },
     {
@@ -62,7 +62,7 @@
         "type": "bytes",
         "logicalType": "decimal",
         "precision": 10,
-        "scale": 0
+        "scale": 2
       }
     },
     {
@@ -71,7 +71,7 @@
         "type": "bytes",
         "logicalType": "decimal",
         "precision": 10,
-        "scale": 0
+        "scale": 2
       },
       "default": "\u0000"
     },
@@ -81,7 +81,7 @@
         "type": "bytes",
         "logicalType": "decimal",
         "precision": 10,
-        "scale": 0
+        "scale": 2
       },
       "default": "\u0000"
     },

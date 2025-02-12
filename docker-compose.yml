@@ -49,6 +49,67 @@ services:
       retries: 3             # Количество попыток перед тем, как контейнер будет помечен как unhealthy
       start_period: 30s      # Время ожидания перед первой проверкой (например, пока база поднимается)
 
+  kufar-parser-service:
+    image: kufar-parser-service:latest
+    container_name: kufar-parser-service
+    restart: always
+    ports:
+      - "8088:8088"
+    depends_on:
+      service-discovery:
+        condition: service_healthy
+      kufar-parser-db:
+        condition: service_healthy
+    environment:
+      DB_USERNAME: postgres_user_admin
+      DB_PASSWORD: postgres_db_password
+      FLYWAY_LOG_LEVEL: DEBUG
+      SPRING_PROFILES_ACTIVE: prod
+    networks:
+      - application-net
+
+  kufar-parser-db:
+    image: postgres:17.2
+    container_name: kufar_parser_db
+    restart: always
+    depends_on:
+      - service-discovery
+    environment:
+      POSTGRES_USER: postgres_user_admin
+      POSTGRES_PASSWORD: postgres_db_password
+      POSTGRES_DB: kufar-parser-db
+    volumes:
+      - D:/docker-data/kufarspy/kufar-parser-db:/var/lib/postgresql/data
+    ports:
+      - "5436:5432"
+    networks:
+      - application-net
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres_user_admin -d kufar-parser-db" ]
+      interval: 10s          # Интервал между проверками (здесь каждые 10 секунд)
+      timeout: 5s            # Таймаут команды проверки
+      retries: 3             # Количество попыток перед тем, как контейнер будет помечен как unhealthy
+      start_period: 30s      # Время ожидания перед первой проверкой (например, пока база поднимается)
+
+  telegram-service:
+    image: telegram-service:latest
+    container_name: telegram-service
+    restart: always
+    ports:
+      - "8087:8087"
+    depends_on:
+      service-discovery:
+        condition: service_healthy
+      kufar-parser-db:
+        condition: service_healthy
+    environment:
+      DB_USERNAME: postgres_user_admin
+      DB_PASSWORD: postgres_db_password
+      FLYWAY_LOG_LEVEL: DEBUG
+      SPRING_PROFILES_ACTIVE: prod
+    networks:
+      - application-net
+
   telegram-bot-db:
     image: postgres:17.2
     container_name: telegram_bot_ms_postgres_db
@@ -170,6 +231,8 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     ports:
       - "2181:2181"
+    networks:
+      - application-net
 
   # Kafka брокер
   kafka:
@@ -188,6 +251,8 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - application-net
 
   # Schema Registry
   schema-registry:
@@ -202,6 +267,8 @@ services:
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka:29092
       SCHEMA_REGISTRY_HOST_NAME: schema-registry
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8085
+    networks:
+      - application-net
 
   # AKHQ UI для Kafka
   akhq:
@@ -222,6 +289,9 @@ services:
                 bootstrap.servers: "kafka:29092"
               schema-registry:
                 url: "http://schema-registry:8085"
+    networks:
+      - application-net
+
 
 
 

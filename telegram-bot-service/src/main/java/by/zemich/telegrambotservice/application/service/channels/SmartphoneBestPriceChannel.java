@@ -1,6 +1,5 @@
 package by.zemich.telegrambotservice.application.service.channels;
 
-import by.zemich.telegrambotservice.application.service.MarketPriceService;
 import by.zemich.telegrambotservice.application.service.NotificationPostManager;
 import by.zemich.telegrambotservice.application.service.PostManager;
 import by.zemich.telegrambotservice.application.service.bots.TelegramBotService;
@@ -12,7 +11,7 @@ import by.zemich.telegrambotservice.domain.policy.OnlyCorrectModelPolicy;
 import by.zemich.telegrambotservice.domain.policy.OnlyOriginalGoodsPolicy;
 import by.zemich.telegrambotservice.domain.policy.api.Policy;
 import by.zemich.telegrambotservice.domain.service.PriceAnalyzer;
-import by.zemich.telegrambotservice.infrastructure.clients.AdvertisementDevicesServiceFeignClient;
+import by.zemich.telegrambotservice.infrastructure.clients.AdvertisementFeignClient;
 import by.zemich.telegrambotservice.infrastructure.properties.ChannelsDelayProperty;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -27,16 +26,12 @@ public class SmartphoneBestPriceChannel extends AbstractTelegramChannel {
     private final String CHANNEL_CHAT_ID = "-1002367745711";
     private final String CHANNEL_CHAT_NANE = "Лушие цены на смартфоны c куфар";
     private final PriceAnalyzer priceAnalyzer;
-    private final MarketPriceService marketPriceService;
-    private final AdvertisementDevicesServiceFeignClient advertisementDevicesServiceFeignClient;
 
     public SmartphoneBestPriceChannel(TelegramBotService telegramBotService,
                                       PostManager postManager,
                                       NotificationPostManager notificationPostManager,
                                       ChannelsDelayProperty channelsDelayProperty,
-                                      PriceAnalyzer priceAnalyzer,
-                                      MarketPriceService marketPriceService,
-                                      AdvertisementDevicesServiceFeignClient advertisementDevicesServiceFeignClient
+                                      PriceAnalyzer priceAnalyzer
     ) {
         super(
                 telegramBotService,
@@ -45,8 +40,6 @@ public class SmartphoneBestPriceChannel extends AbstractTelegramChannel {
                 channelsDelayProperty
         );
         this.priceAnalyzer = priceAnalyzer;
-        this.marketPriceService = marketPriceService;
-        this.advertisementDevicesServiceFeignClient = advertisementDevicesServiceFeignClient;
     }
 
 
@@ -68,12 +61,11 @@ public class SmartphoneBestPriceChannel extends AbstractTelegramChannel {
     @Override
     protected List<Policy<KufarAdvertisement>> createPolicies() {
         return List.of(
-                new CategoryPolicy("17010"),
+                new CategoryPolicy("Мобильные телефоны"),
                 new OnlyOriginalGoodsPolicy(),
                 new MinPercentagePolicy(
                         BigDecimal.valueOf(-35),
-                        advertisementDevicesServiceFeignClient,
-                        marketPriceService
+                        priceAnalyzer
                 ),
                 new OnlyCorrectModelPolicy());
     }

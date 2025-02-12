@@ -23,7 +23,8 @@ public class KafkaEventPublisher implements EventPublisher {
 
     public void publish(Advertisement advertisement) {
         AdvertisementCreatedEvent event = advertisementMapper.mapToEvent(advertisement);
-        CompletableFuture<SendResult<String, SpecificRecord>> future = kafkaTemplate.send("advertisement-events", event);
+        String key = advertisement.getId().toString();
+        CompletableFuture<SendResult<String, SpecificRecord>> future = kafkaTemplate.send("advertisement.created", key, event);
         future.whenComplete((result, exception) -> {
             if (exception == null) {
                 handleSuccess(result);
