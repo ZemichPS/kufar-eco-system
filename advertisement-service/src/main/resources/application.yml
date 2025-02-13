@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: advertisement-service
+  profiles:
+    active: dev
+
+server:
+  port: 9098
