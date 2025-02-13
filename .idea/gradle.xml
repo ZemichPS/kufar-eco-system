@@ -5,6 +5,8 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/analytics-service" />
+        <option name="gradleHome" value="C:/Gradle/gradle-8.9" />
+        <option name="gradleJvm" value="openjdk-21" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/analytics-service" />
@@ -13,6 +15,8 @@
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/config-server" />
+        <option name="gradleHome" value="C:/Gradle/gradle-8.9" />
+        <option name="gradleJvm" value="openjdk-21" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/config-server" />
@@ -21,6 +25,8 @@
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/discoveryms" />
+        <option name="gradleHome" value="C:/Gradle/gradle-8.9" />
+        <option name="gradleJvm" value="openjdk-21" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/discoveryms" />
@@ -37,6 +43,8 @@
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/kufar-spy-application" />
+        <option name="gradleHome" value="C:/Gradle/gradle-8.9" />
+        <option name="gradleJvm" value="openjdk-21" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/kufar-spy-application" />

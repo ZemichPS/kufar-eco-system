@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/by.zemich.kufar.main.iml" filepath="$PROJECT_DIR$/.idea/modules/by.zemich.kufar.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/kufar-eco-system.iml" filepath="$PROJECT_DIR$/.idea/kufar-eco-system.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/kufar.main.iml" filepath="$PROJECT_DIR$/.idea/modules/kufar.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/telegram-bot-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/telegram-bot-service.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/analytics-service/src/test/test.iml" filepath="$PROJECT_DIR$/analytics-service/src/test/test.iml" />
     </modules>
   </component>
