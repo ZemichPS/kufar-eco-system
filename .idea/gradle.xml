@@ -4,6 +4,15 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/advertisement-service" />
+        <option name="gradleJvm" value="openjdk-21" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/advertisement-service" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/analytics-service" />
         <option name="gradleHome" value="C:/Gradle/gradle-8.9" />
         <option name="gradleJvm" value="openjdk-21" />
