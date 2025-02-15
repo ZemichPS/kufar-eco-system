@@ -10,5 +10,5 @@ import java.util.List;
 public class Category {
     private Id id;
     private String name;
-    private List<CategoryAttribute> categoryAttributes;
+    private List<CategoryAttribute> attributes;
 }
