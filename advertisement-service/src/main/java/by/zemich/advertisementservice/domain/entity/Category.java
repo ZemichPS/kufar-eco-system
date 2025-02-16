@@ -22,6 +22,11 @@ public class Category {
     @Setter(AccessLevel.NONE)
     private List<CategoryAttribute> attributes;
 
+    public Category(Id id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public List<CategoryAttribute> getAttributes() {
         return List.copyOf(attributes);
     }
