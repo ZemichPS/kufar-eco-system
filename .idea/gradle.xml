@@ -5,8 +5,8 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/advertisement-service" />
-        <option name="gradleHome" value="C:/gradle-8.12-bin/gradle-8.12" />
-        <option name="gradleJvm" value="liberica-21 (3)" />
+        <option name="gradleHome" value="C:/Gradle/gradle-8.9" />
+        <option name="gradleJvm" value="corretto-21" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/advertisement-service" />
@@ -15,8 +15,8 @@
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/analytics-service" />
-        <option name="gradleHome" value="C:/gradle-8.12-bin/gradle-8.12" />
-        <option name="gradleJvm" value="corretto-21 (2)" />
+        <option name="gradleHome" value="C:/Gradle/gradle-8.9" />
+        <option name="gradleJvm" value="corretto-21" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/analytics-service" />
@@ -25,8 +25,8 @@
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/config-server" />
-        <option name="gradleHome" value="C:/gradle-8.12-bin/gradle-8.12" />
-        <option name="gradleJvm" value="liberica-21" />
+        <option name="gradleHome" value="C:/Gradle/gradle-8.9" />
+        <option name="gradleJvm" value="corretto-21" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/config-server" />
@@ -35,8 +35,8 @@
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/discoveryms" />
-        <option name="gradleHome" value="C:/gradle-8.12-bin/gradle-8.12" />
-        <option name="gradleJvm" value="corretto-21 (3)" />
+        <option name="gradleHome" value="C:/Gradle/gradle-8.9" />
+        <option name="gradleJvm" value="corretto-21" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/discoveryms" />
@@ -45,8 +45,8 @@
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/kufar-parser" />
-        <option name="gradleHome" value="C:/gradle-8.12-bin/gradle-8.12" />
-        <option name="gradleJvm" value="liberica-21 (2)" />
+        <option name="gradleHome" value="C:/Gradle/gradle-8.9" />
+        <option name="gradleJvm" value="corretto-21" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/kufar-parser" />
@@ -55,8 +55,8 @@
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/kufar-spy-application" />
-        <option name="gradleHome" value="C:/gradle-8.12-bin/gradle-8.12" />
-        <option name="gradleJvm" value="liberica-21 (3)" />
+        <option name="gradleHome" value="C:/Gradle/gradle-8.9" />
+        <option name="gradleJvm" value="corretto-21" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/kufar-spy-application" />
@@ -65,8 +65,8 @@
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/telegram-bot-service" />
-        <option name="gradleHome" value="C:/gradle-8.12-bin/gradle-8.12" />
-        <option name="gradleJvm" value="liberica-21 (4)" />
+        <option name="gradleHome" value="C:/Gradle/gradle-8.9" />
+        <option name="gradleJvm" value="corretto-21" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/telegram-bot-service" />
