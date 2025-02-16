@@ -10,4 +10,5 @@ public class Pagination {
     private  int size;
     private  String sortBy;
     private  boolean asc;
+    private boolean onlyActive;
 }

@@ -16,7 +16,6 @@ import by.zemich.advertisementservice.domain.valueobject.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 public class AdvertisementInputPort implements AdvertisementUseCase {
@@ -25,7 +24,9 @@ public class AdvertisementInputPort implements AdvertisementUseCase {
     private final AdvertisementOutputPort advertisementOutputPort;
     private final AdvertisementEventOutputPort advertisementEventOutputPort;
 
-    public AdvertisementInputPort(CategoryOutputPort categoryOutputPort, AdvertisementOutputPort advertisementOutputPort, AdvertisementEventOutputPort advertisementEventOutputPort) {
+    public AdvertisementInputPort(CategoryOutputPort categoryOutputPort,
+                                  AdvertisementOutputPort advertisementOutputPort,
+                                  AdvertisementEventOutputPort advertisementEventOutputPort) {
         this.categoryOutputPort = categoryOutputPort;
         this.advertisementOutputPort = advertisementOutputPort;
         this.advertisementEventOutputPort = advertisementEventOutputPort;

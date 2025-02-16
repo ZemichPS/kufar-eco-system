@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
@@ -26,7 +27,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/v1/advertisements")
 @RequiredArgsConstructor
-public class AdvertisementRestController {
+public class AdvertisementController {
     private final AdvertisementUseCase advertisementUseCases;
 
     @PostMapping
@@ -44,36 +45,38 @@ public class AdvertisementRestController {
                 new Photo(dto.getPhoto()),
                 attributes
         );
-        return null;
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{advertisementUuid}")
+                .buildAndExpand(advertisementId.uuid())
+                .toUri();
+        return ResponseEntity.created(location).build();
     }
 
-    @GetMapping("/active")
-    public ResponseEntity<Page<AdvertisementDto>> getAllActiveAds(@RequestBody PageRequestDto request) {
-        Pagination pagination = PaginationMapper.mapToDomain(request);
+    @GetMapping
+    public ResponseEntity<Page<AdvertisementDto>> getAll(
+            @RequestParam int page,
+            @RequestParam int size,
+            @RequestParam String sortBy,
+            @RequestParam boolean asc,
+            @RequestParam boolean onlyActive
+    ) {
+        Pagination pagination = Pagination.builder()
+                .page(page)
+                .sortBy(sortBy)
+                .asc(asc)
+                .onlyActive(onlyActive)
+                .size(size).build();
         List<Advertisement> allActiveAds = advertisementUseCases.getAllActive(pagination);
         List<AdvertisementDto> response = allActiveAds.stream()
                 .map(AdvertisementMapper::mapToDto).toList();
         PageRequest pageRequest = PageRequest.of(
-                request.getPage(),
-                request.getSize(),
-                Sort.by(request.getSortBy())
+                page,
+                size,
+                Sort.by(sortBy)
         );
         PageImpl<AdvertisementDto> pageResponse = new PageImpl<>(response, pageRequest, allActiveAds.size());
         return ResponseEntity.ok(pageResponse);
     }
 
-    @GetMapping
-    public ResponseEntity<Page<AdvertisementDto>> getAllAds(@RequestBody PageRequestDto request) {
-        Pagination pagination = PaginationMapper.mapToDomain(request);
-        List<Advertisement> allActiveAds = advertisementUseCases.getAll(pagination);
-        List<AdvertisementDto> response = allActiveAds.stream()
-                .map(AdvertisementMapper::mapToDto).toList();
-        PageRequest pageRequest = PageRequest.of(
-                request.getPage(),
-                request.getSize(),
-                Sort.by(request.getSortBy())
-        );
-        PageImpl<AdvertisementDto> pageResponse = new PageImpl<>(response, pageRequest, allActiveAds.size());
-        return ResponseEntity.ok(pageResponse);
-    }
 }

@@ -28,9 +28,14 @@ public class CategoryInputPort implements CategoryUseCase {
     }
 
     @Override
-    public void delete(Id categoryId) {
+    public void deleteById(Id categoryId) {
         if(!categoryOutputPort.existsById(categoryId)) throw new EntityNotFoundException("Category not found");
-        if(!categoryOutputPort.deleteById(categoryId)) throw new RuntimeException("Failed to delete category");
+        if(!categoryOutputPort.deleteById(categoryId)) throw new RuntimeException("Failed to deleteById category");
+    }
+
+    @Override
+    public Category updateById(Id categoryId, String categoryName) {
+        return null;
     }
 
 
