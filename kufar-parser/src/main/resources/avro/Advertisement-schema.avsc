@@ -1,6 +1,6 @@
 {
   "type": "record",
-  "name": "AdvertisementCreatedEvent",
+  "name": "KufarAdvertisementCreatedEvent",
   "namespace": "by.zemich.parser.domain.model.events",
   "fields": [
     {

@@ -10,4 +10,6 @@ public class AdvertisementServiceApplication {
 		SpringApplication.run(AdvertisementServiceApplication.class, args);
 	}
 
+
+
 }

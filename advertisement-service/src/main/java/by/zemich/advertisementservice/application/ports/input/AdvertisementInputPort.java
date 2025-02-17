@@ -6,7 +6,6 @@ import by.zemich.advertisementservice.application.ports.output.AdvertisementEven
 import by.zemich.advertisementservice.application.usecases.AdvertisementUseCase;
 import by.zemich.advertisementservice.domain.entity.Advertisement;
 import by.zemich.advertisementservice.domain.entity.Category;
-import by.zemich.advertisementservice.domain.entity.User;
 import by.zemich.advertisementservice.domain.entity.factory.AdvertisementAttributeFactory;
 import by.zemich.advertisementservice.domain.entity.factory.AdvertisementFactory;
 import by.zemich.advertisementservice.domain.exception.EntityNotFoundException;
@@ -36,10 +35,9 @@ public class AdvertisementInputPort implements AdvertisementUseCase {
     public Id create(Id userId, Id categoryId, Condition condition, Price price, Comment comment, Photo photo, Map<UUID, String> attributesMap) {
         Category category = categoryOutputPort.getById(categoryId)
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
-        User user = new User(); // TODO получить юзера из feign user service
 
         Advertisement createdAdvertisement = AdvertisementFactory.create(
-                user,
+                userId,
                 category,
                 condition,
                 LocalDateTime.now(),

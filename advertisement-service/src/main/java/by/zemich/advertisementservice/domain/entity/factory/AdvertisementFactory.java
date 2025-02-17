@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class AdvertisementFactory {
-    public static Advertisement create(User user,
+    public static Advertisement create(Id userId,
                                        Category category,
                                        Condition condition,
                                        LocalDateTime publishedAt,
@@ -19,7 +19,7 @@ public class AdvertisementFactory {
                                        Photo photo) {
         return new Advertisement(
                 new Id(UUID.randomUUID()),
-                user,
+                userId,
                 category,
                 condition,
                 publishedAt,
