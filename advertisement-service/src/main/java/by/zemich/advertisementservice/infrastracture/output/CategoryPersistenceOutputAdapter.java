@@ -1,6 +1,6 @@
 package by.zemich.advertisementservice.infrastracture.output;
 
-import by.zemich.advertisementservice.application.ports.output.CategoryOutputPort;
+import by.zemich.advertisementservice.application.ports.output.CategoryPersistenceOutputPort;
 import by.zemich.advertisementservice.domain.entity.Category;
 import by.zemich.advertisementservice.domain.valueobject.CategoryAttribute;
 import by.zemich.advertisementservice.domain.valueobject.Id;
@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class CategoryOutputAdapter implements CategoryOutputPort {
+public class CategoryPersistenceOutputAdapter implements CategoryPersistenceOutputPort {
 
     private final CategoryRepository categoryRepository;
 
@@ -27,7 +27,7 @@ public class CategoryOutputAdapter implements CategoryOutputPort {
 
         return categoryRepository.findById(uuid)
                 .map( entity -> {
-                    Category category = CategoryMapper.toDomain(entity);
+                    Category category = CategoryMapper.mapToDomain(entity);
                     entity.getAttributes().stream().map(CategoryAttributeMapper::mapToDomain)
                             .forEach(category::addAttribute);
                     return category;
@@ -37,12 +37,13 @@ public class CategoryOutputAdapter implements CategoryOutputPort {
     }
 
     @Override
-    public void persist(Category createdCategory) {
-        CategoryEntity categoryEntity = CategoryMapper.toEntity(createdCategory);
+    public Category persist(Category createdCategory) {
+        CategoryEntity categoryEntity = CategoryMapper.mapToEntity(createdCategory);
         createdCategory.getAttributes().stream()
                 .map(CategoryAttributeMapper::mapToEntity)
                 .forEach(categoryEntity::addAttribute);
-        categoryRepository.save(categoryEntity);
+        CategoryEntity savedCategory = categoryRepository.save(categoryEntity);
+        return CategoryMapper.mapToDomain(savedCategory);
     }
 
     @Override

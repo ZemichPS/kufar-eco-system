@@ -27,8 +27,6 @@ public interface AdvertisementUseCase {
 
     Advertisement deactivate(Id advertisementId);
 
-    List<Advertisement> getAllActive(Pagination pagination);
-
     List<Advertisement> getAll(Pagination pagination);
 
     List<Advertisement> getAllByUserId(Id userId);

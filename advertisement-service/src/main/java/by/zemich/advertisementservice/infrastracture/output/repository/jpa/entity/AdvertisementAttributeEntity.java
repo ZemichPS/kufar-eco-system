@@ -15,9 +15,11 @@ import java.util.UUID;
 public class AdvertisementAttributeEntity {
     @Id
     private UUID uuid;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "advertisement_uuid", referencedColumnName = "uuid")
     private AdvertisementEntity advertisement;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "categoryAttribute_uuid")
     private CategoryAttributeEntity categoryAttribute;
     private String value;
 }

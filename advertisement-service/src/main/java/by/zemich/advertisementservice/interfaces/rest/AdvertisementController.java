@@ -65,7 +65,7 @@ public class AdvertisementController {
                 .asc(asc)
                 .onlyActive(onlyActive)
                 .size(size).build();
-        List<Advertisement> allActiveAds = advertisementUseCases.getAllActive(pagination);
+        List<Advertisement> allActiveAds = advertisementUseCases.getAll(pagination);
         List<AdvertisementDto> response = allActiveAds.stream()
                 .map(AdvertisementMapper::mapToDto).toList();
         PageRequest pageRequest = PageRequest.of(

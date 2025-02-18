@@ -1,7 +1,7 @@
 package by.zemich.advertisementservice.application.ports.input;
 
 import by.zemich.advertisementservice.application.ports.output.AdvertisementOutputPort;
-import by.zemich.advertisementservice.application.ports.output.CategoryOutputPort;
+import by.zemich.advertisementservice.application.ports.output.CategoryPersistenceOutputPort;
 import by.zemich.advertisementservice.application.ports.output.AdvertisementEventOutputPort;
 import by.zemich.advertisementservice.application.usecases.AdvertisementUseCase;
 import by.zemich.advertisementservice.domain.entity.Advertisement;
@@ -19,21 +19,21 @@ import java.util.UUID;
 
 public class AdvertisementInputPort implements AdvertisementUseCase {
 
-    private final CategoryOutputPort categoryOutputPort;
+    private final CategoryPersistenceOutputPort categoryPersistenceOutputPort;
     private final AdvertisementOutputPort advertisementOutputPort;
     private final AdvertisementEventOutputPort advertisementEventOutputPort;
 
-    public AdvertisementInputPort(CategoryOutputPort categoryOutputPort,
+    public AdvertisementInputPort(CategoryPersistenceOutputPort categoryPersistenceOutputPort,
                                   AdvertisementOutputPort advertisementOutputPort,
                                   AdvertisementEventOutputPort advertisementEventOutputPort) {
-        this.categoryOutputPort = categoryOutputPort;
+        this.categoryPersistenceOutputPort = categoryPersistenceOutputPort;
         this.advertisementOutputPort = advertisementOutputPort;
         this.advertisementEventOutputPort = advertisementEventOutputPort;
     }
 
     @Override
     public Id create(Id userId, Id categoryId, Condition condition, Price price, Comment comment, Photo photo, Map<UUID, String> attributesMap) {
-        Category category = categoryOutputPort.getById(categoryId)
+        Category category = categoryPersistenceOutputPort.getById(categoryId)
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
 
         Advertisement createdAdvertisement = AdvertisementFactory.create(
@@ -104,11 +104,6 @@ public class AdvertisementInputPort implements AdvertisementUseCase {
                 .orElseThrow(() -> new EntityNotFoundException("Advertisement not found"));
         advertisementEventOutputPort.publishAdvertisementDeactivate(ad);
         return ad;
-    }
-
-    @Override
-    public List<Advertisement> getAllActive(Pagination pagination) {
-        return advertisementOutputPort.retrieveAllActive(pagination);
     }
 
     @Override

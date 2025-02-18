@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AdvertisementCommandListener {
 
-    private final AdvertisementUseCase advertisementUseCase
+    private final AdvertisementUseCase advertisementUseCase;
 
     @KafkaListener(groupId = "advertisementGroup", topics = "createAdvertisement")
     public void listen(GenericRecord record) {

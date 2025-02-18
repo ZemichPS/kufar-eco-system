@@ -3,6 +3,7 @@ package by.zemich.advertisementservice.infrastracture.output.repository.jpa.enti
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -13,12 +14,29 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@ToString(exclude = {"attributes", "advertisements"})
 public class CategoryEntity {
     @Id
     private UUID uuid;
     private String name;
-    @ManyToMany
+
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            mappedBy = "category"
+    )
+    private List<AdvertisementEntity> advertisements;
+
     @Setter(AccessLevel.NONE)
+    @ManyToMany(
+            fetch = FetchType.LAZY
+    )
+    @JoinTable(
+            name = "category_catattributes",
+            joinColumns = @JoinColumn(name = "category_uuid"),
+            inverseJoinColumns = @JoinColumn(name = "category_attribute_uuid")
+    )
     private Set<CategoryAttributeEntity> attributes;
 
     public CategoryEntity(UUID uuid, String name) {
@@ -27,11 +45,10 @@ public class CategoryEntity {
     }
 
     public boolean addAttribute(CategoryAttributeEntity attribute) {
-        attribute.setCategory(this);
         return attributes.add(attribute);
     }
+
     public boolean removeAttribute(CategoryAttributeEntity attribute) {
-        attribute.setCategory(null);
         return attributes.remove(attribute);
     }
 }

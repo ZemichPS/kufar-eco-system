@@ -7,6 +7,6 @@ public interface CategoryUseCase {
     Id create(String categoryName);
     void deleteById(Id categoryId);
 
-    Category updateById(Id categoryId, String categoryName);
+    Category updateById(Id categoryId, String newCategoryName);
 
 }

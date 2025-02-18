@@ -12,9 +12,7 @@ public interface AdvertisementOutputPort {
 
     Optional<Advertisement> retrieveById(Id id);
 
-    List<Advertisement> retrieveAllActive(Pagination pagination);
     List<Advertisement> retrieveAll(Pagination pagination);
-
 
     List<Advertisement> retrieveAllByUserId(Id userId);
 }

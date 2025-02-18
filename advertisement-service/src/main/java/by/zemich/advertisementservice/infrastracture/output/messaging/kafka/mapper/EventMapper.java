@@ -6,5 +6,7 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class EventMapper {
-    public static Event map(Advertisement advertisement) {}
+    public static Event map(Advertisement advertisement) {
+        return null;
+    }
 }

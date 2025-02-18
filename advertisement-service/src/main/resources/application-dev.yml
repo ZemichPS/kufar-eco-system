@@ -1,0 +1,52 @@
+spring:
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: advertisement-group
+      enable-auto-commit: true
+      auto-offset-reset: earliest
+    properties:
+      schema.registry.url: http://localhost:8085
+
+  flyway:
+    baseline-on-migrate: false
+    community-db-support-enabled: false
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: io.hypersistence.utils.hibernate.naming.CamelCaseToSnakeCaseNamingStrategy
+    show-sql: true
+    database: postgresql
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+        use_sql_comments: false
+        jdbc.lob.non_contextual_creation: true
+        default_batch_fetch_size: 50
+        jdbc.batch_size: 30
+        default_schema: app
+
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connectTimeout: 5000
+            readTimeout: 5000
+            loggerLevel: basic
+
+  config:
+    import: configserver:http://localhost:8888
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres_user_admin
+    password: postgres_db_password
+    url: jdbc:postgresql://localhost:5438/advertisements
+
+server:
+  port: 9098

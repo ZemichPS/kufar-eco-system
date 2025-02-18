@@ -6,7 +6,6 @@ import by.zemich.advertisementservice.domain.entity.Category;
 import by.zemich.advertisementservice.domain.valueobject.CategoryAttribute;
 import by.zemich.advertisementservice.domain.valueobject.Id;
 import by.zemich.advertisementservice.interfaces.rest.data.request.CategoryRequestDto;
-import by.zemich.advertisementservice.infrastracture.input.rest.data.response.*;
 import by.zemich.advertisementservice.interfaces.rest.data.response.AttributeDtoRequest;
 import by.zemich.advertisementservice.interfaces.rest.data.response.CategoryAttributeResponseDto;
 import by.zemich.advertisementservice.interfaces.rest.data.response.CategoryResponseDto;

@@ -15,7 +15,7 @@ public class AdvertisementMapper {
 
         return AdvertisementDto.builder()
                 .id(ad.getId().uuid())
-                .userDto(UserMapper.mapToDto(ad.getUser()))
+                .userId(ad.getUserId().uuid())
                 .category(ad.getCategory().getName())
                 .condition(ad.getCondition().name())
                 .publishedAt(ad.getPublishedAt())

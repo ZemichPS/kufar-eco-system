@@ -12,7 +12,7 @@ import java.util.UUID;
 @Builder
 public class AdvertisementDto {
     private UUID id;
-    private UserDto userDto;
+    private UUID userId;
     private String category;
     private String condition;
     private LocalDateTime publishedAt;

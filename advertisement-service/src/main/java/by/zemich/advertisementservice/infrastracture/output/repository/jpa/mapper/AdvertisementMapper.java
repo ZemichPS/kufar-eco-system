@@ -6,17 +6,21 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class AdvertisementMapper {
-    public static AdvertisementEntity mapToEntity(Advertisement advertisement) {
+    public static AdvertisementEntity mapToEntity(Advertisement domain) {
         return AdvertisementEntity.builder()
-                .uuid(advertisement.getId().uuid())
-                .userUuid(advertisement.getUserId().uuid())
-                .condition(AdvertisementEntity.Condition.valueOf(advertisement.getCondition().name()))
-                .publishedAt(advertisement.getPublishedAt())
-                .activatedAt(advertisement.getActivatedAt())
-                .priceInByn(advertisement.getPrice().priceInByn())
-                .comment(advertisement.getComment().value())
-                .photoFileName(advertisement.getPhoto().filename())
-                .activatedAt(advertisement.getActivatedAt())
+                .uuid(domain.getId().uuid())
+                .userUuid(domain.getUserId().uuid())
+                .condition(AdvertisementEntity.Condition.valueOf(domain.getCondition().name()))
+                .publishedAt(domain.getPublishedAt())
+                .activatedAt(domain.getActivatedAt())
+                .priceInByn(domain.getPrice().priceInByn())
+                .comment(domain.getComment().value())
+                .photoFileName(domain.getPhoto().filename())
+                .activatedAt(domain.getActivatedAt())
                 .build();
+    }
+
+    public static Advertisement mapToDomain(AdvertisementEntity entity){
+        return null;
     }
 }

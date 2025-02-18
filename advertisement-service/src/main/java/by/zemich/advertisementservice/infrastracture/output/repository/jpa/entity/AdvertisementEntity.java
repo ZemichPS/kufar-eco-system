@@ -20,7 +20,8 @@ public class AdvertisementEntity {
     @Id
     private UUID uuid;
     private UUID userUuid;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_uuid", referencedColumnName = "uuid")
     private CategoryEntity category;
     @Enumerated(EnumType.STRING)
     private Condition condition;
@@ -30,7 +31,13 @@ public class AdvertisementEntity {
     private String comment;
     private String photoFileName;
     private Boolean active;
-    @OneToMany
+
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            mappedBy = "advertisement",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private List<AdvertisementAttributeEntity> attributes;
 
     public boolean addAttribute(AdvertisementAttributeEntity attribute) {

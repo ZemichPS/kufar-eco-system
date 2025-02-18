@@ -6,6 +6,30 @@ networks:
 
 services:
 
+  advertisement-db:
+    image: postgres:17.2
+    container_name: advertisement_postgres_db
+    restart: always
+    depends_on:
+      - service-discovery
+    environment:
+      POSTGRES_USER: postgres_user_admin
+      POSTGRES_PASSWORD: postgres_db_password
+      POSTGRES_DB: advertisements
+    volumes:
+      - D:/docker-data/advertisements/advertisements-application-db:/var/lib/postgresql/data
+    ports:
+      - "5438:5432"
+    networks:
+      - application-net
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres_user_admin -d kufardb" ]
+      interval: 10s          # Интервал между проверками (здесь каждые 10 секунд)
+      timeout: 5s            # Таймаут команды проверки
+      retries: 3             # Количество попыток перед тем, как контейнер будет помечен как unhealthy
+      start_period: 30s      # Время ожидания перед первой проверкой (например, пока база поднимается)
+
+
   kufarspy:
     # image: kufarspy-application:latest // стабильная версия
     image: kufarspy-application:0.0.1
