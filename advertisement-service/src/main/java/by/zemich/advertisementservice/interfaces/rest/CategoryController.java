@@ -5,6 +5,7 @@ import by.zemich.advertisementservice.application.usecases.CategoryUseCase;
 import by.zemich.advertisementservice.domain.entity.Category;
 import by.zemich.advertisementservice.domain.valueobject.CategoryAttribute;
 import by.zemich.advertisementservice.domain.valueobject.Id;
+import by.zemich.advertisementservice.infrastracture.output.repository.jpa.entity.CategoryEntity;
 import by.zemich.advertisementservice.interfaces.rest.data.request.CategoryRequestDto;
 import by.zemich.advertisementservice.interfaces.rest.data.response.AttributeDtoRequest;
 import by.zemich.advertisementservice.interfaces.rest.data.response.CategoryAttributeResponseDto;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -38,12 +40,20 @@ public class CategoryController {
         return ResponseEntity.created(location).build();
     }
 
+    @GetMapping
+    public ResponseEntity<List<CategoryResponseDto>> getAll(){
+        List<CategoryResponseDto> response = categoryUseCase.getAll().stream().
+                map(CategoryMapper::mapToDto)
+                .toList();
+        return ResponseEntity.ok(response);
+    }
+
     @PutMapping("/{categoryUuid}")
     public ResponseEntity<CategoryResponseDto> update(@PathVariable UUID categoryUuid, @RequestBody CategoryRequestDto request) {
         String categoryName = request.getName();
         Id categoryId = new Id(categoryUuid);
         Category updatedCategory = categoryUseCase.updateById(categoryId, categoryName);
-        CategoryResponseDto response = CategoryMapper.toDto(updatedCategory);
+        CategoryResponseDto response = CategoryMapper.mapToDto(updatedCategory);
         return ResponseEntity.ok(response);
     }
 

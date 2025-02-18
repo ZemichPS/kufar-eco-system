@@ -12,6 +12,7 @@ import by.zemich.advertisementservice.infrastracture.output.repository.jpa.mappe
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -68,5 +69,12 @@ public class CategoryPersistenceOutputAdapter implements CategoryPersistenceOutp
                     return true;
                 })
                 .orElse(false);
+    }
+
+    @Override
+    public List<Category> getAll() {
+        return categoryRepository.findAll().stream()
+                .map(CategoryMapper::mapToDomain)
+                .toList();
     }
 }

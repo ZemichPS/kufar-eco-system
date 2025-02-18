@@ -4,6 +4,7 @@ import by.zemich.advertisementservice.domain.entity.Category;
 import by.zemich.advertisementservice.domain.valueobject.CategoryAttribute;
 import by.zemich.advertisementservice.domain.valueobject.Id;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CategoryPersistenceOutputPort {
@@ -16,4 +17,6 @@ public interface CategoryPersistenceOutputPort {
     boolean existsById(Id categoryId);
 
     boolean deleteById(Id id);
+
+    List<Category> getAll();
 }

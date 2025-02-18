@@ -10,7 +10,7 @@ import java.util.List;
 
 @UtilityClass
 public class CategoryMapper {
-    public static CategoryResponseDto toDto(Category category) {
+    public static CategoryResponseDto mapToDto(Category category) {
         List<CategoryAttributeResponseDto> attributesResponse = category.getAttributes().stream()
                 .map(attribute -> {
                     return CategoryAttributeResponseDto.builder()

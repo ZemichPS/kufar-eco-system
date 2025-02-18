@@ -7,6 +7,8 @@ import by.zemich.advertisementservice.domain.entity.factory.CategoryFactory;
 import by.zemich.advertisementservice.domain.exception.EntityNotFoundException;
 import by.zemich.advertisementservice.domain.valueobject.Id;
 
+import java.util.List;
+
 public class CategoryInputPort implements CategoryUseCase {
 
     private final CategoryPersistenceOutputPort categoryPersistenceOutputPort;
@@ -34,6 +36,11 @@ public class CategoryInputPort implements CategoryUseCase {
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
         category.setName(newCategoryName);
         return categoryPersistenceOutputPort.persist(category);
+    }
+
+    @Override
+    public List<Category> getAll() {
+        return categoryPersistenceOutputPort.getAll();
     }
 
 
