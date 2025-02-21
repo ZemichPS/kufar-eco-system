@@ -1,6 +1,7 @@
 package by.zemich.advertisementservice.infrastracture.output.repository.jpa.mapper;
 
 import by.zemich.advertisementservice.domain.entity.Advertisement;
+import by.zemich.advertisementservice.domain.valueobject.*;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.entity.AdvertisementEntity;
 import lombok.experimental.UtilityClass;
 
@@ -24,7 +25,18 @@ public class AdvertisementMapper {
                 .build();
     }
 
-    public static Advertisement mapToDomain(AdvertisementEntity entity){
-        return null;
+    public static Advertisement mapToDomain(AdvertisementEntity entity) {
+        return new Advertisement(
+                new Id(entity.getUuid()),
+                new Id(entity.getUserUuid()),
+                null,
+                Condition.valueOf(entity.getCondition().name()),
+                entity.getPublishedAt(),
+                entity.getActivatedAt(),
+                new Price(entity.getPriceInByn()),
+                new Comment(entity.getComment()),
+                new Photo(entity.getPhotoFileName()),
+                entity.getActive()
+        );
     }
 }

@@ -5,7 +5,7 @@ import by.zemich.advertisementservice.domain.entity.Advertisement;
 import by.zemich.advertisementservice.domain.request.Pagination;
 import by.zemich.advertisementservice.domain.valueobject.*;
 import by.zemich.advertisementservice.interfaces.rest.data.request.NewAdvertisementDTO;
-import by.zemich.advertisementservice.interfaces.rest.data.response.AdvertisementDto;
+import by.zemich.advertisementservice.interfaces.rest.data.response.AdvertisementResponseDto;
 import by.zemich.advertisementservice.interfaces.rest.mappers.AdvertisementMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -51,8 +51,16 @@ public class AdvertisementController {
         return ResponseEntity.created(location).build();
     }
 
+    @GetMapping("/{advertisementUuid}")
+    public ResponseEntity<AdvertisementResponseDto> getById(@PathVariable UUID advertisementUuid) {
+        Id advertisementId = new Id(advertisementUuid);
+        Advertisement advertisement = advertisementUseCases.getById(advertisementId);
+        AdvertisementResponseDto response =  AdvertisementMapper.mapToDto(advertisement);
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping
-    public ResponseEntity<Page<AdvertisementDto>> getAll(
+    public ResponseEntity<Page<AdvertisementResponseDto>> getAll(
             @RequestParam int page,
             @RequestParam int size,
             @RequestParam String sortBy,
@@ -66,14 +74,14 @@ public class AdvertisementController {
                 .onlyActive(onlyActive)
                 .size(size).build();
         List<Advertisement> allActiveAds = advertisementUseCases.getAll(pagination);
-        List<AdvertisementDto> response = allActiveAds.stream()
+        List<AdvertisementResponseDto> response = allActiveAds.stream()
                 .map(AdvertisementMapper::mapToDto).toList();
         PageRequest pageRequest = PageRequest.of(
                 page,
                 size,
                 Sort.by(sortBy)
         );
-        PageImpl<AdvertisementDto> pageResponse = new PageImpl<>(response, pageRequest, allActiveAds.size());
+        PageImpl<AdvertisementResponseDto> pageResponse = new PageImpl<>(response, pageRequest, allActiveAds.size());
         return ResponseEntity.ok(pageResponse);
     }
 

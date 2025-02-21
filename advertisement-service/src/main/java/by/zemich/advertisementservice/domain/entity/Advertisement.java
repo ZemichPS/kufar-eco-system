@@ -54,5 +54,7 @@ public class Advertisement {
         return attributes.add(attribute);
     }
 
-
+    public void addCategory(Category category) {
+        this.category = category;
+    }
 }

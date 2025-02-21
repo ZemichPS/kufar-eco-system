@@ -2,7 +2,9 @@ package by.zemich.advertisementservice.infrastracture.output;
 
 import by.zemich.advertisementservice.application.ports.output.AdvertisementOutputPort;
 import by.zemich.advertisementservice.domain.entity.Advertisement;
-import by.zemich.advertisementservice.domain.exception.CategoryAttributeNotFoundException;
+import by.zemich.advertisementservice.domain.entity.AdvertisementAttribute;
+import by.zemich.advertisementservice.domain.entity.Category;
+import by.zemich.advertisementservice.domain.exception.AdvertisementNotFoundException;
 import by.zemich.advertisementservice.domain.exception.CategoryNotFoundException;
 import by.zemich.advertisementservice.domain.request.Pagination;
 import by.zemich.advertisementservice.domain.valueobject.Id;
@@ -45,17 +47,17 @@ public class AdvertisementOutputAdapter implements AdvertisementOutputPort {
                 })
                 .forEach(advertisementEntity::addAttribute);
         UUID categoryId = advertisement.getCategory().getId().uuid();
-        CategoryEntity categoryEntity = categoryRepository.findById(categoryId).orElseThrow(()-> new CategoryNotFoundException(categoryId.toString()));
+        CategoryEntity categoryEntity = categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId.toString()));
         advertisementEntity.setCategory(categoryEntity);
         advertisementRepository.save(advertisementEntity);
     }
 
     @Override
-    public Optional<Advertisement> retrieveById(Id id) {
+    public Advertisement retrieveById(Id id) {
         UUID advertisementId = id.uuid();
-        return advertisementRepository.findById(advertisementId)
-                .map(AdvertisementMapper::mapToDomain)
-                .or(Optional::empty);
+        AdvertisementEntity advertisementEntity = advertisementRepository.findById(advertisementId)
+                .orElseThrow(() -> new AdvertisementNotFoundException(advertisementId.toString()));
+        return mapToDomain(advertisementEntity);
     }
 
 
@@ -69,7 +71,7 @@ public class AdvertisementOutputAdapter implements AdvertisementOutputPort {
                 Sort.by(sortDirection, pagination.getSortBy())
         );
         return advertisementRepository.findAllWithEagerRelationshipsByActiveIs(pageable, active).stream()
-                .map(AdvertisementMapper::mapToDomain)
+                .map(this::mapToDomain)
                 .toList();
     }
 
@@ -79,5 +81,16 @@ public class AdvertisementOutputAdapter implements AdvertisementOutputPort {
         return advertisementRepository.findAllByUserUuid(userUuid).stream()
                 .map(AdvertisementMapper::mapToDomain)
                 .toList();
+    }
+
+    public Advertisement mapToDomain(AdvertisementEntity advertisementEntity) {
+        CategoryEntity categoryEntity = advertisementEntity.getCategory();
+        Advertisement advertisement = AdvertisementMapper.mapToDomain(advertisementEntity);
+        Category category = CategoryMapper.mapToDomain(categoryEntity);
+        advertisementEntity.getAttributes().stream()
+                .map(AdvertisementAttributeMapper::mapToDomain)
+                .forEach(advertisement::addAttribute);
+        advertisement.addCategory(category);
+        return advertisement;
     }
 }

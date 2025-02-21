@@ -2,22 +2,22 @@ package by.zemich.advertisementservice.interfaces.rest.mappers;
 
 import by.zemich.advertisementservice.domain.entity.Advertisement;
 import by.zemich.advertisementservice.interfaces.rest.data.response.AdvertisementAttributeDto;
-import by.zemich.advertisementservice.interfaces.rest.data.response.AdvertisementDto;
+import by.zemich.advertisementservice.interfaces.rest.data.response.AdvertisementResponseDto;
 
 import java.util.List;
 
 public class AdvertisementMapper {
 
-    public static AdvertisementDto mapToDto(Advertisement ad) {
+    public static AdvertisementResponseDto mapToDto(Advertisement ad) {
         List<AdvertisementAttributeDto> attributes = ad.getAttributes().stream()
                 .map(AdvertisementAttributeMapper::mapToDto)
                 .toList();
 
-        return AdvertisementDto.builder()
+        return AdvertisementResponseDto.builder()
                 .id(ad.getId().uuid())
                 .userId(ad.getUserId().uuid())
                 .category(ad.getCategory().getName())
-                .condition(ad.getCondition().name())
+                .condition(ad.getCondition().getConditionDescription())
                 .publishedAt(ad.getPublishedAt())
                 .activatedAt(ad.getActivatedAt())
                 .priceInByn(ad.getPrice().priceInByn())

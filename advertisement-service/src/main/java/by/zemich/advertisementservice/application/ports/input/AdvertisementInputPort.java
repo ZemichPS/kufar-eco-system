@@ -63,46 +63,34 @@ public class AdvertisementInputPort implements AdvertisementUseCase {
 
     @Override
     public Advertisement updatePriceById(Id advertisementId, Price price) {
-        Advertisement ad = advertisementOutputPort.retrieveById(advertisementId)
-                .map(advertisement -> {
-                    advertisement.setPrice(price);
-                    advertisementOutputPort.persist(advertisement);
-                    return advertisement;
-                })
-                .orElseThrow(() -> new EntityNotFoundException("Advertisement not found"));
-        advertisementEventOutputPort.publishAdvertisementPriceChanged(ad);
-        return ad;
+        Advertisement advertisement = advertisementOutputPort.retrieveById(advertisementId);
+        advertisement.setPrice(price);
+        advertisementOutputPort.persist(advertisement);
+        advertisementEventOutputPort.publishAdvertisementPriceChanged(advertisement);
+        return advertisement;
     }
 
     @Override
     public Advertisement getById(Id advertisementId) {
-        return advertisementOutputPort.retrieveById(advertisementId)
-                .orElseThrow(() -> new EntityNotFoundException("Advertisement not found"));
+        return advertisementOutputPort.retrieveById(advertisementId);
     }
 
     @Override
     public Advertisement activate(Id advertisementId) {
-        return advertisementOutputPort.retrieveById(advertisementId)
-                .map(advertisement -> {
-                    advertisement.setActive(true);
-                    advertisement.setActivatedAt(LocalDateTime.now());
-                    advertisementOutputPort.persist(advertisement);
-                    return advertisement;
-                })
-                .orElseThrow(() -> new EntityNotFoundException("Advertisement not found"));
+        Advertisement advertisement = advertisementOutputPort.retrieveById(advertisementId);
+        advertisement.setActive(true);
+        advertisement.setActivatedAt(LocalDateTime.now());
+        advertisementOutputPort.persist(advertisement);
+        return advertisement;
     }
 
     @Override
     public Advertisement deactivate(Id advertisementId) {
-        Advertisement ad = advertisementOutputPort.retrieveById(advertisementId)
-                .map(advertisement -> {
-                    advertisement.setActive(false);
-                    advertisementOutputPort.persist(advertisement);
-                    return advertisement;
-                })
-                .orElseThrow(() -> new EntityNotFoundException("Advertisement not found"));
-        advertisementEventOutputPort.publishAdvertisementDeactivate(ad);
-        return ad;
+        Advertisement advertisement = advertisementOutputPort.retrieveById(advertisementId);
+        advertisement.setActive(false);
+        advertisementOutputPort.persist(advertisement);
+        advertisementEventOutputPort.publishAdvertisementDeactivate(advertisement);
+        return advertisement;
     }
 
     @Override

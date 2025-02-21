@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Data
 @Builder
-public class AdvertisementDto {
+public class AdvertisementResponseDto {
     private UUID id;
     private UUID userId;
     private String category;
