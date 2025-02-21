@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -25,6 +26,7 @@ public class Category {
     public Category(Id id, String name) {
         this.id = id;
         this.name = name;
+        this.attributes = new ArrayList<>();
     }
 
     public List<CategoryAttribute> getAttributes() {

@@ -3,9 +3,11 @@ package by.zemich.advertisementservice.application.ports.input;
 import by.zemich.advertisementservice.application.ports.output.CategoryAttributeOutputPort;
 import by.zemich.advertisementservice.application.usecases.CategoryAttributeUseCase;
 import by.zemich.advertisementservice.domain.entity.factory.CategoryAttributeFactory;
-import by.zemich.advertisementservice.domain.exception.EntityNotFoundException;
+import by.zemich.advertisementservice.domain.exception.CategoryAttributeNotFoundException;
 import by.zemich.advertisementservice.domain.valueobject.CategoryAttribute;
 import by.zemich.advertisementservice.domain.valueobject.Id;
+
+import java.util.List;
 
 public class CategoryAttributeInputPort implements CategoryAttributeUseCase {
 
@@ -16,22 +18,37 @@ public class CategoryAttributeInputPort implements CategoryAttributeUseCase {
     }
 
     @Override
-    public Id create(Id categoryId, String attributeName) {
+    public Id create(String attributeName) {
         CategoryAttribute attribute = CategoryAttributeFactory.create(attributeName);
-        categoryAttributeOutputPort.persist(categoryId, attribute);
-        return attribute.id();
+        categoryAttributeOutputPort.persist(attribute);
+        return attribute.getId();
     }
 
     @Override
     public void deleteById(Id attributeId) {
         if (!categoryAttributeOutputPort.existsById(attributeId))
-            throw new EntityNotFoundException("CategoryAttribute does not exist");
+            throw new CategoryAttributeNotFoundException(attributeId.uuid().toString());
         if (!categoryAttributeOutputPort.delete(attributeId))
             throw new RuntimeException("Failed to deleteById category attribute");
     }
 
     @Override
-    public CategoryAttribute updateById(Id attributeUuid, String attributeName) {
-        return null;
+    public CategoryAttribute updateNameById(Id attributeUuid, String attributeName) {
+        CategoryAttribute attribute = categoryAttributeOutputPort.getById(attributeUuid);
+        if (!attribute.getName().equals(attributeName)) {
+            attribute.setName(attributeName);
+            categoryAttributeOutputPort.persist(attribute);
+        }
+        return attribute;
+    }
+
+    @Override
+    public List<CategoryAttribute> getAll() {
+        return categoryAttributeOutputPort.getAll();
+    }
+
+    @Override
+    public CategoryAttribute getById(Id categoryAttributeId) {
+        return categoryAttributeOutputPort.getById(categoryAttributeId);
     }
 }

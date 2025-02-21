@@ -8,11 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CategoryPersistenceOutputPort {
-    Optional<Category> getById(Id id);
+    Category getById(Id id);
 
     Category persist(Category createdCategory);
-
-    void persist(Id categoryId, CategoryAttribute attribute);
 
     boolean existsById(Id categoryId);
 

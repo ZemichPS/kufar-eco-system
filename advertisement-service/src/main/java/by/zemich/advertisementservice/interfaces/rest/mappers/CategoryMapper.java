@@ -5,24 +5,18 @@ import by.zemich.advertisementservice.interfaces.rest.data.response.CategoryAttr
 import by.zemich.advertisementservice.interfaces.rest.data.response.CategoryResponseDto;
 import lombok.experimental.UtilityClass;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
 @UtilityClass
 public class CategoryMapper {
     public static CategoryResponseDto mapToDto(Category category) {
-        List<CategoryAttributeResponseDto> attributesResponse = category.getAttributes().stream()
-                .map(attribute -> {
-                    return CategoryAttributeResponseDto.builder()
-                            .uuid(attribute.id().uuid())
-                            .name(attribute.name())
-                            .build();
-                }).toList();
-
         return CategoryResponseDto.builder()
                 .uuid(category.getId().uuid())
                 .name(category.getName())
-                .attributes(attributesResponse)
+                .attributes(new ArrayList<>())
                 .build();
     }
 }

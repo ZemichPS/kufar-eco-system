@@ -2,9 +2,12 @@ package by.zemich.advertisementservice.infrastracture.output;
 
 import by.zemich.advertisementservice.application.ports.output.AdvertisementOutputPort;
 import by.zemich.advertisementservice.domain.entity.Advertisement;
+import by.zemich.advertisementservice.domain.exception.CategoryAttributeNotFoundException;
+import by.zemich.advertisementservice.domain.exception.CategoryNotFoundException;
 import by.zemich.advertisementservice.domain.request.Pagination;
 import by.zemich.advertisementservice.domain.valueobject.Id;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.api.AdvertisementRepository;
+import by.zemich.advertisementservice.infrastracture.output.repository.jpa.api.CategoryRepository;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.entity.AdvertisementAttributeEntity;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.entity.AdvertisementEntity;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.entity.CategoryAttributeEntity;
@@ -28,6 +31,7 @@ import java.util.UUID;
 public class AdvertisementOutputAdapter implements AdvertisementOutputPort {
 
     private final AdvertisementRepository advertisementRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
     public void persist(Advertisement advertisement) {
@@ -36,12 +40,14 @@ public class AdvertisementOutputAdapter implements AdvertisementOutputPort {
                 .map(advertisementAttribute -> {
                     AdvertisementAttributeEntity attributeEntity = AdvertisementAttributeMapper.mapToEntity(advertisementAttribute);
                     CategoryAttributeEntity categoryAttributeEntity = CategoryAttributeMapper.mapToEntity(advertisementAttribute.getCategoryAttribute());
-                    CategoryEntity categoryEntity = CategoryMapper.mapToEntity(advertisement.getCategory());
-                   // categoryAttributeEntity.setCategory(categoryEntity);
                     attributeEntity.setCategoryAttribute(categoryAttributeEntity);
                     return attributeEntity;
                 })
                 .forEach(advertisementEntity::addAttribute);
+        UUID categoryId = advertisement.getCategory().getId().uuid();
+        CategoryEntity categoryEntity = categoryRepository.findById(categoryId).orElseThrow(()-> new CategoryNotFoundException(categoryId.toString()));
+        advertisementEntity.setCategory(categoryEntity);
+        advertisementRepository.save(advertisementEntity);
     }
 
     @Override

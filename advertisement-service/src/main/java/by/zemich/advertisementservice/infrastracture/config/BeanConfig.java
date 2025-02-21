@@ -26,8 +26,8 @@ public class BeanConfig {
     }
 
     @Bean
-    public CategoryUseCase categoryUseCase(CategoryPersistenceOutputPort categoryPersistenceOutputPort) {
-        return new CategoryInputPort(categoryPersistenceOutputPort);
+    public CategoryUseCase categoryUseCase(CategoryPersistenceOutputPort categoryPersistenceOutputPort, CategoryAttributeOutputPort categoryAttributeOutputPort) {
+        return new CategoryInputPort(categoryPersistenceOutputPort, categoryAttributeOutputPort);
     }
 
     @Bean

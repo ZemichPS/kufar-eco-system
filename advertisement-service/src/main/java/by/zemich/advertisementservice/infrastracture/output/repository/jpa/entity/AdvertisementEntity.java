@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,7 +39,7 @@ public class AdvertisementEntity {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<AdvertisementAttributeEntity> attributes;
+    private List<AdvertisementAttributeEntity> attributes = new ArrayList<>();
 
     public boolean addAttribute(AdvertisementAttributeEntity attribute) {
         attribute.setAdvertisement(this);

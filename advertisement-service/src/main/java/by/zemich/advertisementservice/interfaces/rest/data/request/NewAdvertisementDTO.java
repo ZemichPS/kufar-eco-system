@@ -23,8 +23,8 @@ public class NewAdvertisementDTO {
     }
 
     @Data
-    public class AdvertisementAttribute {
-        private UUID CategoryAttributeId;
+    public static class AdvertisementAttribute {
+        private UUID categoryAttributeId;
         private String value;
     }
 }

@@ -2,8 +2,11 @@ package by.zemich.advertisementservice.infrastracture.output;
 
 import by.zemich.advertisementservice.application.ports.output.CategoryPersistenceOutputPort;
 import by.zemich.advertisementservice.domain.entity.Category;
+import by.zemich.advertisementservice.domain.exception.CategoryAttributeNotFoundException;
+import by.zemich.advertisementservice.domain.exception.CategoryNotFoundException;
 import by.zemich.advertisementservice.domain.valueobject.CategoryAttribute;
 import by.zemich.advertisementservice.domain.valueobject.Id;
+import by.zemich.advertisementservice.infrastracture.output.repository.jpa.api.CategoryAttributeRepository;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.api.CategoryRepository;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.entity.CategoryAttributeEntity;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.entity.CategoryEntity;
@@ -15,45 +18,40 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class CategoryPersistenceOutputAdapter implements CategoryPersistenceOutputPort {
 
     private final CategoryRepository categoryRepository;
+    private final CategoryAttributeRepository categoryAttributeRepository;
 
     @Override
-    public Optional<Category> getById(Id id) {
+    public Category getById(Id id) {
         UUID uuid = id.uuid();
-
         return categoryRepository.findById(uuid)
-                .map( entity -> {
+                .map(entity -> {
                     Category category = CategoryMapper.mapToDomain(entity);
                     entity.getAttributes().stream().map(CategoryAttributeMapper::mapToDomain)
                             .forEach(category::addAttribute);
                     return category;
                 })
-                .or(Optional::empty);
-
+                .orElseThrow(() -> new CategoryNotFoundException(uuid.toString()));
     }
 
     @Override
     public Category persist(Category createdCategory) {
         CategoryEntity categoryEntity = CategoryMapper.mapToEntity(createdCategory);
         createdCategory.getAttributes().stream()
-                .map(CategoryAttributeMapper::mapToEntity)
-                .forEach(categoryEntity::addAttribute);
+                .map(attribute -> {
+                    UUID categoryAttributeUuid = attribute.getId().uuid();
+                    CategoryAttributeEntity categoryAttributeEntity = categoryAttributeRepository.findById(categoryAttributeUuid)
+                            .orElseThrow(() -> new CategoryAttributeNotFoundException(categoryAttributeUuid.toString()));
+                    return categoryAttributeEntity;
+                }).forEach(categoryEntity::addAttribute);
         CategoryEntity savedCategory = categoryRepository.save(categoryEntity);
         return CategoryMapper.mapToDomain(savedCategory);
-    }
-
-    @Override
-    public void persist(Id categoryId, CategoryAttribute attribute) {
-        UUID categoryUuid = categoryId.uuid();
-        CategoryEntity categoryEntity = categoryRepository.findById(categoryUuid).orElseThrow();
-        CategoryAttributeEntity categoryAttributeEntity = CategoryAttributeMapper.mapToEntity(attribute);
-        categoryEntity.addAttribute(categoryAttributeEntity);
-        categoryRepository.save(categoryEntity);
     }
 
     @Override
@@ -74,7 +72,15 @@ public class CategoryPersistenceOutputAdapter implements CategoryPersistenceOutp
     @Override
     public List<Category> getAll() {
         return categoryRepository.findAll().stream()
-                .map(CategoryMapper::mapToDomain)
+                .map(
+                        categoryEntity -> {
+                            Category category = CategoryMapper.mapToDomain(categoryEntity);
+                            categoryEntity.getAttributes().stream()
+                                    .map(CategoryAttributeMapper::mapToDomain)
+                                    .forEach(category::addAttribute);
+                            return category;
+                        }
+                )
                 .toList();
     }
 }

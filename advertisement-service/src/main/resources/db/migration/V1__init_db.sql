@@ -18,14 +18,14 @@ CREATE TABLE app.advertisements
 CREATE TABLE app.categories
 (
     uuid uuid,
-    name text,
+    name text UNIQUE ,
     CONSTRAINT pk_categories PRIMARY KEY (uuid)
 );
 
 CREATE TABLE app.category_attributes
 (
     uuid uuid,
-    name text,
+    name text UNIQUE,
     CONSTRAINT pk_category_attributes PRIMARY KEY (uuid)
 );
 
@@ -33,7 +33,7 @@ CREATE TABLE app.advertisement_attributes
 (
     uuid                   uuid,
     advertisement_uuid     uuid,
-    categoryAttribute_uuid uuid,
+    category_attribute_uuid uuid,
     value                  text,
     CONSTRAINT pk_advertisement_attributes PRIMARY KEY (uuid)
 );
@@ -54,4 +54,4 @@ ALTER TABLE app.category_catattributes
 
 ALTER TABLE app.advertisement_attributes
     ADD CONSTRAINT fk_advertisement FOREIGN KEY (advertisement_uuid) REFERENCES app.advertisements (uuid),
-    ADD CONSTRAINT fk_category_attribute FOREIGN KEY (categoryAttribute_uuid) REFERENCES app.category_attributes (uuid)
+    ADD CONSTRAINT fk_category_attribute FOREIGN KEY (category_attribute_uuid) REFERENCES app.category_attributes (uuid)

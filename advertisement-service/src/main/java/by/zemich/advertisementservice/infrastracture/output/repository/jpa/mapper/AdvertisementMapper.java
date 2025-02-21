@@ -4,6 +4,8 @@ import by.zemich.advertisementservice.domain.entity.Advertisement;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.entity.AdvertisementEntity;
 import lombok.experimental.UtilityClass;
 
+import java.util.ArrayList;
+
 @UtilityClass
 public class AdvertisementMapper {
     public static AdvertisementEntity mapToEntity(Advertisement domain) {
@@ -17,6 +19,8 @@ public class AdvertisementMapper {
                 .comment(domain.getComment().value())
                 .photoFileName(domain.getPhoto().filename())
                 .activatedAt(domain.getActivatedAt())
+                .attributes(new ArrayList<>())
+                .active(domain.isActive())
                 .build();
     }
 

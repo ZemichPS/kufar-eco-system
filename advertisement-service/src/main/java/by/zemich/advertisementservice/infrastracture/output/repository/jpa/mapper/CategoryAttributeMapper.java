@@ -9,8 +9,8 @@ import lombok.experimental.UtilityClass;
 public class CategoryAttributeMapper {
     public static CategoryAttributeEntity mapToEntity(CategoryAttribute attribute) {
         return CategoryAttributeEntity.builder()
-                .uuid(attribute.id().uuid())
-                .name(attribute.name())
+                .uuid(attribute.getId().uuid())
+                .name(attribute.getName())
                 .build();
     }
 

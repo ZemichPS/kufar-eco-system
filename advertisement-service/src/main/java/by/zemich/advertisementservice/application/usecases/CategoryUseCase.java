@@ -13,4 +13,8 @@ public interface CategoryUseCase {
     Category updateById(Id categoryId, String newCategoryName);
 
     List<Category> getAll();
+
+    Category getById(Id id);
+
+    Id addAttribute(Id categoryId, Id attributeId);
 }

@@ -6,7 +6,7 @@ import by.zemich.advertisementservice.interfaces.rest.data.response.Advertisemen
 public class AdvertisementAttributeMapper {
     public static AdvertisementAttributeDto mapToDto(AdvertisementAttribute attribute) {
         return AdvertisementAttributeDto.builder()
-                .name(attribute.getCategoryAttribute().name())
+                .name(attribute.getCategoryAttribute().getName())
                 .value(attribute.getValue())
                 .build();
     }

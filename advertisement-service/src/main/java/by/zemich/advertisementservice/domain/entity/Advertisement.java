@@ -47,7 +47,7 @@ public class Advertisement {
         this.comment = comment;
         this.photo = photo;
         this.active = active;
-        attributes = new ArrayList<>();
+        this.attributes = new ArrayList<>();
     }
 
     public boolean addAttribute(AdvertisementAttribute attribute) {

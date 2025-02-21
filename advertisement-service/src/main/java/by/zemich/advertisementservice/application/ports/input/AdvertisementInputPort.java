@@ -33,8 +33,7 @@ public class AdvertisementInputPort implements AdvertisementUseCase {
 
     @Override
     public Id create(Id userId, Id categoryId, Condition condition, Price price, Comment comment, Photo photo, Map<UUID, String> attributesMap) {
-        Category category = categoryPersistenceOutputPort.getById(categoryId)
-                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+        Category category = categoryPersistenceOutputPort.getById(categoryId);
 
         Advertisement createdAdvertisement = AdvertisementFactory.create(
                 userId,
@@ -51,7 +50,7 @@ public class AdvertisementInputPort implements AdvertisementUseCase {
                 .map(entry -> {
                     Id CategoryAttributeId = new Id(entry.getKey());
                     CategoryAttribute attribute = category.getAttributes().stream()
-                            .filter(attr -> CategoryAttributeId.equals(attr.id()))
+                            .filter(attr -> CategoryAttributeId.equals(attr.getId()))
                             .findFirst().orElseThrow(); // TODO продумать
                     String attributeValue = entry.getValue();
                     return AdvertisementAttributeFactory.create(attribute, attributeValue);

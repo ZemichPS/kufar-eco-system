@@ -3,6 +3,7 @@ package by.zemich.advertisementservice.infrastracture.output.repository.jpa.enti
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -37,7 +38,7 @@ public class CategoryEntity {
             joinColumns = @JoinColumn(name = "category_uuid"),
             inverseJoinColumns = @JoinColumn(name = "category_attribute_uuid")
     )
-    private Set<CategoryAttributeEntity> attributes;
+    private Set<CategoryAttributeEntity> attributes = new HashSet<>();
 
     public CategoryEntity(UUID uuid, String name) {
         this.uuid = uuid;

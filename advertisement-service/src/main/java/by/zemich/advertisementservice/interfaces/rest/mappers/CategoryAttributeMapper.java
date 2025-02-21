@@ -6,10 +6,10 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class CategoryAttributeMapper {
-    public static CategoryAttributeResponseDto toDto(CategoryAttribute attribute) {
+    public static CategoryAttributeResponseDto mapToDto(CategoryAttribute attribute) {
         return CategoryAttributeResponseDto.builder()
-                .uuid(attribute.id().uuid())
-                .name(attribute.name())
+                .uuid(attribute.getId().uuid())
+                .name(attribute.getName())
                 .build();
     }
 }

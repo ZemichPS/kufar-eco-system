@@ -5,9 +5,7 @@ import by.zemich.advertisementservice.application.usecases.CategoryUseCase;
 import by.zemich.advertisementservice.domain.entity.Category;
 import by.zemich.advertisementservice.domain.valueobject.CategoryAttribute;
 import by.zemich.advertisementservice.domain.valueobject.Id;
-import by.zemich.advertisementservice.infrastracture.output.repository.jpa.entity.CategoryEntity;
 import by.zemich.advertisementservice.interfaces.rest.data.request.CategoryRequestDto;
-import by.zemich.advertisementservice.interfaces.rest.data.response.AttributeDtoRequest;
 import by.zemich.advertisementservice.interfaces.rest.data.response.CategoryAttributeResponseDto;
 import by.zemich.advertisementservice.interfaces.rest.data.response.CategoryResponseDto;
 import by.zemich.advertisementservice.interfaces.rest.mappers.CategoryAttributeMapper;
@@ -20,9 +18,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/category")
+@RequestMapping("/api/v1/categories")
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryUseCase categoryUseCase;
@@ -41,10 +40,28 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CategoryResponseDto>> getAll(){
-        List<CategoryResponseDto> response = categoryUseCase.getAll().stream().
-                map(CategoryMapper::mapToDto)
+    public ResponseEntity<List<CategoryResponseDto>> getAllCategories() {
+        List<CategoryResponseDto> response = categoryUseCase.getAll().stream()
+                .map(category -> {
+                            List<CategoryAttributeResponseDto> attributes = category.getAttributes()
+                                    .stream().map(CategoryAttributeMapper::mapToDto).toList();
+                            CategoryResponseDto responseDto = CategoryMapper.mapToDto(category);
+                            responseDto.setAttributes(attributes);
+                            return responseDto;
+                        }
+                )
                 .toList();
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{categoryUuid}")
+    public ResponseEntity<CategoryResponseDto> getCategoryById(@PathVariable UUID categoryUuid) {
+        Id id = new Id(categoryUuid);
+        Category category = categoryUseCase.getById(id);
+        CategoryResponseDto response = CategoryMapper.mapToDto(category);
+        category.getAttributes().stream()
+                .map(CategoryAttributeMapper::mapToDto)
+                .forEach(response.getAttributes()::add);
         return ResponseEntity.ok(response);
     }
 
@@ -64,34 +81,21 @@ public class CategoryController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/{categoryUuid}/attributes")
-    public ResponseEntity<URI> addAttribute(@PathVariable UUID categoryUuid, @RequestBody AttributeDtoRequest request) {
+
+    @PostMapping("/{categoryUuid}/attributes/{attributeUuid}")
+    public ResponseEntity<URI> addAttribute(
+            @PathVariable UUID categoryUuid,
+            @PathVariable UUID attributeUuid
+    ) {
         Id categoryId = new Id(categoryUuid);
-        Id attributeId = categoryAttributeUseCase.create(
-                categoryId,
-                request.getName()
-        );
+        Id attributeId = new Id(attributeUuid);
+        categoryId = categoryUseCase.addAttribute(categoryId, attributeId);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{attributeUuid}")
-                .buildAndExpand(attributeId.uuid())
+                .path("/{categoryUuid}")
+                .buildAndExpand(categoryId.uuid())
                 .toUri();
         return ResponseEntity.created(location).build();
-    }
-
-    @DeleteMapping("/attributes/{attributeUuid}")
-    public ResponseEntity<Void> deleteAttribute(@PathVariable UUID attributeUuid) {
-        categoryAttributeUseCase.deleteById(new Id(attributeUuid));
-        return ResponseEntity.noContent().build();
-    }
-
-    @PutMapping("/attributes/{attributeUuid}")
-    public ResponseEntity<CategoryAttributeResponseDto> updateAttribute(@PathVariable UUID attributeUuid, @RequestBody AttributeDtoRequest request) {
-        Id attributeId = new Id(attributeUuid);
-        String attributeName = request.getName();
-        CategoryAttribute updatedAttribute = categoryAttributeUseCase.updateById(attributeId, attributeName);
-        CategoryAttributeResponseDto response = CategoryAttributeMapper.toDto(updatedAttribute);
-        return ResponseEntity.ok(response);
     }
 
 
