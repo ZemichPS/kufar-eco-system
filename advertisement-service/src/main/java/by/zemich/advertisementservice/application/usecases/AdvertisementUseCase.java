@@ -19,6 +19,17 @@ public interface AdvertisementUseCase {
             Map<UUID, String> attributesMap
     );
 
+    Advertisement update(
+            Id id,
+            Id userId,
+            Id categoryId,
+            Condition condition,
+            Price price,
+            Comment comment,
+            Photo photo,
+            Map<UUID, String> attributesMap
+    );
+
     Advertisement updatePriceById(Id advertisementId, Price price);
 
     Advertisement getById(Id advertisementId);

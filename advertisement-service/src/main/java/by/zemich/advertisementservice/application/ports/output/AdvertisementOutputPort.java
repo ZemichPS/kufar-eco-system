@@ -7,7 +7,8 @@ import by.zemich.advertisementservice.domain.valueobject.Id;
 import java.util.List;
 
 public interface AdvertisementOutputPort {
-    void persist(Advertisement advertisement);
+    void saveNew(Advertisement advertisement);
+    void update(Advertisement advertisement);
 
     Advertisement retrieveById(Id id);
 

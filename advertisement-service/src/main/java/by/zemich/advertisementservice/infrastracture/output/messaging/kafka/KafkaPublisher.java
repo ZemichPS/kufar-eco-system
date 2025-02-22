@@ -20,6 +20,11 @@ public class KafkaPublisher implements AdvertisementEventOutputPort {
     }
 
     @Override
+    public void publishAdvertisementUpdated(Advertisement advertisement) {
+
+    }
+
+    @Override
     public void publishAdvertisementPriceChanged(Advertisement ad) {
 
     }
