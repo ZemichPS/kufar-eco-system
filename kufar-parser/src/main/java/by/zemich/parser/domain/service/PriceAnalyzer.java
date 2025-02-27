@@ -14,13 +14,13 @@ import java.util.stream.Collectors;
 public class PriceAnalyzer {
 
     private static final BigDecimal OUTLIER_MULTIPLIER = BigDecimal.valueOf(1.5);
-    private final MinimumRequredAmountOfDataForMarketPriceCountingPolicy minDataSizePolicy = new MinimumRequredAmountOfDataForMarketPriceCountingPolicy();
+    private final MinimumRequredAmountOfDataForMarketPriceCountingPolicy minDataSizePolicy;
 
     /**
      * Вычисляет рыночную цену как среднее значение между средней ценой и медианной ценой
      * после удаления выбросов.
      */
-    public BigDecimal getMarketPrice(List<BigDecimal> prices) throws Exception {
+    public BigDecimal getMarketPrice(List<BigDecimal> prices) {
 
         if (prices == null || !minDataSizePolicy.isSatisfiedBy(prices.size()) ) {
             throw new IllegalArgumentException("Prices list cannot be null or empty");

@@ -19,6 +19,6 @@ public class DeviceConditionAnalyzerHandler implements AdvertisementProcessor {
 
     @Override
     public boolean canProcess(Advertisement advertisement) {
-        return true;
+        return advertisement.getDetails() != null && !advertisement.getDetails().isBlank();
     }
 }

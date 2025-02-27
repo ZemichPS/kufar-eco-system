@@ -28,6 +28,7 @@ public class MinPercentagePolicy implements Policy<KufarAdvertisement> {
         if (!isValidAdvertisement(ad)) {
             return false;
         }
+
         BigDecimal nonCommerceMarketPrice = ad.getNonCommerceMarketPrice().orElseThrow();
         BigDecimal currentAdPrice = ad.getPriceInByn();
         BigDecimal percentageDifference = priceAnalyzer.calculatePercentageDifference(nonCommerceMarketPrice, currentAdPrice);

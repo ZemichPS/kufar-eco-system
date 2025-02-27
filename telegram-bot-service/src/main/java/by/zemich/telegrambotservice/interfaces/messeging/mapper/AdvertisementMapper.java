@@ -1,4 +1,4 @@
-package by.zemich.telegrambotservice.infrastructure.messeging.mapper;
+package by.zemich.telegrambotservice.interfaces.messeging.mapper;
 
 import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
 import org.apache.avro.generic.GenericRecord;
@@ -37,7 +37,7 @@ public class AdvertisementMapper {
                 .commerceMarketPrice(convertDecimal(record, "commerceMarketPrice"))
                 .nonCommerceMarketPrice(convertDecimal(record, "nonCommerceMarketPrice"))
                 .details(record.get("details").toString())
-                .fullyFunctional(Boolean.getBoolean(record.get("fullyFunctional").toString()))
+                .fullyFunctional(Boolean.parseBoolean(record.get("fullyFunctional").toString()))
                 .images(record.get("images").toString())
                 .sellerId(record.get("sellerId").toString())
                 .parameters(parameters)

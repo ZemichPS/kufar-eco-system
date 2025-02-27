@@ -57,19 +57,19 @@ public class KufarAdvertisement {
                 .findFirst();
     }
 
+    public Optional<String> getModel() {
+        return this.parameters.stream()
+                .filter(param -> "phones_model".equals(param.identity))
+                .map(param -> param.value)
+                .findFirst();
+    }
+
     public Optional<BigDecimal> getNonCommerceMarketPrice() {
         return Optional.ofNullable(this.nonCommerceMarketPrice);
     }
 
     public Optional<BigDecimal> getCommerceMarketPrice() {
         return Optional.ofNullable(this.commerceMarketPrice);
-    }
-
-    public Optional<String> getModel() {
-        return this.parameters.stream()
-                .filter(param -> "phones_model".equals(param.identity))
-                .map(param -> param.value)
-                .findFirst();
     }
 
     public Optional<String> getParameterValueByParameterName(String parameterName) {

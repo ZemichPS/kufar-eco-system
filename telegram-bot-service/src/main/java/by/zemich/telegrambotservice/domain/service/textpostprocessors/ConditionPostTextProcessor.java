@@ -16,6 +16,6 @@ public class ConditionPostTextProcessor implements PostTextProcessor {
 
     @Override
     public boolean isApplicable(KufarAdvertisement advertisement) {
-        return true;
+        return advertisement.getCondition() != null;
     }
 }

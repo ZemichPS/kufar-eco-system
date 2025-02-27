@@ -1,7 +1,6 @@
 package by.zemich.parser.infrastructure.messaging.kafka.mapper;
 
 
-import by.zemich.parser.application.service.SmartphoneAdvertisementService;
 import by.zemich.parser.application.service.SubCategoryService;
 import by.zemich.parser.domain.model.Advertisement;
 import by.zemich.parser.domain.model.Category;
@@ -10,16 +9,12 @@ import by.zemich.parser.domain.model.events.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.time.ZoneOffset;
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class AdvertisementMapper {
-
-    private final SmartphoneAdvertisementService smartphoneAdvertisementService;
-    private final SubCategoryService subCategoryService;
 
     public AdvertisementCreatedEvent mapToEvent(Advertisement advertisement) {
         List<Parameter> parameters = advertisement.getParameters().stream()
@@ -42,9 +37,7 @@ public class AdvertisementMapper {
                 .setParameters(parameters)
                 .build();
 
-        String categoryId = advertisement.getCategory();
-        setCategory(event, categoryId);
-        setMarketPrices(advertisement, event);
+
         return event;
     }
 
@@ -56,22 +49,7 @@ public class AdvertisementMapper {
                 .build();
     }
 
-    private void setCategory(AdvertisementCreatedEvent event, String categoryId) {
-        subCategoryService.getById(categoryId).ifPresentOrElse(
-                subcategory -> {
-                    Category category = subcategory.getCategory();
-                    event.setCategory(subcategory.getName());
-                    event.setParentCategory(category.getName());
-                }, () -> {
-                    event.setCategory("Unknown");
-                    event.setParentCategory("Unknown");
-                });
-    }
 
-    private void setMarketPrices(Advertisement advertisement, AdvertisementCreatedEvent event) {
-        BigDecimal commerceMarketPrice = smartphoneAdvertisementService.getMarketCommercePriceByAdvertisement(advertisement).orElse(BigDecimal.ZERO);
-        BigDecimal unCommerceMarketPrice = smartphoneAdvertisementService.getMarketUnCommercePriceByAdvertisement(advertisement).orElse(BigDecimal.ZERO);
-        event.setCommerceMarketPrice(commerceMarketPrice);
-        event.setNonCommerceMarketPrice(unCommerceMarketPrice);
-    }
+
+
 }

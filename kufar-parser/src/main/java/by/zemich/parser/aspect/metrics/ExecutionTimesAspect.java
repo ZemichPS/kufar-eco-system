@@ -17,6 +17,7 @@ import java.util.Map;
 @Aspect
 @Component
 public class ExecutionTimesAspect {
+
     private final MeterRegistry meterRegistry;
 
     public ExecutionTimesAspect(MeterRegistry meterRegistry) {

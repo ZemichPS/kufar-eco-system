@@ -20,31 +20,32 @@ public class MarketAveragePriceTextProcessor implements PostTextProcessor {
 
     @Override
     public String process(KufarAdvertisement advertisement) {
-        if(!(advertisement.getNonCommerceMarketPrice().get().signum() > 0) || !(advertisement.getCommerceMarketPrice().get().signum() > 0)) return "";
-        Predicate<BigDecimal> currentValueMoreThenZero = price -> price.compareTo(BigDecimal.ZERO) > 0;
-        BigDecimal currentAdPrice = advertisement.getPriceInByn();
+        if (advertisement.getNonCommerceMarketPrice().get().signum() > 0 || advertisement.getCommerceMarketPrice().get().signum() > 0) {
+            Predicate<BigDecimal> currentValueMoreThenZero = price -> price.compareTo(BigDecimal.ZERO) > 0;
+            BigDecimal currentAdPrice = advertisement.getPriceInByn();
 
-        StringBuilder rezult = new StringBuilder("\uD83D\uDCC8 Средняя рыночная стоимость c учётом состояния и объёма памяти:");
+            StringBuilder rezult = new StringBuilder("\uD83D\uDCC8 Средняя рыночная стоимость c учётом состояния и объёма памяти:");
 
-        advertisement.getCommerceMarketPrice()
-                .filter(currentValueMoreThenZero)
-                .map(commerceMarketPrice -> rezult.append("\n - %.0f (для коммерческих объявлений). ".formatted(commerceMarketPrice))
-                        .append(getPercentageDifference(commerceMarketPrice, currentAdPrice)));
+            advertisement.getCommerceMarketPrice()
+                    .filter(currentValueMoreThenZero)
+                    .map(commerceMarketPrice -> rezult.append("\n - %.0f (для коммерческих объявлений). ".formatted(commerceMarketPrice))
+                            .append(getPercentageDifference(commerceMarketPrice, currentAdPrice)));
 
-        advertisement.getNonCommerceMarketPrice()
-                .filter(currentValueMoreThenZero)
-                .map(notCommerceMarketPrice -> rezult.append("\n - %.0f (для частных объявлений). ".formatted(notCommerceMarketPrice))
-                        .append(getPercentageDifference(notCommerceMarketPrice, currentAdPrice))
-                );
+            advertisement.getNonCommerceMarketPrice()
+                    .filter(currentValueMoreThenZero)
+                    .map(notCommerceMarketPrice -> rezult.append("\n - %.0f (для частных объявлений). ".formatted(notCommerceMarketPrice))
+                            .append(getPercentageDifference(notCommerceMarketPrice, currentAdPrice))
+                    );
 
-        return rezult.toString();
+            return rezult.toString();
+        } else return "";
     }
 
     @Override
     public boolean isApplicable(KufarAdvertisement advertisement) {
         return advertisement.getBrand().isPresent()
                 && advertisement.getModel().isPresent()
-                && advertisement.getPriceInByn().compareTo(BigDecimal.ZERO) > 0;
+                && advertisement.getPriceInByn().signum() > 0;
     }
 
     private String getPercentageDifference(BigDecimal comparePrice, BigDecimal currentPrice) {

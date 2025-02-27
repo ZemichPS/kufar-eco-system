@@ -20,7 +20,7 @@ public class PublishService {
 
     public void publish(KufarAdvertisement ad) {
         advertisementPublishers.forEach(publisher -> {
-            Mono.defer(() -> Mono.fromRunnable(()-> publisher.publish(ad)))
+            Mono.defer(() -> Mono.fromRunnable(() -> publisher.publish(ad)))
                     .retryWhen(
                             Retry.backoff(20, Duration.ofSeconds(15))
                                     .maxBackoff(Duration.ofSeconds(20))

@@ -13,14 +13,15 @@ import java.util.function.Predicate;
 @Service
 @AllArgsConstructor
 public class MarketPriceService {
+
     private final PriceAnalyzer priceAnalyzer;
+
     private final int adsCountForMarketPriceAnalyze = 35;
 
-
     public BigDecimal getMarketPrice(List<Advertisement> advertisements,
-                                      Predicate<Advertisement> predicate,
-                                      String condition
-    ) throws Exception {
+                                     Predicate<Advertisement> predicate,
+                                     String condition
+    ) {
         List<BigDecimal> prices = advertisements.stream()
                 .filter(predicate)
                 .filter(ad -> ad.getCondition().equalsIgnoreCase(condition))
@@ -28,10 +29,6 @@ public class MarketPriceService {
                 .limit(adsCountForMarketPriceAnalyze)
                 .map(Advertisement::getPriceInByn)
                 .toList();
-        return priceAnalyzer.getMarketPrice(prices);
-    }
-
-    public BigDecimal getMarketPrice(List<BigDecimal> prices) throws Exception {
         return priceAnalyzer.getMarketPrice(prices);
     }
 }

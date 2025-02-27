@@ -15,7 +15,7 @@ public class DetailsPostTextProcessor implements PostTextProcessor {
     public String process(KufarAdvertisement advertisement) {
         String details = advertisement.getDetails();
         String removed = removeExtraCharacters(details);
-        if (advertisement.getCategory().equalsIgnoreCase("17010")) {
+        if (advertisement.getCategory().equalsIgnoreCase("Мобильные телефоны")) {
             removed = (advertisement.getSubject() + ". " + removed);
         }
         String prepared = reduce(removed);
@@ -24,7 +24,7 @@ public class DetailsPostTextProcessor implements PostTextProcessor {
 
     @Override
     public boolean isApplicable(KufarAdvertisement advertisement) {
-        return true;
+        return advertisement.getDetails() != null && !advertisement.getDetails().isEmpty();
     }
 
 

@@ -32,10 +32,6 @@ public class PostManager {
             sync = true
     )
     public SendPhoto create(KufarAdvertisement kufarAdvertisement) {
-        return createIfNotExists(kufarAdvertisement);
-    }
-
-    private SendPhoto createIfNotExists(KufarAdvertisement kufarAdvertisement) {
         InputFile photo = kufarAdvertisement.getPhotoLink()
                 .map(InputFile::new)
                 .orElseGet(() -> {
@@ -50,7 +46,6 @@ public class PostManager {
                 .caption(text)
                 .build();
     }
-
 
     private String processPostText(KufarAdvertisement kufarAdvertisement) {
         return postTextProcessors.stream()

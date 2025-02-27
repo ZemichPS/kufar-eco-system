@@ -19,10 +19,6 @@ import java.util.function.Predicate;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@CacheConfig(
-        cacheManager = "smartphoneAdvertisementServiceCacheManager",
-        cacheNames = "marketPrices"
-)
 public class SmartphoneAdvertisementService {
     private final AdvertisementService advertisementService;
     private final MarketPriceService marketPriceService;
@@ -31,52 +27,32 @@ public class SmartphoneAdvertisementService {
     private final Predicate<Advertisement> commerceAdPredicate = Advertisement::isCompanyAd;
     private final Predicate<Advertisement> unCommerceAdPredicate = advertisement -> !advertisement.isCompanyAd();
 
-    @Cacheable(
-            key = "#advertisement.brand.get() + " +
-                    "'-' + #advertisement.model.get() + " +
-                    "'-' + #advertisement.getParameterValueByParameterName('phablet_phones_memory').get()",
-            sync = true,
-            condition = "#advertisement.brand.isPresent() and #advertisement.model.isPresent() and #advertisement.getParameterValueByParameterName('phablet_phones_memory').isPresent()"
-    )
     public Optional<BigDecimal> getMarketCommercePriceByAdvertisement(Advertisement advertisement) {
         return getMarketCommercePriceByAdvertisementAndPredicate(advertisement, fullFunctionalPredicate.and(commerceAdPredicate));
     }
 
-    @Cacheable(
-            key = "#advertisement.brand.get() + " +
-                    "'-' + #advertisement.model.get() + " +
-                    "'-' + #advertisement.getParameterValueByParameterName('phablet_phones_memory').get()",
-            sync = true,
-            condition = "#advertisement.brand.isPresent() and #advertisement.model.isPresent() and #advertisement.getParameterValueByParameterName('phablet_phones_memory').isPresent()"
-    )
     public Optional<BigDecimal> getMarketUnCommercePriceByAdvertisement(Advertisement advertisement) {
         return getMarketCommercePriceByAdvertisementAndPredicate(advertisement, fullFunctionalPredicate.and(unCommerceAdPredicate));
     }
 
     private Optional<BigDecimal> getMarketCommercePriceByAdvertisementAndPredicate(Advertisement advertisement, Predicate<Advertisement> predicate) {
-        if (!validateAdvertisement(advertisement)) return Optional.empty();
-        String brand = advertisement.getBrand().orElseThrow();
-        String model = advertisement.getModel().orElseThrow();
-        String memoryAmount = advertisement.getParameterValueByParameterName("phablet_phones_memory").orElseThrow();
-        List<Advertisement> advertisements = advertisementService.getAllByBrandAndModelWithMemoryAmount(brand, model, memoryAmount);
-        BigDecimal marketPriceForCommerce;
-        try {
-            marketPriceForCommerce = marketPriceService.getMarketPrice(
-                    advertisements,
-                    predicate,
-                    advertisement.getCondition()
-            );
-        } catch (Exception e) {
-            log.error(e.getMessage());
+        if (!validateAdvertisement(advertisement)) {
             return Optional.empty();
         }
-        return Optional.of(marketPriceForCommerce);
+        String brand = advertisement.getBrand().orElseThrow(() -> new IllegalArgumentException("Brand is missing"));
+        String model = advertisement.getModel().orElseThrow(() -> new IllegalArgumentException("Model is missing"));
+        Optional<String> memoryOpt = advertisement.getParameterValueByParameterName("phablet_phones_memory");
+
+        List<Advertisement> ads = memoryOpt
+                .map(memory -> advertisementService.getAllByBrandAndModelWithMemoryAmount(brand, model, memory))
+                .orElseGet(() -> advertisementService.getAllByBrandAndModel(brand, model));
+        BigDecimal price = marketPriceService.getMarketPrice(ads, predicate, advertisement.getCondition());
+        return Optional.of(price);
     }
 
     private boolean validateAdvertisement(Advertisement ad) {
         return ad.getBrand().isPresent()
-                && ad.getModel().isPresent()
-                && ad.getParameterValueByParameterName("phablet_phones_memory").isPresent();
+                && ad.getModel().isPresent();
     }
 
 

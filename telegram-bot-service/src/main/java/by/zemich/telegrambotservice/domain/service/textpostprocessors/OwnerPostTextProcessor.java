@@ -16,6 +16,6 @@ public class OwnerPostTextProcessor implements PostTextProcessor {
 
     @Override
     public boolean isApplicable(KufarAdvertisement advertisement) {
-        return advertisement.getCategory().equalsIgnoreCase("17010");
+        return true;
     }
 }
