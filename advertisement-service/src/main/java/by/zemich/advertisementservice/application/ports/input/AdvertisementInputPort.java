@@ -8,7 +8,6 @@ import by.zemich.advertisementservice.domain.entity.Advertisement;
 import by.zemich.advertisementservice.domain.entity.Category;
 import by.zemich.advertisementservice.domain.entity.factory.AdvertisementAttributeFactory;
 import by.zemich.advertisementservice.domain.entity.factory.AdvertisementFactory;
-import by.zemich.advertisementservice.domain.exception.EntityNotFoundException;
 import by.zemich.advertisementservice.domain.request.Pagination;
 import by.zemich.advertisementservice.domain.valueobject.*;
 
@@ -34,8 +33,8 @@ public class AdvertisementInputPort implements AdvertisementUseCase {
     @Override
     public Id create(Id userId, Id categoryId, Condition condition, Price price, Comment comment, Photo photo, Map<UUID, String> attributesMap) {
         Category category = categoryPersistenceOutputPort.getById(categoryId);
-
-        Advertisement createdAdvertisement = AdvertisementFactory.create(
+        Advertisement createdAdvertisement = AdvertisementFactory.get(
+                new Id(UUID.randomUUID()),
                 userId,
                 category,
                 condition,
@@ -45,27 +44,39 @@ public class AdvertisementInputPort implements AdvertisementUseCase {
                 comment,
                 photo
         );
-
-        attributesMap.entrySet().stream()
-                .map(entry -> {
-                    Id CategoryAttributeId = new Id(entry.getKey());
-                    CategoryAttribute attribute = category.getAttributes().stream()
-                            .filter(attr -> CategoryAttributeId.equals(attr.getId()))
-                            .findFirst().orElseThrow(); // TODO продумать
-                    String attributeValue = entry.getValue();
-                    return AdvertisementAttributeFactory.create(attribute, attributeValue);
-                }).forEach(createdAdvertisement::addAttribute);
-
-        advertisementOutputPort.persist(createdAdvertisement);
+        AdvertisementAttributeFactory.get(category, attributesMap)
+                .forEach(createdAdvertisement::addAttribute);
+        advertisementOutputPort.saveNew(createdAdvertisement);
         advertisementEventOutputPort.publishAdvertisementCreated(createdAdvertisement);
         return createdAdvertisement.getId();
+    }
+
+    @Override
+    public Advertisement update(Id id, Id userId, Id categoryId, Condition condition, Price price, Comment comment, Photo photo, Map<UUID, String> attributesMap) {
+        Category category = categoryPersistenceOutputPort.getById(categoryId);
+        Advertisement updatedAdvertisement = AdvertisementFactory.get(
+                id,
+                userId,
+                category,
+                condition,
+                LocalDateTime.now(),
+                LocalDateTime.now(),
+                price,
+                comment,
+                photo
+        );
+        AdvertisementAttributeFactory.get(category, attributesMap)
+                .forEach(updatedAdvertisement::addAttribute);
+        advertisementOutputPort.update(updatedAdvertisement);
+        advertisementEventOutputPort.publishAdvertisementUpdated(updatedAdvertisement);
+        return updatedAdvertisement;
     }
 
     @Override
     public Advertisement updatePriceById(Id advertisementId, Price price) {
         Advertisement advertisement = advertisementOutputPort.retrieveById(advertisementId);
         advertisement.setPrice(price);
-        advertisementOutputPort.persist(advertisement);
+        advertisementOutputPort.update(advertisement);
         advertisementEventOutputPort.publishAdvertisementPriceChanged(advertisement);
         return advertisement;
     }
@@ -80,7 +91,7 @@ public class AdvertisementInputPort implements AdvertisementUseCase {
         Advertisement advertisement = advertisementOutputPort.retrieveById(advertisementId);
         advertisement.setActive(true);
         advertisement.setActivatedAt(LocalDateTime.now());
-        advertisementOutputPort.persist(advertisement);
+        advertisementOutputPort.saveNew(advertisement);
         return advertisement;
     }
 
@@ -88,7 +99,7 @@ public class AdvertisementInputPort implements AdvertisementUseCase {
     public Advertisement deactivate(Id advertisementId) {
         Advertisement advertisement = advertisementOutputPort.retrieveById(advertisementId);
         advertisement.setActive(false);
-        advertisementOutputPort.persist(advertisement);
+        advertisementOutputPort.saveNew(advertisement);
         advertisementEventOutputPort.publishAdvertisementDeactivate(advertisement);
         return advertisement;
     }

@@ -19,7 +19,7 @@ public class CategoryAttributeInputPort implements CategoryAttributeUseCase {
 
     @Override
     public Id create(String attributeName) {
-        CategoryAttribute attribute = CategoryAttributeFactory.create(attributeName);
+        CategoryAttribute attribute = CategoryAttributeFactory.get(attributeName);
         categoryAttributeOutputPort.persist(attribute);
         return attribute.getId();
     }
