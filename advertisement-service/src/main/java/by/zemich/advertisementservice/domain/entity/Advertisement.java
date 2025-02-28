@@ -36,7 +36,8 @@ public class Advertisement {
                          Price price,
                          Comment comment,
                          Photo photo,
-                         boolean active
+                         boolean active,
+                         Side side
     ) {
         this.id = id;
         this.user = user;
@@ -49,6 +50,7 @@ public class Advertisement {
         this.photo = photo;
         this.active = active;
         this.attributes = new ArrayList<>();
+        this.side = side;
     }
 
     public boolean addAttribute(AdvertisementAttribute attribute) {

@@ -49,6 +49,7 @@ public class AdvertisementInjectionExtension implements TestInstancePostProcesso
                 .images("iphone.jpg")
                 .sellerId(UUID.randomUUID().toString())
                 .parameters(new ArrayList<>())
+                .fullyFunctional(true)
                 .build();
 
         if(!annotation.emptyParam()){

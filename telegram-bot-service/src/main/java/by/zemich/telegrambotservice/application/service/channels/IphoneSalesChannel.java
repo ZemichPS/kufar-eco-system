@@ -68,6 +68,7 @@ public class IphoneSalesChannel extends AbstractTelegramChannel {
                 new ExcludeModelsPolicy(List.of(
                         "iPhone 5",
                         "iPhone 5s",
+                        "iPhone 5G",
                         "iPhone 6",
                         "iPhone 6s",
                         "iPhone 6 Plus",
@@ -77,8 +78,7 @@ public class IphoneSalesChannel extends AbstractTelegramChannel {
                         "iPhone 8 Plus",
                         "iPhone X",
                         "iPhone XR",
-                        "IPhone XR",
-                        "IPhone XS",
+                        "iPhone XS",
                         "iPhone XS Max",
                         "iPhone SE (2020)"
                 )),
