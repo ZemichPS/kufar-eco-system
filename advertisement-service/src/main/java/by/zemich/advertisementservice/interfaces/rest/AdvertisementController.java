@@ -62,7 +62,6 @@ public class AdvertisementController {
                 );
         Advertisement advertisement = advertisementUseCases.update(
                 new User(new Id(dto.getId())),
-                new Id(dto.getUserId()),
                 new Id(dto.getCategoryId()),
                 Condition.valueOf(dto.getCondition().name()),
                 new Price(dto.getPriceInByn()),

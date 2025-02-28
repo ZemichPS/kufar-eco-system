@@ -22,7 +22,6 @@ public interface AdvertisementUseCase {
 
     Advertisement update(
             User user,
-            Id userId,
             Id categoryId,
             Condition condition,
             Price price,

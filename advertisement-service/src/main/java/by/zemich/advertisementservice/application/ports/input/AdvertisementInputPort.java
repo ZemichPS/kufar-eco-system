@@ -55,7 +55,7 @@ public class AdvertisementInputPort implements AdvertisementUseCase {
     }
 
     @Override
-    public Advertisement update(Id id, User user, Id categoryId, Condition condition, Price price, Comment comment, Photo photo, Map<UUID, String> attributesMap) {
+    public Advertisement update(User user, Id categoryId, Condition condition, Price price, Comment comment, Photo photo, Map<UUID, String> attributesMap) {
         Category category = categoryPersistenceOutputPort.getById(categoryId);
         Advertisement updatedAdvertisement = AdvertisementFactory.get(
                 user,
@@ -73,6 +73,7 @@ public class AdvertisementInputPort implements AdvertisementUseCase {
         advertisementEventOutputPort.publishAdvertisementUpdated(updatedAdvertisement);
         return updatedAdvertisement;
     }
+
 
     @Override
     public Advertisement updatePriceById(Id advertisementId, Price price) {
