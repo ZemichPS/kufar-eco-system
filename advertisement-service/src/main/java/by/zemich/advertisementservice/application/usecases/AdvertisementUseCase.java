@@ -1,6 +1,7 @@
 package by.zemich.advertisementservice.application.usecases;
 
 import by.zemich.advertisementservice.domain.entity.Advertisement;
+import by.zemich.advertisementservice.domain.entity.User;
 import by.zemich.advertisementservice.domain.request.Pagination;
 import by.zemich.advertisementservice.domain.valueobject.*;
 
@@ -10,7 +11,7 @@ import java.util.UUID;
 
 public interface AdvertisementUseCase {
     Id create(
-            Id userId,
+            User user,
             Id categoryId,
             Condition condition,
             Price price,
@@ -20,7 +21,7 @@ public interface AdvertisementUseCase {
     );
 
     Advertisement update(
-            Id id,
+            User user,
             Id userId,
             Id categoryId,
             Condition condition,

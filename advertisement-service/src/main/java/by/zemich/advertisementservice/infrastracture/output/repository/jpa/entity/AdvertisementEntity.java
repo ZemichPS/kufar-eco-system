@@ -32,6 +32,8 @@ public class AdvertisementEntity {
     private String comment;
     private String photoFileName;
     private Boolean active;
+    private Side side;
+
 
     @OneToMany(
             fetch = FetchType.LAZY,
@@ -55,6 +57,11 @@ public class AdvertisementEntity {
 
         Condition(String conditionDescription) {
         }
+    }
+
+    public enum Side{
+        BUY,
+        SELL
     }
 
 }

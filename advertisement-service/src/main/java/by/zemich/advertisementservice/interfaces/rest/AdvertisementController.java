@@ -2,9 +2,12 @@ package by.zemich.advertisementservice.interfaces.rest;
 
 import by.zemich.advertisementservice.application.usecases.AdvertisementUseCase;
 import by.zemich.advertisementservice.domain.entity.Advertisement;
+import by.zemich.advertisementservice.domain.entity.User;
 import by.zemich.advertisementservice.domain.request.Pagination;
 import by.zemich.advertisementservice.domain.valueobject.*;
+import by.zemich.advertisementservice.interfaces.rest.data.request.AdvertisementRequestDTO;
 import by.zemich.advertisementservice.interfaces.rest.data.request.NewAdvertisementDTO;
+import by.zemich.advertisementservice.interfaces.rest.data.request.UpdateAdvertisementPriceRequestDTO;
 import by.zemich.advertisementservice.interfaces.rest.data.response.AdvertisementResponseDto;
 import by.zemich.advertisementservice.interfaces.rest.mappers.AdvertisementMapper;
 import lombok.RequiredArgsConstructor;
@@ -51,11 +54,40 @@ public class AdvertisementController {
         return ResponseEntity.created(location).build();
     }
 
+    @PutMapping
+    public ResponseEntity<AdvertisementResponseDto> updateAdvertisement(@RequestBody AdvertisementRequestDTO dto) {
+        Map<UUID, String> attributes = dto.getAttributes().stream()
+                .collect(
+                        Collectors.toMap(NewAdvertisementDTO.AdvertisementAttribute::getCategoryAttributeId, NewAdvertisementDTO.AdvertisementAttribute::getValue)
+                );
+        Advertisement advertisement = advertisementUseCases.update(
+                new User(new Id(dto.getId())),
+                new Id(dto.getUserId()),
+                new Id(dto.getCategoryId()),
+                Condition.valueOf(dto.getCondition().name()),
+                new Price(dto.getPriceInByn()),
+                new Comment(dto.getComment()),
+                new Photo(dto.getPhoto()),
+                attributes
+        );
+        AdvertisementResponseDto responseDto = AdvertisementMapper.mapToDto(advertisement);
+        return ResponseEntity.ok(responseDto);
+    }
+
+    @PatchMapping
+    public ResponseEntity<AdvertisementResponseDto> updateAdvertisement(@RequestBody UpdateAdvertisementPriceRequestDTO request) {
+        Id advertisementId = new Id(request.getAdvertisementId());
+        Price price = new Price(request.getPriceInByn());
+        Advertisement advertisement = advertisementUseCases.updatePriceById(advertisementId, price);
+        AdvertisementResponseDto responseDto = AdvertisementMapper.mapToDto(advertisement);
+        return ResponseEntity.ok(responseDto);
+    }
+
     @GetMapping("/{advertisementUuid}")
     public ResponseEntity<AdvertisementResponseDto> getById(@PathVariable UUID advertisementUuid) {
         Id advertisementId = new Id(advertisementUuid);
         Advertisement advertisement = advertisementUseCases.getById(advertisementId);
-        AdvertisementResponseDto response =  AdvertisementMapper.mapToDto(advertisement);
+        AdvertisementResponseDto response = AdvertisementMapper.mapToDto(advertisement);
         return ResponseEntity.ok(response);
     }
 

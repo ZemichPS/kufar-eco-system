@@ -9,6 +9,7 @@ import by.zemich.advertisementservice.domain.exception.CategoryAttributeNotFound
 import by.zemich.advertisementservice.domain.exception.CategoryNotFoundException;
 import by.zemich.advertisementservice.domain.request.Pagination;
 import by.zemich.advertisementservice.domain.valueobject.Id;
+import by.zemich.advertisementservice.domain.valueobject.Side;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.api.AdvertisementAttributeRepository;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.api.AdvertisementRepository;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.api.CategoryAttributeRepository;
@@ -61,7 +62,8 @@ public class AdvertisementOutputAdapter implements AdvertisementOutputPort {
 
     @Override
     public void update(Advertisement advertisement) {
-        AdvertisementEntity advertisementEntity = AdvertisementMapper.mapToEntity(advertisement);
+        UUID advertisementId = advertisement.getId().uuid();
+        AdvertisementEntity advertisementEntity = advertisementRepository.findById(advertisementId).orElseThrow(() -> new AdvertisementNotFoundException(advertisementId.toString()));
         advertisement.getAttributes().stream()
                 .map(attribute -> {
                     AdvertisementAttributeEntity advertisementAttributeEntity = advertisementAttributeRepository.findById(attribute.getId().uuid()).orElseGet(() ->
@@ -83,6 +85,11 @@ public class AdvertisementOutputAdapter implements AdvertisementOutputPort {
         CategoryEntity categoryEntity = categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId.toString()));
         advertisementEntity.setCategory(categoryEntity);
         advertisementRepository.save(advertisementEntity);
+    }
+
+    @Override
+    public void updatePrice(Advertisement advertisement) {
+
     }
 
     @Override
@@ -113,6 +120,20 @@ public class AdvertisementOutputAdapter implements AdvertisementOutputPort {
         UUID userUuid = userId.uuid();
         return advertisementRepository.findAllByUserUuid(userUuid).stream()
                 .map(AdvertisementMapper::mapToDomain)
+                .toList();
+    }
+
+    @Override
+    public List<Advertisement> retrieveByAttributes(List<AdvertisementAttribute> attributes, Side side) {
+        List<UUID> categoryAttributeIds = attributes.stream()
+                .map(attribute -> attribute.getCategoryAttribute().getId().uuid())
+                .toList();
+
+        List<String> values = attributes.stream().map(AdvertisementAttribute::getValue).toList();
+        String paramSide = side.name();
+
+        return advertisementRepository.findByAttributesAndSide(categoryAttributeIds, values, paramSide).stream()
+                .map(this::mapToDomain)
                 .toList();
     }
 

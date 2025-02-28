@@ -5,7 +5,9 @@ import by.zemich.advertisementservice.application.ports.output.CategoryPersisten
 import by.zemich.advertisementservice.application.ports.output.AdvertisementEventOutputPort;
 import by.zemich.advertisementservice.application.usecases.AdvertisementUseCase;
 import by.zemich.advertisementservice.domain.entity.Advertisement;
+import by.zemich.advertisementservice.domain.entity.AdvertisementAttribute;
 import by.zemich.advertisementservice.domain.entity.Category;
+import by.zemich.advertisementservice.domain.entity.User;
 import by.zemich.advertisementservice.domain.entity.factory.AdvertisementAttributeFactory;
 import by.zemich.advertisementservice.domain.entity.factory.AdvertisementFactory;
 import by.zemich.advertisementservice.domain.request.Pagination;
@@ -31,11 +33,11 @@ public class AdvertisementInputPort implements AdvertisementUseCase {
     }
 
     @Override
-    public Id create(Id userId, Id categoryId, Condition condition, Price price, Comment comment, Photo photo, Map<UUID, String> attributesMap) {
+    public Id create(User user, Id categoryId, Condition condition, Price price, Comment comment, Photo photo, Map<UUID, String> attributesMap) {
         Category category = categoryPersistenceOutputPort.getById(categoryId);
         Advertisement createdAdvertisement = AdvertisementFactory.get(
                 new Id(UUID.randomUUID()),
-                userId,
+                user,
                 category,
                 condition,
                 LocalDateTime.now(),
@@ -52,11 +54,10 @@ public class AdvertisementInputPort implements AdvertisementUseCase {
     }
 
     @Override
-    public Advertisement update(Id id, Id userId, Id categoryId, Condition condition, Price price, Comment comment, Photo photo, Map<UUID, String> attributesMap) {
+    public Advertisement update(User user, Id userId, Id categoryId, Condition condition, Price price, Comment comment, Photo photo, Map<UUID, String> attributesMap) {
         Category category = categoryPersistenceOutputPort.getById(categoryId);
         Advertisement updatedAdvertisement = AdvertisementFactory.get(
-                id,
-                userId,
+                user,
                 category,
                 condition,
                 LocalDateTime.now(),
@@ -112,6 +113,16 @@ public class AdvertisementInputPort implements AdvertisementUseCase {
     @Override
     public List<Advertisement> getAllByUserId(Id userId) {
         return advertisementOutputPort.retrieveAllByUserId(userId);
+    }
+
+    private void checkAndNotifyUser(Advertisement advertisement) {
+        List<AdvertisementAttribute> attributes = advertisement.getAttributes();
+        Side side = advertisement.getSide();
+        List<User> users = advertisementOutputPort.retrieveByAttributes(attributes, side).stream()
+                .map(Advertisement::getUser)
+                .toList();
+
+        advertisementEventOutputPort.publishPositionFount(users, advertisement);
     }
 
 }

@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 public class Advertisement {
     private Id id;
-    private Id userId;
+    private User user;
     private Category category;
     private Condition condition;
     private LocalDateTime publishedAt;
@@ -25,9 +25,10 @@ public class Advertisement {
     @Setter
     private boolean active;
     private List<AdvertisementAttribute> attributes;
+    private Side side;
 
     public Advertisement(Id id,
-                         Id userId,
+                         User user,
                          Category category,
                          Condition condition,
                          LocalDateTime publishedAt,
@@ -38,7 +39,7 @@ public class Advertisement {
                          boolean active
     ) {
         this.id = id;
-        this.userId = userId;
+        this.user = user;
         this.category = category;
         this.condition = condition;
         this.publishedAt = publishedAt;

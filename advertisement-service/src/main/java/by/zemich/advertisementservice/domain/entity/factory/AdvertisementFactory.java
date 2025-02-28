@@ -2,6 +2,7 @@ package by.zemich.advertisementservice.domain.entity.factory;
 
 import by.zemich.advertisementservice.domain.entity.Advertisement;
 import by.zemich.advertisementservice.domain.entity.Category;
+import by.zemich.advertisementservice.domain.entity.User;
 import by.zemich.advertisementservice.domain.valueobject.*;
 
 import java.time.LocalDateTime;
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 public class AdvertisementFactory {
     public static Advertisement get(
             Id id,
-            Id userId,
+            User user,
             Category category,
             Condition condition,
             LocalDateTime publishedAt,
@@ -19,7 +20,7 @@ public class AdvertisementFactory {
             Photo photo) {
         return new Advertisement(
                 id,
-                userId,
+                user,
                 category,
                 condition,
                 publishedAt,
