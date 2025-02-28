@@ -50,11 +50,12 @@ public class AdvertisementInputPort implements AdvertisementUseCase {
                 .forEach(createdAdvertisement::addAttribute);
         advertisementOutputPort.saveNew(createdAdvertisement);
         advertisementEventOutputPort.publishAdvertisementCreated(createdAdvertisement);
+        checkAndNotifyUser(createdAdvertisement);
         return createdAdvertisement.getId();
     }
 
     @Override
-    public Advertisement update(User user, Id userId, Id categoryId, Condition condition, Price price, Comment comment, Photo photo, Map<UUID, String> attributesMap) {
+    public Advertisement update(Id id, User user, Id categoryId, Condition condition, Price price, Comment comment, Photo photo, Map<UUID, String> attributesMap) {
         Category category = categoryPersistenceOutputPort.getById(categoryId);
         Advertisement updatedAdvertisement = AdvertisementFactory.get(
                 user,
