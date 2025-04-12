@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class OnlyOriginalGoodsPolicyTest {
 
-    @KufarAdvertisementInjection
+    @KufarAdvertisementInjection(emptyParam = false)
     private KufarAdvertisement advertisement;
 
     private static OnlyOriginalGoodsPolicy policy;

@@ -1,0 +1,71 @@
+{
+  "type": "record",
+  "name": "PositionFountEvent",
+  "namespace": "by.zemich.advertisementservice.domain.events",
+  "fields": [
+    {
+      "name": "notificationable",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "logicalType": "uuid"
+        }
+      }
+    },
+    {
+      "name": "uuid",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
+    {
+      "name": "userUuid",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
+    {
+      "name": "categoryUuid",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
+    {
+      "type": "enum",
+      "name": "condition",
+      "symbols": [
+        "NEW",
+        "USED",
+        "BROKEN"
+      ]
+    },
+    {
+      "name": "priceInByn",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 10,
+        "scale": 0
+      }
+    },
+    {
+      "name": "comment",
+      "type": "string"
+    },
+    {
+      "name": "photoFilename",
+      "type": "string"
+    },
+    {
+      "name": "attributesMap",
+      "type": {
+        "type": "map",
+        "values": "string"
+      }
+    }
+  ]
+}
