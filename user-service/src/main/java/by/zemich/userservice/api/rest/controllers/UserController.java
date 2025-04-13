@@ -8,6 +8,7 @@ import by.zemich.userservice.application.UserCommandService;
 import by.zemich.userservice.application.UserQueryService;
 import by.zemich.userservice.domain.models.commands.CreateUserCommand;
 import by.zemich.userservice.domain.models.queries.GetUserByIdQuery;
+import by.zemich.userservice.domain.models.queries.GetUserByTelegramIdQuery;
 import by.zemich.userservice.domain.models.user.entity.User;
 import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 
 @RestController
@@ -58,7 +60,15 @@ public class UserController {
     @PostAuthorize("returnObject.email == authentication.name || hasRole('ADMIN')")
     public ResponseEntity<UserResponseDto> getByTelegramId(@PathVariable String telegramId) {
         if (telegramId == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Entity not found");
-        User user = userQueryService.getByTelegramId(new GetUserByIdQuery(telegramId));
+        User user = userQueryService.getByTelegramId(new GetUserByTelegramIdQuery(telegramId));
+        return ResponseEntity.ok(UserMapper.map(user));
+    }
+
+    @GetMapping("/{userId}")
+    @PostAuthorize("returnObject.email == authentication.name || hasRole('ADMIN')")
+    public ResponseEntity<UserResponseDto> getById(@PathVariable UUID userId) {
+        if (userId == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Entity not found");
+        User user = userQueryService.getById(new GetUserByIdQuery(userId));
         return ResponseEntity.ok(UserMapper.map(user));
     }
 }

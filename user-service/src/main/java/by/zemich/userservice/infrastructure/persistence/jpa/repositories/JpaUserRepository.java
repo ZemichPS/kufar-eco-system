@@ -50,4 +50,9 @@ public class JpaUserRepository implements UserRepository {
     public List<User> getAll() {
         return springDataUserRepository.findAll().stream().map(UserMapper::map).toList();
     }
+
+    @Override
+    public Optional<User> getUserId(UserId userId) {
+        return springDataUserRepository.findById(userId.getId()).map(UserMapper::map);
+    }
 }

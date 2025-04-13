@@ -19,4 +19,6 @@ public interface UserRepository {
     Optional<User> getByTelegramId(String telegramId);
 
     List<User> getAll();
+
+   Optional<User> getUserId(UserId userId);
 }
