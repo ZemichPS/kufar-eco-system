@@ -11,6 +11,7 @@ import by.zemich.userservice.domain.models.user.vo.UserId;
 import by.zemich.userservice.domain.repository.OrganizationRepository;
 import by.zemich.userservice.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,9 +19,12 @@ import org.springframework.stereotype.Service;
 public class UserCommandService {
     private final UserRepository userRepository;
     private final OrganizationRepository organizationRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public User handle(CreateUserCommand command) {
+        String encodedPassword = passwordEncoder.encode(command.rawPassword());
         User newUser = new User(command);
+        newUser.setPassword(encodedPassword);
         return userRepository.save(newUser);
     }
 

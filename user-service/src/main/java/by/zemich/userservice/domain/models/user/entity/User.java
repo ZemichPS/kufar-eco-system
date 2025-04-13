@@ -27,7 +27,6 @@ public class User {
         this.name = new Name(command.firstname(), command.lastname());
         this.email = new Email(command.email());
         this.phoneNumber = new PhoneNumber(command.phoneNumber());
-        this.password = command.password();
     }
 
     public User(UserId userId) {

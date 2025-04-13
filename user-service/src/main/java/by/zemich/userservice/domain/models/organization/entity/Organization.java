@@ -21,6 +21,7 @@ public class Organization {
     private List<UUID> staff = new ArrayList<>();
 
     public Organization(CreateOrganizationCommand command) {
+        this.organizationId = new OrganizationId(UUID.randomUUID());
         this.name = command.name();
         this.organizationType = OrganizationType.valueOf(command.organizationType());
         this.phoneNumber = new PhoneNumber(command.phoneNumber());

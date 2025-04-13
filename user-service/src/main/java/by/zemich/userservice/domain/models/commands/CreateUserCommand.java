@@ -6,6 +6,6 @@ public record CreateUserCommand(
         String lastname,
         String email,
         String phoneNumber,
-        String password
+        String rawPassword
 ) {
 }

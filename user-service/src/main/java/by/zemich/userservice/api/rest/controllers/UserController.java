@@ -10,6 +10,7 @@ import by.zemich.userservice.domain.models.commands.CreateUserCommand;
 import by.zemich.userservice.domain.models.queries.GetUserByIdQuery;
 import by.zemich.userservice.domain.models.user.entity.User;
 import jakarta.annotation.security.PermitAll;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,9 +30,10 @@ public class UserController {
     private final UserCommandService userCommandService;
     private final UserQueryService userQueryService;
 
+
     @PostMapping
     @PermitAll
-    public ResponseEntity<UserResponseDto> register(@RequestBody UserCreateDto dto) {
+    public ResponseEntity<UserResponseDto> register(@Valid @RequestBody UserCreateDto dto) {
         CreateUserCommand command = UserCommandMapper.map(dto);
         User newUser = userCommandService.handle(command);
         UserResponseDto response = UserMapper.map(newUser);
