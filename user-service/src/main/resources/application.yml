@@ -21,7 +21,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none # либо update/create-drop, если ты это используешь
+      ddl-auto: none # либо update/handle-drop, если ты это используешь
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
     properties:

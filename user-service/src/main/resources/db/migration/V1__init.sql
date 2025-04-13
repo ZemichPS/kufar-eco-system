@@ -1,3 +1,5 @@
+DROP SCHEMA IF EXISTS app;
+
 CREATE SCHEMA IF NOT EXISTS app;
 CREATE TABLE app.users
 (
@@ -8,7 +10,9 @@ CREATE TABLE app.users
     email          text,
     phoneNumber    text,
     telegramUserId text,
-    password       text
+    password       text,
+    organizationId uuid
+
 );
 
 CREATE TABLE app.organizations
@@ -27,8 +31,7 @@ CREATE TABLE app.organizations
     owner_id         uuid
 );
 
+
 ALTER table app.users
     ADD CONSTRAINT uniq_user_email UNIQUE (email);
 
-ALTER TABLE app.organizations
-    ADD CONSTRAINT fk_owner FOREIGN KEY (owner_id) REFERENCES app.users (id);
