@@ -9,6 +9,7 @@ import by.zemich.userservice.infrastructure.persistence.jpa.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -43,5 +44,10 @@ public class JpaUserRepository implements UserRepository {
     @Override
     public Optional<User> getByTelegramId(String telegramId) {
         return springDataUserRepository.findByTelegramUserId(telegramId).map(UserMapper::map);
+    }
+
+    @Override
+    public List<User> getAll() {
+        return springDataUserRepository.findAll().stream().map(UserMapper::map).toList();
     }
 }

@@ -4,7 +4,11 @@ import lombok.Getter;
 
 @Getter
 public enum Role {
-    OWNER("владелец"), STAFF("сотрудник");
+    ADMIN("администратор"),
+    MODERATOR("модератор"),
+    OWNER("владелец"),
+    SELLER("продавец"),
+    STAFF("сотрудник");
     private String title;
 
     Role(String title) {

@@ -7,6 +7,7 @@ import by.zemich.userservice.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -18,5 +19,9 @@ public class UserQueryService {
         String telegramId = query.telegramId();
         return userRepository.getByTelegramId(query.telegramId())
                 .orElseThrow(() -> new UserNotFoundException(telegramId));
+    }
+
+    public List<User> getAll(){
+        return userRepository.getAll();
     }
 }

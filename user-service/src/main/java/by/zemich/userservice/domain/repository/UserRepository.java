@@ -4,6 +4,7 @@ import by.zemich.userservice.domain.models.user.entity.User;
 import by.zemich.userservice.domain.models.user.vo.Email;
 import by.zemich.userservice.domain.models.user.vo.UserId;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository {
@@ -16,4 +17,6 @@ public interface UserRepository {
     boolean existsById(UserId userId);
 
     Optional<User> getByTelegramId(String telegramId);
+
+    List<User> getAll();
 }

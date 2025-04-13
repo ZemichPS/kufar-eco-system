@@ -41,19 +41,6 @@ public class Organization {
                         String name,
                         OrganizationType organizationType,
                         Address address,
-                        PhoneNumber phoneNumber
-    ) {
-        this.organizationId = organizationId;
-        this.name = name;
-        this.organizationType = organizationType;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
-    }
-
-    public Organization(OrganizationId organizationId,
-                        String name,
-                        OrganizationType organizationType,
-                        Address address,
                         PhoneNumber phoneNumber,
                         List<UUID> staff
     ) {

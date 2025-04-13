@@ -8,6 +8,7 @@ import by.zemich.userservice.infrastructure.persistence.jpa.mapper.OrganizationM
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,5 +26,12 @@ public class JpaOrganizationRepository implements OrganizationRepository {
         OrganizationEntity entity = OrganizationMapper.map(organization);
         OrganizationEntity saved = repository.save(entity);
         return OrganizationMapper.map(saved);
+    }
+
+    @Override
+    public List<Organization> getAllOrganizations() {
+        return repository.findAll().stream()
+                .map(OrganizationMapper::map)
+                .toList();
     }
 }
