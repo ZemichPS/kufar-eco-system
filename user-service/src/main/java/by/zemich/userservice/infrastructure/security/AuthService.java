@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
@@ -13,26 +12,27 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final AuthenticationManager authenticationManager;
-    private final UserRepository userRepository;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final UserDetailsRepository userDetailsRepository;
+    private final JwtService jwtService;
 
     public String login(String email, String password) {
         try {
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-            return jwtTokenProvider.generateToken(authentication);
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         } catch (AuthenticationException exception) {
             throw new AuthenticationServiceException(exception.getMessage());
         }
+        UserDetailsImpl foundedUser = userDetailsRepository.findByEmail(email).orElseThrow();
+        return jwtService.generateToken(foundedUser);
     }
 
     public void changePassword(String email, String password, String newPassword) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-            UserEntity user = userRepository.findByEmail(email).orElseThrow();
-            user.setPassword(newPassword);
-            userRepository.save(user);
         } catch (AuthenticationException exception) {
             throw new AuthenticationServiceException(exception.getMessage());
         }
+        UserDetailsImpl user = userDetailsRepository.findByEmail(email).orElseThrow();
+        user.setPassword(newPassword);
+        userDetailsRepository.save(user);
     }
 }

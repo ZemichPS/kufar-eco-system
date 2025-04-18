@@ -1,6 +1,5 @@
 package by.zemich.userservice.infrastructure.security;
 
-import by.zemich.userservice.domain.models.user.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -34,16 +33,14 @@ public class JwtService {
     /**
      * Генерация токена
      *
-     * @param userDetails данные пользователя
+     * @param user данные пользователя
      * @return токен
      */
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetailsImpl user) {
         Map<String, Object> claims = new HashMap<>();
-        if (userDetails instanceof User customUserDetails) {
-            claims.put("email", customUserDetails.getEmail());
-            claims.put("role", customUserDetails.getRole());
-        }
-        return generateToken(claims, userDetails);
+        claims.put("email", user.getUsername());
+        claims.put("role", user.getRole());
+        return generateToken(claims, user);
     }
 
     /**
