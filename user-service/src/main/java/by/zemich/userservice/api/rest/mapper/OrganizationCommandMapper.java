@@ -1,6 +1,6 @@
 package by.zemich.userservice.api.rest.mapper;
 
-import by.zemich.userservice.api.rest.dto.OrganizationRequestDto;
+import by.zemich.userservice.application.query.dto.OrganizationRequestDto;
 import by.zemich.userservice.domain.models.commands.CreateOrganizationCommand;
 import lombok.experimental.UtilityClass;
 

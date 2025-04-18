@@ -11,7 +11,7 @@ public class UserMapper {
         User user = new User(new UserId(entity.getId()));
         user.setRegisteredAt(entity.getRegisteredAt());
         user.setRole(Role.valueOf(entity.getRole().toString()));
-        user.setName(new Name(entity.getFirstName(), entity.getLastName()));
+        user.setName(new Name(entity.getUsername(), entity.getFirstName(), entity.getLastName()));
         user.setEmail(new Email(entity.getEmail()));
         user.setPhoneNumber(new PhoneNumber(entity.getPhoneNumber()));
         user.setTelegramUserId(entity.getTelegramUserId());
@@ -23,6 +23,7 @@ public class UserMapper {
     public static UserEntity map(User domain) {
         return UserEntity.builder()
                 .id(domain.getUserId().getId())
+                .username(domain.getName().getUsername())
                 .firstName(domain.getName().getFirstname())
                 .lastName(domain.getName().getLastname())
                 .registeredAt(domain.getRegisteredAt())

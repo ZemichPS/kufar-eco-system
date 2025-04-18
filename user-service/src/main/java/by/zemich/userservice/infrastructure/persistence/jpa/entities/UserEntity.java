@@ -16,8 +16,8 @@ import java.util.UUID;
 @Setter
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
+    private String username;
     private String firstName;
     private String lastName;
     @Enumerated(EnumType.STRING)
@@ -32,7 +32,7 @@ public class UserEntity {
 
     @Getter
     public enum Role {
-        OWNER("владелец"), STAFF("сотрудник");
+        OWNER("владелец"), STAFF("сотрудник"), ADMIN("администратор");
         private String title;
 
         Role(String title) {

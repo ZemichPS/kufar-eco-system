@@ -24,7 +24,7 @@ public class User {
     public User(CreateUserCommand command) {
         this.userId = new UserId(UUID.randomUUID());
         this.role = Role.valueOf(command.role());
-        this.name = new Name(command.firstname(), command.lastname());
+        this.name = new Name(command.username(), command.firstname(), command.lastname());
         this.email = new Email(command.email());
         this.phoneNumber = new PhoneNumber(command.phoneNumber());
     }

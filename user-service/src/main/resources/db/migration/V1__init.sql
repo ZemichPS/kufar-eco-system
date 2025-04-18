@@ -1,17 +1,19 @@
-DROP SCHEMA IF EXISTS app;
-
+DROP SCHEMA IF EXISTS app CASCADE;
 CREATE SCHEMA IF NOT EXISTS app;
+
 CREATE TABLE app.users
 (
-    id             uuid PRIMARY KEY,
-    registered_at  timestamp with time zone,
-    first_name     text,
-    surname        text,
-    email          text,
-    phoneNumber    text,
-    telegramUserId text,
-    password       text,
-    organizationId uuid
+    id               uuid PRIMARY KEY,
+    role             text,
+    username         text,
+    registered_at    timestamp with time zone,
+    first_name       text,
+    last_name        text,
+    email            text,
+    phone_number     text,
+    telegram_user_id text,
+    password         text,
+    organization_id  uuid
 
 );
 
@@ -31,7 +33,7 @@ CREATE TABLE app.organizations
     owner_id         uuid
 );
 
-
 ALTER table app.users
     ADD CONSTRAINT uniq_user_email UNIQUE (email);
 
+ALTER TABLE app.users ADD CONSTRAINT uniq_username UNIQUE (username);
