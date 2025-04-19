@@ -1,5 +1,6 @@
 package by.zemich.userservice.api.rest.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
@@ -8,6 +9,7 @@ public class UserCreateRequestDto {
     private String username;
     private String firstName;
     private String lastName;
+    @Email
     private String email;
     private String role;
     private String telegramUserId;

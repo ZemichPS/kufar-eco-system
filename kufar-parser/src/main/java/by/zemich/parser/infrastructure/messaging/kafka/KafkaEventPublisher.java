@@ -23,7 +23,6 @@ public class KafkaEventPublisher implements EventPublisher {
 
     public void publish(Advertisement advertisement) {
         AdvertisementCreatedEvent event = eventService.create(advertisement);
-        log.info("device func: {}", event.getFullyFunctional());
         String key = advertisement.getId().toString();
         CompletableFuture<SendResult<String, SpecificRecord>> future = kafkaTemplate.send("advertisement.created", key, event);
         future.whenComplete((result, exception) -> {

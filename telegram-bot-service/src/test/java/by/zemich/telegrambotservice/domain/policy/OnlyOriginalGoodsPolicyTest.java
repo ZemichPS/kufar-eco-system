@@ -3,6 +3,7 @@ package by.zemich.telegrambotservice.domain.policy;
 import by.zemich.telegrambotservice.domain.model.KufarAdvertisement;
 import by.zemich.telegrambotservice.mocks.AdvertisementInjectionExtension;
 import by.zemich.telegrambotservice.mocks.KufarAdvertisementInjection;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -27,12 +28,14 @@ class OnlyOriginalGoodsPolicyTest {
     @MethodSource("getRelevantAdDescription")
     void givenRelevantAdDescription_whenIsSatisfiedBy_thenReturnTrue(String details) {
         advertisement.setDetails(details);
+        Assertions.assertTrue(policy.isSatisfiedBy(advertisement));
     }
 
     @ParameterizedTest
     @MethodSource("getIrrelevantAdDescription")
-    void givenIrrelevantAdDescription_whenIsSatisfiedBy_thenReturnTrue(String details) {
+    void givenIrrelevantAdDescription_whenIsSatisfiedBy_thenReturnFalse(String details) {
         advertisement.setDetails(details);
+        Assertions.assertFalse(policy.isSatisfiedBy(advertisement));
     }
 
     private static Stream<Arguments> getRelevantAdDescription() {

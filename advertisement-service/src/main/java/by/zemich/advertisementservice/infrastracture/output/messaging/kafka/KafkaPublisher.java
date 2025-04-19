@@ -4,6 +4,8 @@ import by.zemich.advertisementservice.application.ports.output.AdvertisementEven
 import by.zemich.advertisementservice.domain.entity.Advertisement;
 import by.zemich.advertisementservice.domain.entity.User;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.apache.avro.Schema;
 import org.apache.avro.specific.SpecificRecord;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
@@ -17,9 +19,26 @@ public class KafkaPublisher implements AdvertisementEventOutputPort {
     private final KafkaTemplate<String, SpecificRecord> kafkaTemplate;
 
     @Override
+    @SneakyThrows
     public void publishAdvertisementCreated(Advertisement advertisement) {
+        SpecificRecord specificRecord = new SpecificRecord() {
+            @Override
+            public void put(int i, Object v) {
 
+            }
 
+            @Override
+            public Object get(int i) {
+                return null;
+            }
+
+            @Override
+            public Schema getSchema() {
+                return null;
+            }
+        };
+        kafkaTemplate.send("topic", "", specificRecord).get();
+        SpecificRecord.class.getCanonicalName();
     }
 
     @Override
