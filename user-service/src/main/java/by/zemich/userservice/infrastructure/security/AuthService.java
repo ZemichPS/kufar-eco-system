@@ -16,21 +16,13 @@ public class AuthService {
     private final JwtService jwtService;
 
     public String login(String email, String password) {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-        } catch (AuthenticationException exception) {
-            throw new AuthenticationServiceException(exception.getMessage());
-        }
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         UserDetailsImpl foundedUser = userDetailsRepository.findByEmail(email).orElseThrow();
         return jwtService.generateToken(foundedUser);
     }
 
     public void changePassword(String email, String password, String newPassword) {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-        } catch (AuthenticationException exception) {
-            throw new AuthenticationServiceException(exception.getMessage());
-        }
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         UserDetailsImpl user = userDetailsRepository.findByEmail(email).orElseThrow();
         user.setPassword(newPassword);
         userDetailsRepository.save(user);
