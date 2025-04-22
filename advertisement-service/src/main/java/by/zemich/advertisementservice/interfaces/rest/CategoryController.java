@@ -1,9 +1,8 @@
 package by.zemich.advertisementservice.interfaces.rest;
 
 import by.zemich.advertisementservice.application.usecases.CategoryAttributeUseCase;
-import by.zemich.advertisementservice.application.usecases.CategoryUseCase;
+import by.zemich.advertisementservice.application.usecases.CommandCategoryUseCase;
 import by.zemich.advertisementservice.domain.entity.Category;
-import by.zemich.advertisementservice.domain.valueobject.CategoryAttribute;
 import by.zemich.advertisementservice.domain.valueobject.Id;
 import by.zemich.advertisementservice.interfaces.rest.data.request.CategoryRequestDto;
 import by.zemich.advertisementservice.interfaces.rest.data.response.CategoryAttributeResponseDto;
@@ -18,19 +17,18 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/categories")
 @RequiredArgsConstructor
 public class CategoryController {
-    private final CategoryUseCase categoryUseCase;
+    private final CommandCategoryUseCase commandCategoryUseCase;
     private final CategoryAttributeUseCase categoryAttributeUseCase;
 
     @PostMapping
     public ResponseEntity<URI> create(@RequestBody CategoryRequestDto request) {
         String categoryName = request.getName();
-        Id categoryId = categoryUseCase.create(categoryName);
+        Id categoryId = commandCategoryUseCase.handle(categoryName);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{categoryUuid}")
@@ -41,7 +39,7 @@ public class CategoryController {
 
     @GetMapping
     public ResponseEntity<List<CategoryResponseDto>> getAllCategories() {
-        List<CategoryResponseDto> response = categoryUseCase.getAll().stream()
+        List<CategoryResponseDto> response = commandCategoryUseCase.getAll().stream()
                 .map(category -> {
                             List<CategoryAttributeResponseDto> attributes = category.getAttributes()
                                     .stream().map(CategoryAttributeMapper::mapToDto).toList();
@@ -57,7 +55,7 @@ public class CategoryController {
     @GetMapping("/{categoryUuid}")
     public ResponseEntity<CategoryResponseDto> getCategoryById(@PathVariable UUID categoryUuid) {
         Id id = new Id(categoryUuid);
-        Category category = categoryUseCase.getById(id);
+        Category category = commandCategoryUseCase.getById(id);
         CategoryResponseDto response = CategoryMapper.mapToDto(category);
         category.getAttributes().stream()
                 .map(CategoryAttributeMapper::mapToDto)
@@ -69,7 +67,7 @@ public class CategoryController {
     public ResponseEntity<CategoryResponseDto> update(@PathVariable UUID categoryUuid, @RequestBody CategoryRequestDto request) {
         String categoryName = request.getName();
         Id categoryId = new Id(categoryUuid);
-        Category updatedCategory = categoryUseCase.updateById(categoryId, categoryName);
+        Category updatedCategory = commandCategoryUseCase.handle(categoryId);
         CategoryResponseDto response = CategoryMapper.mapToDto(updatedCategory);
         return ResponseEntity.ok(response);
     }
@@ -77,7 +75,7 @@ public class CategoryController {
     @DeleteMapping("/{categoryUuid}")
     public ResponseEntity<Void> delete(@PathVariable UUID categoryUuid) {
         Id categoryId = new Id(categoryUuid);
-        categoryUseCase.deleteById(categoryId);
+        commandCategoryUseCase.handle(categoryId);
         return ResponseEntity.noContent().build();
     }
 
@@ -89,7 +87,7 @@ public class CategoryController {
     ) {
         Id categoryId = new Id(categoryUuid);
         Id attributeId = new Id(attributeUuid);
-        categoryId = categoryUseCase.addAttribute(categoryId, attributeId);
+        categoryId = commandCategoryUseCase.addAttribute(categoryId, attributeId);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{categoryUuid}")

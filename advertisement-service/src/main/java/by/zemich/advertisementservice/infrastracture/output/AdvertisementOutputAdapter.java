@@ -8,6 +8,7 @@ import by.zemich.advertisementservice.domain.exception.AdvertisementNotFoundExce
 import by.zemich.advertisementservice.domain.exception.CategoryAttributeNotFoundException;
 import by.zemich.advertisementservice.domain.exception.CategoryNotFoundException;
 import by.zemich.advertisementservice.domain.request.Pagination;
+import by.zemich.advertisementservice.domain.valueobject.AdvertisementId;
 import by.zemich.advertisementservice.domain.valueobject.Id;
 import by.zemich.advertisementservice.domain.valueobject.Side;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.api.AdvertisementAttributeRepository;
@@ -20,7 +21,6 @@ import by.zemich.advertisementservice.infrastracture.output.repository.jpa.entit
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.entity.CategoryEntity;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.mapper.AdvertisementAttributeMapper;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.mapper.AdvertisementMapper;
-import by.zemich.advertisementservice.infrastracture.output.repository.jpa.mapper.CategoryAttributeMapper;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.mapper.CategoryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -42,22 +42,13 @@ public class AdvertisementOutputAdapter implements AdvertisementOutputPort {
     private final CategoryAttributeRepository categoryAttributeRepository;
 
     @Override
-    public void saveNew(Advertisement advertisement) {
+    public Advertisement saveNew(Advertisement advertisement) {
         AdvertisementEntity advertisementEntity = AdvertisementMapper.mapToEntity(advertisement);
-        advertisement.getAttributes().stream()
-                .map(advertisementAttribute -> {
-                    AdvertisementAttributeEntity attributeEntity = AdvertisementAttributeMapper.mapToEntity(advertisementAttribute);
-                    UUID categoryAttributeId = attributeEntity.getCategoryAttribute().getUuid();
-                    CategoryAttributeEntity categoryAttributeEntity = categoryAttributeRepository.findById(categoryAttributeId)
-                            .orElseThrow(() -> new CategoryAttributeNotFoundException(categoryAttributeId.toString()));
-                    attributeEntity.setCategoryAttribute(categoryAttributeEntity);
-                    return attributeEntity;
-                })
-                .forEach(advertisementEntity::addAttribute);
-        UUID categoryId = advertisement.getCategory().getId().uuid();
+        UUID categoryId = advertisement.getCategoryId().uuid();
         CategoryEntity categoryEntity = categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId.toString()));
         advertisementEntity.setCategory(categoryEntity);
         advertisementRepository.save(advertisementEntity);
+        return mapToDomain(advertisementEntity);
     }
 
     @Override
@@ -81,7 +72,7 @@ public class AdvertisementOutputAdapter implements AdvertisementOutputPort {
                 }).
                 forEach(advertisementEntity::addAttribute);
 
-        UUID categoryId = advertisement.getCategory().getId().uuid();
+        UUID categoryId = advertisement.getCategoryId().getId().uuid();
         CategoryEntity categoryEntity = categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId.toString()));
         advertisementEntity.setCategory(categoryEntity);
         advertisementRepository.save(advertisementEntity);
@@ -93,11 +84,10 @@ public class AdvertisementOutputAdapter implements AdvertisementOutputPort {
     }
 
     @Override
-    public Advertisement retrieveById(Id id) {
+    public Optional<Advertisement> retrieveById(AdvertisementId id) {
         UUID advertisementId = id.uuid();
-        AdvertisementEntity advertisementEntity = advertisementRepository.findById(advertisementId)
-                .orElseThrow(() -> new AdvertisementNotFoundException(advertisementId.toString()));
-        return mapToDomain(advertisementEntity);
+        return advertisementRepository.findById(advertisementId)
+                .map(this::mapToDomain);
     }
 
 
@@ -138,13 +128,10 @@ public class AdvertisementOutputAdapter implements AdvertisementOutputPort {
     }
 
     public Advertisement mapToDomain(AdvertisementEntity advertisementEntity) {
-        CategoryEntity categoryEntity = advertisementEntity.getCategory();
         Advertisement advertisement = AdvertisementMapper.mapToDomain(advertisementEntity);
-        Category category = CategoryMapper.mapToDomain(categoryEntity);
         advertisementEntity.getAttributes().stream()
                 .map(AdvertisementAttributeMapper::mapToDomain)
                 .forEach(advertisement::addAttribute);
-        advertisement.addCategory(category);
         return advertisement;
     }
 }

@@ -3,6 +3,7 @@ package by.zemich.advertisementservice.domain.entity;
 
 import by.zemich.advertisementservice.domain.valueobject.AdCharacteristics;
 import by.zemich.advertisementservice.domain.valueobject.CategoryAttribute;
+import by.zemich.advertisementservice.domain.valueobject.CategoryId;
 import by.zemich.advertisementservice.domain.valueobject.Id;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -16,14 +17,14 @@ import java.util.List;
 @Getter()
 @Setter
 public class Category {
-    private Id id;
+    private CategoryId id;
     private String name;
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     private List<CategoryAttribute> attributes;
 
-    public Category(Id id, String name) {
+    public Category(CategoryId id, String name) {
         this.id = id;
         this.name = name;
         this.attributes = new ArrayList<>();

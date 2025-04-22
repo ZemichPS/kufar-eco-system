@@ -1,7 +1,7 @@
 DROP SCHEMA IF EXISTS app CASCADE;
 CREATE SCHEMA IF NOT EXISTS app;
 
-CREATE TABLE app.users
+CREATE TABLE app.userIds
 (
     id               uuid PRIMARY KEY,
     role             text,
@@ -33,7 +33,7 @@ CREATE TABLE app.organizations
     owner_id         uuid
 );
 
-ALTER table app.users
+ALTER table app.userIds
     ADD CONSTRAINT uniq_user_email UNIQUE (email);
 
-ALTER TABLE app.users ADD CONSTRAINT uniq_username UNIQUE (username);
+ALTER TABLE app.userIds ADD CONSTRAINT uniq_username UNIQUE (username);

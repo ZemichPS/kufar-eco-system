@@ -2,14 +2,14 @@ package by.zemich.advertisementservice.infrastracture.config;
 
 import by.zemich.advertisementservice.application.ports.input.AdvertisementInputPort;
 import by.zemich.advertisementservice.application.ports.input.CategoryAttributeInputPort;
-import by.zemich.advertisementservice.application.ports.input.CategoryInputPort;
+import by.zemich.advertisementservice.application.ports.input.CommandCategoryInputPort;
 import by.zemich.advertisementservice.application.ports.output.AdvertisementEventOutputPort;
 import by.zemich.advertisementservice.application.ports.output.AdvertisementOutputPort;
 import by.zemich.advertisementservice.application.ports.output.CategoryAttributeOutputPort;
 import by.zemich.advertisementservice.application.ports.output.CategoryPersistenceOutputPort;
-import by.zemich.advertisementservice.application.usecases.AdvertisementUseCase;
+import by.zemich.advertisementservice.application.usecases.AdvertisementCommandUseCases;
 import by.zemich.advertisementservice.application.usecases.CategoryAttributeUseCase;
-import by.zemich.advertisementservice.application.usecases.CategoryUseCase;
+import by.zemich.advertisementservice.application.usecases.CommandCategoryUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,17 +17,16 @@ import org.springframework.context.annotation.Configuration;
 public class BeanConfig {
 
     @Bean
-    public AdvertisementUseCase advertisementUseCase(
-            CategoryPersistenceOutputPort categoryPersistenceOutputPort,
+    public AdvertisementCommandUseCases advertisementUseCase(
             AdvertisementOutputPort advertisementOutputPort,
             AdvertisementEventOutputPort advertisementEventOutputPort
     ) {
-        return new AdvertisementInputPort(categoryPersistenceOutputPort, advertisementOutputPort, advertisementEventOutputPort);
+        return new AdvertisementInputPort(advertisementOutputPort, advertisementEventOutputPort);
     }
 
     @Bean
-    public CategoryUseCase categoryUseCase(CategoryPersistenceOutputPort categoryPersistenceOutputPort, CategoryAttributeOutputPort categoryAttributeOutputPort) {
-        return new CategoryInputPort(categoryPersistenceOutputPort, categoryAttributeOutputPort);
+    public CommandCategoryUseCase categoryUseCase(CategoryPersistenceOutputPort categoryPersistenceOutputPort, CategoryAttributeOutputPort categoryAttributeOutputPort) {
+        return new CommandCategoryInputPort(categoryPersistenceOutputPort, categoryAttributeOutputPort);
     }
 
     @Bean

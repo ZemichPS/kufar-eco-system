@@ -1,9 +1,9 @@
 package by.zemich.advertisementservice.domain.entity;
 
 
+import by.zemich.advertisementservice.domain.command.CreateAdvertisementCommand;
 import by.zemich.advertisementservice.domain.valueobject.*;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,40 +11,48 @@ import java.util.List;
 
 @Getter
 public class Advertisement {
-    private Id id;
-    private User user;
-    private Category category;
+    private AdvertisementId id;
+    private UserId userId;
+    private CategoryId categoryId;
     private Condition condition;
     private LocalDateTime publishedAt;
-    @Setter
-    private LocalDateTime activatedAt;
-    @Setter
+    private LocalDateTime reactivatedAt;
     private Price price;
     private Comment comment;
     private Photo photo;
-    @Setter
     private boolean active;
     private List<AdvertisementAttribute> attributes;
     private Side side;
 
-    public Advertisement(Id id,
-                         User user,
-                         Category category,
-                         Condition condition,
-                         LocalDateTime publishedAt,
-                         LocalDateTime activatedAt,
-                         Price price,
-                         Comment comment,
-                         Photo photo,
-                         boolean active,
-                         Side side
-    ) {
-        this.id = id;
-        this.user = user;
-        this.category = category;
+    public Advertisement (CreateAdvertisementCommand command) {
+        this.id = command.advertisementId();
+        this.userId = command.userId();
+        this.categoryId = command.categoryId();
+        this.condition = command.condition();
+        this.publishedAt = command.publishedAt();
+        this.price = command.price();
+        this.comment = command.comment();
+        this.photo = command.photo();
+        this.active = command.active();
+        this.attributes = new ArrayList<>();
+        this.side = command.side();
+    }
+
+    public Advertisement (AdvertisementId advertisementId,
+                          UserId userId,
+                          CategoryId categoryId,
+                          Condition condition,
+                          Price price,
+                          LocalDateTime publishedAt,
+                          Comment comment,
+                          boolean active,
+                          Photo photo,
+                          Side side) {
+        this.id = advertisementId;
+        this.userId = userId;
+        this.categoryId = categoryId;
         this.condition = condition;
         this.publishedAt = publishedAt;
-        this.activatedAt = activatedAt;
         this.price = price;
         this.comment = comment;
         this.photo = photo;
@@ -53,11 +61,27 @@ public class Advertisement {
         this.side = side;
     }
 
-    public boolean addAttribute(AdvertisementAttribute attribute) {
-        return attributes.add(attribute);
+    public void addAttribute(AdvertisementAttribute attribute) {
+        attributes.add(attribute);
     }
 
-    public void addCategory(Category category) {
-        this.category = category;
+    public void changeComment(Comment comment) {
+        this.comment = comment;
+    }
+
+    public void changeCondition(Condition condition) {
+        this.condition = condition;
+    }
+
+    public void changePrice(Price price) {
+        this.price = price;
+    }
+
+    public void changePhoto(Photo photo) {
+        this.photo = photo;
+    }
+
+    public void activate(boolean active) {
+        this.active = active;
     }
 }

@@ -29,7 +29,7 @@ public class CategoryAttributeInputPort implements CategoryAttributeUseCase {
         if (!categoryAttributeOutputPort.existsById(attributeId))
             throw new CategoryAttributeNotFoundException(attributeId.uuid().toString());
         if (!categoryAttributeOutputPort.delete(attributeId))
-            throw new RuntimeException("Failed to deleteById category attribute");
+            throw new RuntimeException("Failed to handle category attribute");
     }
 
     @Override

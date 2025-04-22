@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS app.kufarAdvertisements
     images TEXT
 );
 
-CREATE TABLE IF NOT EXISTS app.users
+CREATE TABLE IF NOT EXISTS app.userIds
 (
     id               UUID PRIMARY KEY,
     username         VARCHAR(50),

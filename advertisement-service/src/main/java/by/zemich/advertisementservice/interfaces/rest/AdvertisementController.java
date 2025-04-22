@@ -1,8 +1,7 @@
 package by.zemich.advertisementservice.interfaces.rest;
 
-import by.zemich.advertisementservice.application.usecases.AdvertisementUseCase;
 import by.zemich.advertisementservice.domain.entity.Advertisement;
-import by.zemich.advertisementservice.domain.entity.User;
+import by.zemich.advertisementservice.domain.valueobject.UserId;
 import by.zemich.advertisementservice.domain.request.Pagination;
 import by.zemich.advertisementservice.domain.valueobject.*;
 import by.zemich.advertisementservice.interfaces.rest.data.request.AdvertisementRequestDTO;
@@ -29,7 +28,7 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/advertisements")
 @RequiredArgsConstructor
 public class AdvertisementController {
-    private final AdvertisementUseCase advertisementUseCases;
+    private final AdvertisementUseCases advertisementUseCases;
 
     @PostMapping
     public ResponseEntity<URI> createAdvertisement(@RequestBody NewAdvertisementDTO dto) {
@@ -61,7 +60,7 @@ public class AdvertisementController {
                         Collectors.toMap(NewAdvertisementDTO.AdvertisementAttribute::getCategoryAttributeId, NewAdvertisementDTO.AdvertisementAttribute::getValue)
                 );
         Advertisement advertisement = advertisementUseCases.update(
-                new User(new Id(dto.getId())),
+                new UserId(dto.getId())),
                 new Id(dto.getCategoryId()),
                 Condition.valueOf(dto.getCondition().name()),
                 new Price(dto.getPriceInByn()),

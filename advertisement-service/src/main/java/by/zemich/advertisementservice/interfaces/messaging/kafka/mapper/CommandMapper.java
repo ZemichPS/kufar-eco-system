@@ -1,6 +1,5 @@
 package by.zemich.advertisementservice.interfaces.messaging.kafka.mapper;
 
-import by.zemich.advertisementservice.domain.command.AdvertisementCreateCommand;
 import by.zemich.advertisementservice.domain.valueobject.*;
 import lombok.experimental.UtilityClass;
 import org.apache.avro.generic.GenericRecord;

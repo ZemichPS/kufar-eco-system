@@ -1,7 +1,7 @@
 package by.zemich.advertisementservice.application.ports.output;
 
 import by.zemich.advertisementservice.domain.entity.Advertisement;
-import by.zemich.advertisementservice.domain.entity.User;
+import by.zemich.advertisementservice.domain.valueobject.UserId;
 
 import java.util.List;
 
@@ -13,5 +13,5 @@ public interface AdvertisementEventOutputPort {
 
     void publishAdvertisementDeactivate(Advertisement ad);
 
-    void publishPositionFount(List<User> users, Advertisement advertisement);
+    void publishPositionFount(List<UserId> userIds, Advertisement advertisement);
 }

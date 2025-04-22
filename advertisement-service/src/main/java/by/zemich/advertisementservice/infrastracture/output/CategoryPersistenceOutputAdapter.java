@@ -4,7 +4,7 @@ import by.zemich.advertisementservice.application.ports.output.CategoryPersisten
 import by.zemich.advertisementservice.domain.entity.Category;
 import by.zemich.advertisementservice.domain.exception.CategoryAttributeNotFoundException;
 import by.zemich.advertisementservice.domain.exception.CategoryNotFoundException;
-import by.zemich.advertisementservice.domain.valueobject.CategoryAttribute;
+import by.zemich.advertisementservice.domain.valueobject.CategoryId;
 import by.zemich.advertisementservice.domain.valueobject.Id;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.api.CategoryAttributeRepository;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.api.CategoryRepository;
@@ -16,9 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -28,7 +26,7 @@ public class CategoryPersistenceOutputAdapter implements CategoryPersistenceOutp
     private final CategoryAttributeRepository categoryAttributeRepository;
 
     @Override
-    public Category getById(Id id) {
+    public Category getById(CategoryId id) {
         UUID uuid = id.uuid();
         return categoryRepository.findById(uuid)
                 .map(entity -> {
@@ -60,7 +58,7 @@ public class CategoryPersistenceOutputAdapter implements CategoryPersistenceOutp
     }
 
     @Override
-    public boolean deleteById(Id id) {
+    public boolean deleteById(CategoryId id) {
         return categoryRepository.findById(id.uuid())
                 .map(entity -> {
                     categoryRepository.delete(entity);

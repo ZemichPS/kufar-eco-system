@@ -15,11 +15,11 @@ public class AdvertisementMapper {
                 .userUuid(domain.getUserId().uuid())
                 .condition(AdvertisementEntity.Condition.valueOf(domain.getCondition().name()))
                 .publishedAt(domain.getPublishedAt())
-                .activatedAt(domain.getActivatedAt())
+                .activatedAt(domain.getReactivatedAt())
                 .priceInByn(domain.getPrice().priceInByn())
                 .comment(domain.getComment().value())
                 .photoFileName(domain.getPhoto().filename())
-                .activatedAt(domain.getActivatedAt())
+                .activatedAt(domain.getReactivatedAt())
                 .attributes(new ArrayList<>())
                 .active(domain.isActive())
                 .build();
@@ -27,16 +27,16 @@ public class AdvertisementMapper {
 
     public static Advertisement mapToDomain(AdvertisementEntity entity) {
         return new Advertisement(
-                new Id(entity.getUuid()),
-                new Id(entity.getUserUuid()),
-                null,
+                new AdvertisementId(entity.getUuid()),
+                new UserId(entity.getUserUuid()),
+                new CategoryId(entity.getCategory().getUuid()),
                 Condition.valueOf(entity.getCondition().name()),
-                entity.getPublishedAt(),
-                entity.getActivatedAt(),
                 new Price(entity.getPriceInByn()),
+                entity.getPublishedAt(),
                 new Comment(entity.getComment()),
+                entity.getActive(),
                 new Photo(entity.getPhotoFileName()),
-                entity.getActive()
+                Side.valueOf(entity.getSide().name())
         );
     }
 }

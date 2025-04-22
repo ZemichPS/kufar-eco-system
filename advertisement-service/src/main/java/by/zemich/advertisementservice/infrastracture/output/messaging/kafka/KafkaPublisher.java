@@ -2,7 +2,7 @@ package by.zemich.advertisementservice.infrastracture.output.messaging.kafka;
 
 import by.zemich.advertisementservice.application.ports.output.AdvertisementEventOutputPort;
 import by.zemich.advertisementservice.domain.entity.Advertisement;
-import by.zemich.advertisementservice.domain.entity.User;
+import by.zemich.advertisementservice.domain.valueobject.UserId;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.avro.Schema;
@@ -57,7 +57,7 @@ public class KafkaPublisher implements AdvertisementEventOutputPort {
     }
 
     @Override
-    public void publishPositionFount(List<User> users, Advertisement advertisement) {
+    public void publishPositionFount(List<UserId> userIds, Advertisement advertisement) {
 
     }
 }
