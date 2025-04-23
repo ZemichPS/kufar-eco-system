@@ -12,7 +12,7 @@ import java.util.UUID;
 public class CategoryFactory {
     public static Category create(CreateCategoryCommand command) {
         return new Category(
-                new CategoryId(UUID.randomUUID()),
+                command.categoryId(),
                 command.name(),
                 new ArrayList<>()
         );

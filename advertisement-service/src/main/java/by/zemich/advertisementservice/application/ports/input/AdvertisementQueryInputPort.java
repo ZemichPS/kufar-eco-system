@@ -22,7 +22,7 @@ public class AdvertisementQueryInputPort implements AdvertisementQueryUseCases {
         UUID advertisemntUuid = query.advertisementId().uuid();
         FullAdvertisementResponse dto = advertisementRepository
                 .findById(advertisemntUuid)
-                .map(entity->{
+                .map(entity -> {
                     return FullAdvertisementResponse.builder()
                             .uuid(entity.getUuid())
                             .userUuid(entity.getUserUuid())
@@ -32,8 +32,8 @@ public class AdvertisementQueryInputPort implements AdvertisementQueryUseCases {
                             .comment(entity.getComment())
                             .side(entity.getSide().getSideDescription())
                             .build();
-                }).orElseThrow(()-> new AdvertisementNotFoundException(advertisemntUuid.toString()));
+                }).orElseThrow(() -> new AdvertisementNotFoundException(advertisemntUuid.toString()));
 
-            return dto;
+        return dto;
     }
 }

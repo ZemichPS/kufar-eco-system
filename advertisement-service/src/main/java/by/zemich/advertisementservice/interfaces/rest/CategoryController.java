@@ -2,7 +2,9 @@ package by.zemich.advertisementservice.interfaces.rest;
 
 import by.zemich.advertisementservice.application.usecases.CategoryAttributeUseCase;
 import by.zemich.advertisementservice.application.usecases.CategoryCommandUseCase;
+import by.zemich.advertisementservice.domain.command.CreateCategoryCommand;
 import by.zemich.advertisementservice.domain.entity.Category;
+import by.zemich.advertisementservice.domain.valueobject.CategoryId;
 import by.zemich.advertisementservice.domain.valueobject.Id;
 import by.zemich.advertisementservice.interfaces.rest.data.request.CategoryRequestDto;
 import by.zemich.advertisementservice.interfaces.rest.data.response.CategoryAttributeResponseDto;
@@ -27,8 +29,11 @@ public class CategoryController {
 
     @PostMapping
     public ResponseEntity<URI> create(@RequestBody CategoryRequestDto request) {
-        String categoryName = request.getName();
-        Id categoryId = commandCategoryUseCase.handle(categoryName);
+        CreateCategoryCommand command = new CreateCategoryCommand(
+                new CategoryId(UUID.randomUUID()),
+                request.getName()
+        );
+        CategoryId categoryId = commandCategoryUseCase.handle(command);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{categoryUuid}")
