@@ -1,4 +1,4 @@
-package by.zemich.advertisementservice.domain.request;
+package by.zemich.advertisementservice.domain.query;
 
 import lombok.Builder;
 import lombok.Data;

@@ -3,6 +3,7 @@ package by.zemich.advertisementservice.infrastracture.output;
 import by.zemich.advertisementservice.application.ports.output.CategoryAttributeOutputPort;
 import by.zemich.advertisementservice.domain.exception.CategoryAttributeNotFoundException;
 import by.zemich.advertisementservice.domain.valueobject.CategoryAttribute;
+import by.zemich.advertisementservice.domain.valueobject.CategoryAttributeId;
 import by.zemich.advertisementservice.domain.valueobject.Id;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.api.CategoryAttributeRepository;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.entity.CategoryAttributeEntity;
@@ -31,7 +32,7 @@ public class CategoryAttributeAdapter implements CategoryAttributeOutputPort {
     }
 
     @Override
-    public boolean delete(Id categoryAttributeId) {
+    public boolean deleteById(CategoryAttributeId categoryAttributeId) {
         if (!categoryAttributeRepository.existsById(categoryAttributeId.uuid())) {
             return false;
         }
@@ -47,8 +48,8 @@ public class CategoryAttributeAdapter implements CategoryAttributeOutputPort {
     }
 
     @Override
-    public CategoryAttribute getById(Id categoryAttributeId) {
-        UUID categoryAttributeUuid = categoryAttributeId.uuid();
+    public Optional<CategoryAttribute> getById(CategoryAttributeId id) {
+        UUID categoryAttributeUuid = id.uuid();
         return categoryAttributeRepository.findById(categoryAttributeUuid)
                 .map(CategoryAttributeMapper::mapToDomain)
                 .orElseThrow(()-> new CategoryAttributeNotFoundException(categoryAttributeUuid.toString()));

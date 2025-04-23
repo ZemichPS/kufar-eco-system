@@ -2,14 +2,14 @@ package by.zemich.advertisementservice.infrastracture.config;
 
 import by.zemich.advertisementservice.application.ports.input.AdvertisementInputPort;
 import by.zemich.advertisementservice.application.ports.input.CategoryAttributeInputPort;
-import by.zemich.advertisementservice.application.ports.input.CommandCategoryInputPort;
+import by.zemich.advertisementservice.application.ports.input.CategoryCommandInputPort;
 import by.zemich.advertisementservice.application.ports.output.AdvertisementEventOutputPort;
 import by.zemich.advertisementservice.application.ports.output.AdvertisementOutputPort;
 import by.zemich.advertisementservice.application.ports.output.CategoryAttributeOutputPort;
 import by.zemich.advertisementservice.application.ports.output.CategoryPersistenceOutputPort;
 import by.zemich.advertisementservice.application.usecases.AdvertisementCommandUseCases;
 import by.zemich.advertisementservice.application.usecases.CategoryAttributeUseCase;
-import by.zemich.advertisementservice.application.usecases.CommandCategoryUseCase;
+import by.zemich.advertisementservice.application.usecases.CategoryCommandUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,8 +25,8 @@ public class BeanConfig {
     }
 
     @Bean
-    public CommandCategoryUseCase categoryUseCase(CategoryPersistenceOutputPort categoryPersistenceOutputPort, CategoryAttributeOutputPort categoryAttributeOutputPort) {
-        return new CommandCategoryInputPort(categoryPersistenceOutputPort, categoryAttributeOutputPort);
+    public CategoryCommandUseCase categoryUseCase(CategoryPersistenceOutputPort categoryPersistenceOutputPort, CategoryAttributeOutputPort categoryAttributeOutputPort) {
+        return new CategoryCommandInputPort(categoryPersistenceOutputPort, categoryAttributeOutputPort);
     }
 
     @Bean

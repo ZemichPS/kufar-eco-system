@@ -1,6 +1,6 @@
 package by.zemich.advertisementservice.interfaces.rest.mappers;
 
-import by.zemich.advertisementservice.domain.request.Pagination;
+import by.zemich.advertisementservice.domain.query.Pagination;
 import by.zemich.advertisementservice.interfaces.rest.data.request.PageRequestDto;
 
 public class PaginationMapper {

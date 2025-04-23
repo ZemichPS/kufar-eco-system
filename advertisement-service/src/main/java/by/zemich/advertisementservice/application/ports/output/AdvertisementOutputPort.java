@@ -2,7 +2,7 @@ package by.zemich.advertisementservice.application.ports.output;
 
 import by.zemich.advertisementservice.domain.entity.Advertisement;
 import by.zemich.advertisementservice.domain.entity.AdvertisementAttribute;
-import by.zemich.advertisementservice.domain.request.Pagination;
+import by.zemich.advertisementservice.domain.query.Pagination;
 import by.zemich.advertisementservice.domain.valueobject.AdvertisementId;
 import by.zemich.advertisementservice.domain.valueobject.Id;
 import by.zemich.advertisementservice.domain.valueobject.Side;

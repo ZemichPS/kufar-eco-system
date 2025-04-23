@@ -1,5 +1,6 @@
 package by.zemich.advertisementservice.infrastracture.output.repository.jpa.entity;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.*;
 import jakarta.persistence.Id;
 import lombok.*;
@@ -52,16 +53,22 @@ public class AdvertisementEntity {
     public enum Condition {
         NEW("новое"),
         USED("б.у."),
-        BROKEN("не исправно");
+        BROKEN("неисправно");
+        @Getter
         private String conditionDescription;
 
         Condition(String conditionDescription) {
         }
     }
 
-    public enum Side{
-        BUY,
-        SELL
+    public enum Side {
+        BUY("Покупка"),
+        SELL("Продажа");
+        @Getter
+        private String sideDescription;
+
+        Side(String sideDescription) {
+        }
     }
 
 }

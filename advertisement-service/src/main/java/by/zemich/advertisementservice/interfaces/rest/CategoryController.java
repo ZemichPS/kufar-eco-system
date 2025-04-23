@@ -1,7 +1,7 @@
 package by.zemich.advertisementservice.interfaces.rest;
 
 import by.zemich.advertisementservice.application.usecases.CategoryAttributeUseCase;
-import by.zemich.advertisementservice.application.usecases.CommandCategoryUseCase;
+import by.zemich.advertisementservice.application.usecases.CategoryCommandUseCase;
 import by.zemich.advertisementservice.domain.entity.Category;
 import by.zemich.advertisementservice.domain.valueobject.Id;
 import by.zemich.advertisementservice.interfaces.rest.data.request.CategoryRequestDto;
@@ -22,7 +22,7 @@ import java.util.UUID;
 @RequestMapping("/api/v1/categories")
 @RequiredArgsConstructor
 public class CategoryController {
-    private final CommandCategoryUseCase commandCategoryUseCase;
+    private final CategoryCommandUseCase commandCategoryUseCase;
     private final CategoryAttributeUseCase categoryAttributeUseCase;
 
     @PostMapping

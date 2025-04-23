@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -26,7 +27,7 @@ public class CategoryPersistenceOutputAdapter implements CategoryPersistenceOutp
     private final CategoryAttributeRepository categoryAttributeRepository;
 
     @Override
-    public Category getById(CategoryId id) {
+    public Optional<Category> getById(CategoryId id) {
         UUID uuid = id.uuid();
         return categoryRepository.findById(uuid)
                 .map(entity -> {
@@ -34,8 +35,7 @@ public class CategoryPersistenceOutputAdapter implements CategoryPersistenceOutp
                     entity.getAttributes().stream().map(CategoryAttributeMapper::mapToDomain)
                             .forEach(category::addAttribute);
                     return category;
-                })
-                .orElseThrow(() -> new CategoryNotFoundException(uuid.toString()));
+                });
     }
 
     @Override

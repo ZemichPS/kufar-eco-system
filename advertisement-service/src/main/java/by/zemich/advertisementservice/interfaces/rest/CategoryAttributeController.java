@@ -1,7 +1,12 @@
 package by.zemich.advertisementservice.interfaces.rest;
 
 import by.zemich.advertisementservice.application.usecases.CategoryAttributeUseCase;
+import by.zemich.advertisementservice.domain.command.CreateCategoryAttributeCommand;
+import by.zemich.advertisementservice.domain.command.DeleteCategoryAttributeCommand;
+import by.zemich.advertisementservice.domain.command.UpdateCategoryAttributeCommand;
 import by.zemich.advertisementservice.domain.valueobject.CategoryAttribute;
+import by.zemich.advertisementservice.domain.valueobject.CategoryAttributeId;
+import by.zemich.advertisementservice.domain.valueobject.CategoryId;
 import by.zemich.advertisementservice.domain.valueobject.Id;
 import by.zemich.advertisementservice.interfaces.rest.data.request.CategoryAttributeRequestDto;
 import by.zemich.advertisementservice.interfaces.rest.data.response.CategoryAttributeResponseDto;
@@ -23,26 +28,31 @@ public class CategoryAttributeController {
 
     @PostMapping
     public ResponseEntity<URI> create(@RequestBody CategoryAttributeRequestDto request) {
-        String attributeName = request.getName();
-        Id categoryAttributeId = categoryAttributeUseCase.create(attributeName);
+        CreateCategoryAttributeCommand command = new CreateCategoryAttributeCommand(
+                new CategoryId(request.getCategoryId()),
+                new CategoryAttributeId(UUID.randomUUID()),
+                request.getName()
+        );
+        CategoryAttributeId id = categoryAttributeUseCase.handle(command);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{categoryUuid}")
-                .buildAndExpand(categoryAttributeId.uuid())
+                .buildAndExpand(id.uuid())
                 .toUri();
         return ResponseEntity.created(location).build();
     }
 
     @PostMapping("/{categoryAttributeUuid}")
-    public ResponseEntity<CategoryAttributeResponseDto> update(
+    public ResponseEntity<Void> update(
             @PathVariable UUID categoryAttributeUuid,
             @RequestBody CategoryAttributeRequestDto request
     ) {
-        Id categoryAttributeId = new Id(categoryAttributeUuid);
-        String attributeName = request.getName();
-        CategoryAttribute categoryAttribute = categoryAttributeUseCase.updateNameById(categoryAttributeId, attributeName);
-        CategoryAttributeResponseDto requestDto = CategoryAttributeMapper.mapToDto(categoryAttribute);
-        return ResponseEntity.ok(requestDto);
+        UpdateCategoryAttributeCommand command = new UpdateCategoryAttributeCommand(
+                new CategoryAttributeId(categoryAttributeUuid),
+                request.getName()
+        );
+        categoryAttributeUseCase.handle(command);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping
@@ -63,8 +73,9 @@ public class CategoryAttributeController {
 
     @DeleteMapping("/{categoryAttributeUuid}")
     public ResponseEntity<Void> delete(@PathVariable UUID categoryAttributeUuid) {
-        Id attributeId = new Id(categoryAttributeUuid);
-        categoryAttributeUseCase.deleteById(attributeId);
+        categoryAttributeUseCase.handle(new DeleteCategoryAttributeCommand(
+                new CategoryAttributeId(categoryAttributeUuid)
+        ));
         return ResponseEntity.noContent().build();
     }
 

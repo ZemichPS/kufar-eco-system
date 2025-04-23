@@ -5,9 +5,10 @@ import by.zemich.advertisementservice.domain.valueobject.CategoryId;
 import by.zemich.advertisementservice.domain.valueobject.Id;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CategoryPersistenceOutputPort {
-    Category getById(CategoryId id);
+    Optional<Category> getById(CategoryId id);
 
     Category persist(Category createdCategory);
 

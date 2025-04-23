@@ -2,7 +2,7 @@ package by.zemich.advertisementservice.interfaces.rest;
 
 import by.zemich.advertisementservice.domain.entity.Advertisement;
 import by.zemich.advertisementservice.domain.valueobject.UserId;
-import by.zemich.advertisementservice.domain.request.Pagination;
+import by.zemich.advertisementservice.domain.query.Pagination;
 import by.zemich.advertisementservice.domain.valueobject.*;
 import by.zemich.advertisementservice.interfaces.rest.data.request.AdvertisementRequestDTO;
 import by.zemich.advertisementservice.interfaces.rest.data.request.NewAdvertisementDTO;
