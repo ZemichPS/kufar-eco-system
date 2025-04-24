@@ -1,10 +1,7 @@
 package by.zemich.advertisementservice.interfaces.rest;
 
 import by.zemich.advertisementservice.application.usecases.AdvertisementCommandUseCases;
-import by.zemich.advertisementservice.domain.command.CreateAdvertisementCommand;
-import by.zemich.advertisementservice.domain.command.DeactivateAdvertisementCommand;
-import by.zemich.advertisementservice.domain.command.DeleteAdvertisementCommand;
-import by.zemich.advertisementservice.domain.command.UpdateAdvertisementCommand;
+import by.zemich.advertisementservice.domain.command.*;
 import by.zemich.advertisementservice.domain.entity.Advertisement;
 import by.zemich.advertisementservice.domain.query.Pagination;
 import by.zemich.advertisementservice.domain.valueobject.*;
@@ -81,6 +78,14 @@ public class AdvertisementCommandController {
     public ResponseEntity<Void> deactivateById(@PathVariable UUID advertisementUuid) {
         AdvertisementId advertisementId = new AdvertisementId(advertisementUuid);
         DeactivateAdvertisementCommand command = new DeactivateAdvertisementCommand(advertisementId);
+        commandUseCases.handle(command);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{advertisementUuid}")
+    public ResponseEntity<Void> activateById(@PathVariable UUID advertisementUuid) {
+        AdvertisementId advertisementId = new AdvertisementId(advertisementUuid);
+        ActivateAdvertisementCommand command = new ActivateAdvertisementCommand(advertisementId);
         commandUseCases.handle(command);
         return ResponseEntity.ok().build();
     }
