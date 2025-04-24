@@ -1,6 +1,5 @@
-package by.zemich.advertisementservice.domain.response;
+package by.zemich.advertisementservice.domain.dto;
 
-import by.zemich.advertisementservice.domain.valueobject.CategoryAttributeId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

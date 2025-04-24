@@ -4,7 +4,7 @@ import by.zemich.advertisementservice.application.ports.output.CategoryPersisten
 import by.zemich.advertisementservice.application.usecases.CategoryQueryUseCase;
 import by.zemich.advertisementservice.domain.exception.CategoryNotFoundException;
 import by.zemich.advertisementservice.domain.query.GetCategoryByIdQuery;
-import by.zemich.advertisementservice.domain.response.CategoryFullDto;
+import by.zemich.advertisementservice.domain.dto.CategoryFullDto;
 import by.zemich.advertisementservice.domain.utils.CategoryMapper;
 
 import java.util.List;

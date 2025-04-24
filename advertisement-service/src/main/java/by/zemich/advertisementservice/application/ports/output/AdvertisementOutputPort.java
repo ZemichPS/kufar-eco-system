@@ -17,9 +17,6 @@ public interface AdvertisementOutputPort {
 
     Optional<Advertisement> retrieveById(AdvertisementId id);
 
-    List<Advertisement> retrieveAll(Pagination pagination);
-
     List<Advertisement> retrieveAllByUserId(Id userId);
 
-    List<Advertisement> retrieveByAttributes(List<AdvertisementAttribute> attributes, Side side);
 }

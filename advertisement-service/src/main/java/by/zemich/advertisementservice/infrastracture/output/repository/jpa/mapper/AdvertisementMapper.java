@@ -1,5 +1,6 @@
 package by.zemich.advertisementservice.infrastracture.output.repository.jpa.mapper;
 
+import by.zemich.advertisementservice.domain.dto.FullAdvertisementDto;
 import by.zemich.advertisementservice.domain.entity.Advertisement;
 import by.zemich.advertisementservice.domain.valueobject.*;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.entity.AdvertisementEntity;
@@ -38,5 +39,17 @@ public class AdvertisementMapper {
                 new Photo(entity.getPhotoFileName()),
                 Side.valueOf(entity.getSide().name())
         );
+    }
+
+    public static FullAdvertisementDto mapToDto(AdvertisementEntity entity) {
+        return FullAdvertisementDto.builder()
+                .uuid(entity.getUuid())
+                .userUuid(entity.getUserUuid())
+                .category(entity.getCategory().getName())
+                .condition(entity.getCondition().getConditionDescription())
+                .publishedAt(entity.getPublishedAt())
+                .comment(entity.getComment())
+                .side(entity.getSide().getSideDescription())
+                .build();
     }
 }

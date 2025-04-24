@@ -1,8 +1,8 @@
 package by.zemich.advertisementservice.domain.utils;
 
 import by.zemich.advertisementservice.domain.entity.Category;
-import by.zemich.advertisementservice.domain.response.CategoryAttributeDto;
-import by.zemich.advertisementservice.domain.response.CategoryFullDto;
+import by.zemich.advertisementservice.domain.dto.CategoryAttributeDto;
+import by.zemich.advertisementservice.domain.dto.CategoryFullDto;
 import by.zemich.advertisementservice.domain.valueobject.CategoryAttribute;
 import lombok.experimental.UtilityClass;
 

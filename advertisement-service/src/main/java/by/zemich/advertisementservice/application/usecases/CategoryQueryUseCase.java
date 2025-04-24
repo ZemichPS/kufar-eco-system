@@ -1,7 +1,7 @@
 package by.zemich.advertisementservice.application.usecases;
 
 import by.zemich.advertisementservice.domain.query.GetCategoryByIdQuery;
-import by.zemich.advertisementservice.domain.response.CategoryFullDto;
+import by.zemich.advertisementservice.domain.dto.CategoryFullDto;
 
 import java.util.List;
 

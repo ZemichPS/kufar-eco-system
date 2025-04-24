@@ -1,10 +1,9 @@
-package by.zemich.advertisementservice.domain.response;
+package by.zemich.advertisementservice.domain.dto;
 
 import by.zemich.advertisementservice.domain.valueobject.CategoryId;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data

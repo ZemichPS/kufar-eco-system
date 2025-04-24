@@ -88,42 +88,11 @@ public class AdvertisementOutputAdapter implements AdvertisementOutputPort {
                 .map(this::mapToDomain);
     }
 
-
-    @Override
-    public List<Advertisement> retrieveAll(Pagination pagination) {
-        Sort.Direction sortDirection = pagination.isAsc() ? Sort.Direction.ASC : Sort.Direction.DESC;
-        boolean active = pagination.isOnlyActive();
-        Pageable pageable = PageRequest.of(
-                pagination.getPage(),
-                pagination.getSize(),
-                Sort.by(sortDirection, pagination.getSortBy())
-        );
-        return advertisementRepository.findAllWithEagerRelationshipsByActiveIs(pageable, active).stream()
-                .map(this::mapToDomain)
-                .toList();
-    }
-
     @Override
     public List<Advertisement> retrieveAllByUserId(Id userId) {
-        UUID userUuid = userId.uuid();
-        return advertisementRepository.findAllByUserUuid(userUuid).stream()
-                .map(AdvertisementMapper::mapToDomain)
-                .toList();
+        return List.of();
     }
 
-    @Override
-    public List<Advertisement> retrieveByAttributes(List<AdvertisementAttribute> attributes, Side side) {
-        List<UUID> categoryAttributeIds = attributes.stream()
-                .map(attribute -> attribute.getCategoryAttribute().getId().uuid())
-                .toList();
-
-        List<String> values = attributes.stream().map(AdvertisementAttribute::getValue).toList();
-        String paramSide = side.name();
-
-        return advertisementRepository.findByAttributesAndSide(categoryAttributeIds, values, paramSide).stream()
-                .map(this::mapToDomain)
-                .toList();
-    }
 
     public Advertisement mapToDomain(AdvertisementEntity advertisementEntity) {
         Advertisement advertisement = AdvertisementMapper.mapToDomain(advertisementEntity);

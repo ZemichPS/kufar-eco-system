@@ -1,4 +1,4 @@
-package by.zemich.advertisementservice.domain.response;
+package by.zemich.advertisementservice.domain.dto;
 
 import lombok.Data;
 
