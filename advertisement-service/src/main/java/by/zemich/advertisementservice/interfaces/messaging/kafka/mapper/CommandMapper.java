@@ -1,5 +1,6 @@
 package by.zemich.advertisementservice.interfaces.messaging.kafka.mapper;
 
+import by.zemich.advertisementservice.domain.command.CreateAdvertisementCommand;
 import by.zemich.advertisementservice.domain.valueobject.*;
 import lombok.experimental.UtilityClass;
 import org.apache.avro.generic.GenericRecord;
@@ -11,7 +12,7 @@ import java.util.stream.Collectors;
 
 @UtilityClass
 public class CommandMapper {
-    public static AdvertisementCreateCommand mapToCommand(GenericRecord record) {
+    public static CreateAdvertisementCommand mapToCommand(GenericRecord record) {
         Map<String, String> avroMap = (Map<String, String>) record.get("attributesMap");
         Id userId = new Id(UUID.fromString(record.get("userUuid").toString()));
         Id categoryId = new Id(UUID.fromString(record.get("categoryUuid").toString()));;
@@ -22,7 +23,7 @@ public class CommandMapper {
         Map<UUID, String> attributesMap =avroMap.entrySet()
                 .stream()
                 .collect(Collectors.toMap(e -> UUID.fromString(e.getKey()), Map.Entry::getValue));
-        return AdvertisementCreateCommand.builder()
+        return CreateAdvertisementCommand.builder()
                 .userId(userId)
                 .categoryId(categoryId)
                 .condition(condition)

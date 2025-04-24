@@ -4,6 +4,7 @@ import by.zemich.advertisementservice.domain.command.*;
 import by.zemich.advertisementservice.domain.valueobject.AdvertisementId;
 
 public interface AdvertisementCommandUseCases {
+
     AdvertisementId handle(CreateAdvertisementCommand command);
 
     void handle(UpdateAdvertisementCommand command);
@@ -13,6 +14,8 @@ public interface AdvertisementCommandUseCases {
     void handle(UpdateAdvertisementPriceCommand command);
 
     void handle(ActivateAdvertisementCommand command);
+
+    void handle(DeleteAdvertisementCommand command);
 
     void handle(DeactivateAdvertisementCommand command);
 }

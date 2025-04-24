@@ -6,7 +6,6 @@ public record UpdateAdvertisementCommand(
         AdvertisementId advertisementId,
         Condition condition,
         Price price,
-        Comment comment,
-        Photo photo
+        Comment comment
         ) {
 }

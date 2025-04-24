@@ -8,6 +8,7 @@ import by.zemich.advertisementservice.domain.command.DeleteCategoryByIdCommand;
 import by.zemich.advertisementservice.domain.command.UpdateBuIdCategoryCommand;
 import by.zemich.advertisementservice.domain.entity.Category;
 import by.zemich.advertisementservice.domain.entity.factory.CategoryFactory;
+import by.zemich.advertisementservice.domain.exception.CategoryNotFoundException;
 import by.zemich.advertisementservice.domain.valueobject.CategoryId;
 
 public class CategoryCommandInputPort implements CategoryCommandUseCase {
@@ -35,12 +36,13 @@ public class CategoryCommandInputPort implements CategoryCommandUseCase {
 
     @Override
     public Category handle(UpdateBuIdCategoryCommand command) {
-        Category category = categoryPersistenceOutputPort.getById(command.categoryId());
+        CategoryId id = command.categoryId();
+        Category category = categoryPersistenceOutputPort.getById(id)
+                .orElseThrow(() -> new CategoryNotFoundException(id.uuid().toString()));
         category.setName(category.getName());
         categoryPersistenceOutputPort.persist(category);
         return category;
     }
-
 
 
 }

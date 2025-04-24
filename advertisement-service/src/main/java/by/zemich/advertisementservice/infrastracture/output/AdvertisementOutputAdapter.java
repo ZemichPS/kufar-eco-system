@@ -77,6 +77,11 @@ public class AdvertisementOutputAdapter implements AdvertisementOutputPort {
     }
 
     @Override
+    public void delete(AdvertisementId id) {
+
+    }
+
+    @Override
     public void updatePrice(Advertisement advertisement) {
 
     }
@@ -86,6 +91,11 @@ public class AdvertisementOutputAdapter implements AdvertisementOutputPort {
         UUID advertisementId = id.uuid();
         return advertisementRepository.findById(advertisementId)
                 .map(this::mapToDomain);
+    }
+
+    @Override
+    public boolean existsById(AdvertisementId id) {
+        return advertisementRepository.existsById(id.uuid());
     }
 
     @Override

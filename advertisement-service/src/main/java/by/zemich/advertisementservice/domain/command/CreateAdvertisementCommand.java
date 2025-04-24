@@ -13,7 +13,6 @@ public record CreateAdvertisementCommand(
         LocalDateTime publishedAt,
         Comment comment,
         boolean active,
-        Photo photo,
         Side side
         ) {
 }

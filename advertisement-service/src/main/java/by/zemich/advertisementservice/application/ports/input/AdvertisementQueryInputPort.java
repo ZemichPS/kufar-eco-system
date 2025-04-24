@@ -2,6 +2,7 @@ package by.zemich.advertisementservice.application.ports.input;
 
 import by.zemich.advertisementservice.application.usecases.AdvertisementQueryUseCases;
 import by.zemich.advertisementservice.domain.dto.AdvertisementFilter;
+import by.zemich.advertisementservice.domain.exception.AdvertisementNotFoundException;
 import by.zemich.advertisementservice.domain.query.GetFullAdvertisementQuery;
 import by.zemich.advertisementservice.domain.repository.AdvertisementQueryRepository;
 import by.zemich.advertisementservice.domain.dto.FullAdvertisementDto;
@@ -18,7 +19,9 @@ public class AdvertisementQueryInputPort implements AdvertisementQueryUseCases {
 
     @Override
     public FullAdvertisementDto loadPage(GetFullAdvertisementQuery query) {
-        return advertisementQueryRepository.getFullResponseById(query.advertisementId());
+        return advertisementQueryRepository.getFullResponseById(query.advertisementId()).orElseThrow(
+                () -> new AdvertisementNotFoundException(query.advertisementId().uuid().toString())
+        );
     }
 
     @Override

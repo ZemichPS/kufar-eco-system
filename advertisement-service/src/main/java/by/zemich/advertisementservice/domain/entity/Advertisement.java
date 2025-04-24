@@ -32,7 +32,6 @@ public class Advertisement {
         this.publishedAt = command.publishedAt();
         this.price = command.price();
         this.comment = command.comment();
-        this.photo = command.photo();
         this.active = command.active();
         this.attributes = new ArrayList<>();
         this.side = command.side();

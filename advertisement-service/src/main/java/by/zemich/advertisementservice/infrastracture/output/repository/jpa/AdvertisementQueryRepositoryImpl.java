@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -24,14 +25,11 @@ public class AdvertisementQueryRepositoryImpl implements AdvertisementQueryRepos
     private final AdvertisementRepository advertisementRepository;
 
     @Override
-    public FullAdvertisementDto getFullResponseById(AdvertisementId advertisementId) {
+    public Optional<FullAdvertisementDto> getFullResponseById(AdvertisementId advertisementId) {
         UUID advertisemntUuid = advertisementId.uuid();
-        FullAdvertisementDto dto = advertisementRepository
+        return advertisementRepository
                 .findById(advertisemntUuid)
-                .map(AdvertisementMapper::mapToDto)
-                .orElseThrow(() -> new AdvertisementNotFoundException(advertisemntUuid.toString()));
-
-        return dto;
+                .map(AdvertisementMapper::mapToDto);
     }
 
     @Override

@@ -6,8 +6,10 @@ import by.zemich.advertisementservice.domain.valueobject.AdvertisementId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Optional;
+
 public interface AdvertisementQueryRepository {
-    FullAdvertisementDto getFullResponseById(AdvertisementId advertisementId);
+    Optional<FullAdvertisementDto> getFullResponseById(AdvertisementId advertisementId);
 
     Page<FullAdvertisementDto> getPage(AdvertisementFilter filter, Pageable pageable);
 

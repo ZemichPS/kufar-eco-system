@@ -41,7 +41,6 @@ public class AdvertisementInputPort implements AdvertisementCommandUseCases {
                     advertisement.changeComment(command.comment());
                     advertisement.changeCondition(command.condition());
                     advertisement.changePrice(command.price());
-                    advertisement.changePhoto(command.photo());
                     return advertisement;
                 })
                 .map(advertisementOutputPort::update)
@@ -88,6 +87,13 @@ public class AdvertisementInputPort implements AdvertisementCommandUseCases {
                 })
                 .map(advertisementOutputPort::update)
                 .orElseThrow(()-> new AdvertisementNotFoundException(command.advertisementId().uuid().toString()));
+    }
+
+    @Override
+    public void handle(DeleteAdvertisementCommand command) {
+        AdvertisementId id = command.advertisementId();
+        if(advertisementOutputPort.existsById(id)) throw new AdvertisementNotFoundException(id.uuid().toString());
+        advertisementOutputPort.delete(id);
     }
 
     @Override

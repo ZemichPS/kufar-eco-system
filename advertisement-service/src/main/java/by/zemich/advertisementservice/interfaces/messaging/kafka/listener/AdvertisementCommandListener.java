@@ -1,5 +1,7 @@
 package by.zemich.advertisementservice.interfaces.messaging.kafka.listener;
 
+import by.zemich.advertisementservice.application.usecases.AdvertisementCommandUseCases;
+import by.zemich.advertisementservice.domain.command.CreateAdvertisementCommand;
 import by.zemich.advertisementservice.interfaces.messaging.kafka.mapper.CommandMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.avro.generic.GenericRecord;
@@ -10,19 +12,11 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AdvertisementCommandListener {
 
-    private final AdvertisementUseCases advertisementUseCases;
+    private final AdvertisementCommandUseCases commandUseCases;
 
     @KafkaListener(groupId = "advertisementGroup", topics = "createAdvertisement")
     public void listen(GenericRecord record) {
-        AdvertisementCreateCommand command = CommandMapper.mapToCommand(record);
-        advertisementUseCases.create(
-                command.getUserId(),
-                command.getCategoryId(),
-                command.getCondition(),
-                command.getPrice(),
-                command.getComment(),
-                command.getPhoto(),
-                command.getAttributesMap()
-        );
+        CreateAdvertisementCommand command = CommandMapper.mapToCommand(record);
+        commandUseCases.handle(command);
     }
 }
