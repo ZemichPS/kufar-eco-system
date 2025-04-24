@@ -55,6 +55,14 @@ public class CategoryAttributeController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/{categoryAttributeUuid}")
+    public ResponseEntity<Void> delete(@PathVariable UUID categoryAttributeUuid) {
+        categoryAttributeUseCase.handle(new DeleteCategoryAttributeCommand(
+                new CategoryAttributeId(categoryAttributeUuid)
+        ));
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping
     public ResponseEntity<List<CategoryAttributeResponseDto>> getAll() {
         List<CategoryAttributeResponseDto> response = categoryAttributeUseCase.getAll().stream().
@@ -65,18 +73,10 @@ public class CategoryAttributeController {
 
     @GetMapping("/{categoryAttributeUuid}")
     public ResponseEntity<CategoryAttributeResponseDto> getById(@PathVariable UUID categoryAttributeUuid) {
-        Id categoryAttributeId = new Id(categoryAttributeUuid);
-        CategoryAttribute attribute = categoryAttributeUseCase.getById(categoryAttributeId);
+        CategoryAttributeId id = new CategoryAttributeId(categoryAttributeUuid);
+        CategoryAttribute attribute = categoryAttributeUseCase.getById(id);
         CategoryAttributeResponseDto response = CategoryAttributeMapper.mapToDto(attribute);
         return ResponseEntity.ok(response);
-    }
-
-    @DeleteMapping("/{categoryAttributeUuid}")
-    public ResponseEntity<Void> delete(@PathVariable UUID categoryAttributeUuid) {
-        categoryAttributeUseCase.handle(new DeleteCategoryAttributeCommand(
-                new CategoryAttributeId(categoryAttributeUuid)
-        ));
-        return ResponseEntity.noContent().build();
     }
 
 }

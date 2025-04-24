@@ -1,10 +1,10 @@
 package by.zemich.advertisementservice.application.usecases;
 
 import by.zemich.advertisementservice.domain.query.GetFullAdvertisementQuery;
-import by.zemich.advertisementservice.domain.response.FullAdvertisementResponse;
+import by.zemich.advertisementservice.domain.response.FullAdvertisementDto;
 
 public interface AdvertisementQueryUseCases {
 
-    FullAdvertisementResponse load(GetFullAdvertisementQuery query);
+    FullAdvertisementDto load(GetFullAdvertisementQuery query);
 
 }

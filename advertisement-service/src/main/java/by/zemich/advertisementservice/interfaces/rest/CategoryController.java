@@ -1,9 +1,14 @@
 package by.zemich.advertisementservice.interfaces.rest;
 
-import by.zemich.advertisementservice.application.usecases.CategoryAttributeUseCase;
 import by.zemich.advertisementservice.application.usecases.CategoryCommandUseCase;
+import by.zemich.advertisementservice.application.usecases.CategoryQueryUseCase;
 import by.zemich.advertisementservice.domain.command.CreateCategoryCommand;
+import by.zemich.advertisementservice.domain.command.DeleteCategoryByIdCommand;
+import by.zemich.advertisementservice.domain.command.UpdateBuIdCategoryCommand;
 import by.zemich.advertisementservice.domain.entity.Category;
+import by.zemich.advertisementservice.domain.query.GetCategoryByIdQuery;
+import by.zemich.advertisementservice.domain.response.CategoryFullDto;
+import by.zemich.advertisementservice.domain.valueobject.CategoryAttributeId;
 import by.zemich.advertisementservice.domain.valueobject.CategoryId;
 import by.zemich.advertisementservice.domain.valueobject.Id;
 import by.zemich.advertisementservice.interfaces.rest.data.request.CategoryRequestDto;
@@ -25,7 +30,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryCommandUseCase commandCategoryUseCase;
-    private final CategoryAttributeUseCase categoryAttributeUseCase;
+    private final CategoryQueryUseCase queryUseCase;
 
     @PostMapping
     public ResponseEntity<URI> create(@RequestBody CategoryRequestDto request) {
@@ -42,46 +47,35 @@ public class CategoryController {
         return ResponseEntity.created(location).build();
     }
 
-    @GetMapping
-    public ResponseEntity<List<CategoryResponseDto>> getAllCategories() {
-        List<CategoryResponseDto> response = commandCategoryUseCase.getAll().stream()
-                .map(category -> {
-                            List<CategoryAttributeResponseDto> attributes = category.getAttributes()
-                                    .stream().map(CategoryAttributeMapper::mapToDto).toList();
-                            CategoryResponseDto responseDto = CategoryMapper.mapToDto(category);
-                            responseDto.setAttributes(attributes);
-                            return responseDto;
-                        }
-                )
-                .toList();
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/{categoryUuid}")
-    public ResponseEntity<CategoryResponseDto> getCategoryById(@PathVariable UUID categoryUuid) {
-        Id id = new Id(categoryUuid);
-        Category category = commandCategoryUseCase.getById(id);
-        CategoryResponseDto response = CategoryMapper.mapToDto(category);
-        category.getAttributes().stream()
-                .map(CategoryAttributeMapper::mapToDto)
-                .forEach(response.getAttributes()::add);
-        return ResponseEntity.ok(response);
-    }
-
     @PutMapping("/{categoryUuid}")
     public ResponseEntity<CategoryResponseDto> update(@PathVariable UUID categoryUuid, @RequestBody CategoryRequestDto request) {
         String categoryName = request.getName();
-        Id categoryId = new Id(categoryUuid);
-        Category updatedCategory = commandCategoryUseCase.handle(categoryId);
+        CategoryId id = new CategoryId(categoryUuid);
+        UpdateBuIdCategoryCommand command = new UpdateBuIdCategoryCommand(id, categoryName);
+        Category updatedCategory = commandCategoryUseCase.handle(command);
         CategoryResponseDto response = CategoryMapper.mapToDto(updatedCategory);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{categoryUuid}")
     public ResponseEntity<Void> delete(@PathVariable UUID categoryUuid) {
-        Id categoryId = new Id(categoryUuid);
-        commandCategoryUseCase.handle(categoryId);
+        CategoryId id = new CategoryId(categoryUuid);
+        DeleteCategoryByIdCommand command = new DeleteCategoryByIdCommand(id);
+        commandCategoryUseCase.handle(command);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<CategoryFullDto>> getAllCategories() {
+        List<CategoryFullDto> response = queryUseCase.loadAll();
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{categoryUuid}")
+    public ResponseEntity<CategoryFullDto> getCategoryById(@PathVariable UUID categoryUuid) {
+        CategoryId id = new CategoryId(categoryUuid);
+        CategoryFullDto response = queryUseCase.getById(new GetCategoryByIdQuery(id));
+        return ResponseEntity.ok(response);
     }
 
 
@@ -90,9 +84,9 @@ public class CategoryController {
             @PathVariable UUID categoryUuid,
             @PathVariable UUID attributeUuid
     ) {
-        Id categoryId = new Id(categoryUuid);
-        Id attributeId = new Id(attributeUuid);
-        categoryId = commandCategoryUseCase.addAttribute(categoryId, attributeId);
+        CategoryId categoryId = new CategoryId(categoryUuid);
+        CategoryAttributeId attributeId = new CategoryAttributeId(attributeUuid);
+        categoryId = commandCategoryUseCase.handle(categoryId, attributeId);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{categoryUuid}")

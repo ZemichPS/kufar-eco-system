@@ -11,7 +11,6 @@ import by.zemich.advertisementservice.domain.exception.CategoryAttributeNotFound
 import by.zemich.advertisementservice.domain.valueobject.CategoryAttribute;
 import by.zemich.advertisementservice.domain.valueobject.CategoryAttributeId;
 import by.zemich.advertisementservice.domain.valueobject.CategoryId;
-import by.zemich.advertisementservice.domain.valueobject.Id;
 
 import java.util.List;
 
@@ -40,8 +39,10 @@ public class CategoryAttributeInputPort implements CategoryAttributeUseCase {
     }
 
     @Override
-    public CategoryAttribute getById(Id categoryAttributeId) {
-        return categoryAttributeOutputPort.getById(categoryAttributeId);
+    public CategoryAttribute getById(CategoryAttributeId categoryAttributeId) {
+        return categoryAttributeOutputPort.getById(categoryAttributeId).orElseThrow(
+                () -> new CategoryAttributeNotFoundException(categoryAttributeId.uuid().toString())
+        );
     }
 
     @Override

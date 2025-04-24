@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -27,7 +28,7 @@ public class CategoryAttributeAdapter implements CategoryAttributeOutputPort {
     }
 
     @Override
-    public boolean existsById(Id categoryAttributeId) {
+    public boolean existsById(CategoryAttributeId categoryAttributeId) {
         return categoryAttributeRepository.existsById(categoryAttributeId.uuid());
     }
 
@@ -51,8 +52,7 @@ public class CategoryAttributeAdapter implements CategoryAttributeOutputPort {
     public Optional<CategoryAttribute> getById(CategoryAttributeId id) {
         UUID categoryAttributeUuid = id.uuid();
         return categoryAttributeRepository.findById(categoryAttributeUuid)
-                .map(CategoryAttributeMapper::mapToDomain)
-                .orElseThrow(()-> new CategoryAttributeNotFoundException(categoryAttributeUuid.toString()));
+                .map(CategoryAttributeMapper::mapToDomain);
     }
 
 }

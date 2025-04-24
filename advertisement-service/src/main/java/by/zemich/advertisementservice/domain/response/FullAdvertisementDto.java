@@ -1,6 +1,5 @@
 package by.zemich.advertisementservice.domain.response;
 
-import by.zemich.advertisementservice.infrastracture.output.repository.jpa.entity.AdvertisementEntity;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Value;
@@ -17,7 +16,7 @@ import java.util.UUID;
 @Value
 @Builder
 @Data
-public class FullAdvertisementResponse implements Serializable {
+public class FullAdvertisementDto implements Serializable {
     UUID uuid;
     UUID userUuid;
     String category;

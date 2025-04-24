@@ -5,7 +5,6 @@ import by.zemich.advertisementservice.domain.command.DeleteCategoryAttributeComm
 import by.zemich.advertisementservice.domain.command.UpdateCategoryAttributeCommand;
 import by.zemich.advertisementservice.domain.valueobject.CategoryAttribute;
 import by.zemich.advertisementservice.domain.valueobject.CategoryAttributeId;
-import by.zemich.advertisementservice.domain.valueobject.Id;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ public interface CategoryAttributeUseCase {
 
     List<CategoryAttribute> getAll();
 
-    CategoryAttribute getById(Id id);
+    CategoryAttribute getById(CategoryAttributeId id);
 
     CategoryAttributeId handle(CreateCategoryAttributeCommand command);
 
