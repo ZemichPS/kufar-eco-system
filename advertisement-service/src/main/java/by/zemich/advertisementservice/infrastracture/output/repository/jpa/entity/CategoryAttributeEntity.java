@@ -18,9 +18,11 @@ public class CategoryAttributeEntity {
     private UUID uuid;
     private String name;
 
+    @Builder.Default
     @ManyToMany
     private Set<CategoryEntity> categories = new HashSet<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "categoryAttribute",
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,

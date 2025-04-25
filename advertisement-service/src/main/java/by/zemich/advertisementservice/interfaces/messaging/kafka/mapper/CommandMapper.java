@@ -23,14 +23,17 @@ public class CommandMapper {
         Map<UUID, String> attributesMap =avroMap.entrySet()
                 .stream()
                 .collect(Collectors.toMap(e -> UUID.fromString(e.getKey()), Map.Entry::getValue));
-        return CreateAdvertisementCommand.builder()
-                .userId(userId)
-                .categoryId(categoryId)
-                .condition(condition)
-                .price(price)
-                .comment(comment)
-                .photo(photo)
-                .attributesMap(attributesMap)
-                .build();
+
+//        return CreateAdvertisementCommand.builder()
+//                .userId(userId)
+//                .categoryId(categoryId)
+//                .condition(condition)
+//                .price(price)
+//                .comment(comment)
+//                .photo(photo)
+//                .attributesMap(attributesMap)
+//                .build();
+        return null;
+
     }
 }

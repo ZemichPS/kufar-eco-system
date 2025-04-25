@@ -33,6 +33,7 @@ public class CategoryEntity {
     @ManyToMany(
             fetch = FetchType.LAZY
     )
+    @Builder.Default
     @JoinTable(
             name = "category_catattributes",
             joinColumns = @JoinColumn(name = "category_uuid"),

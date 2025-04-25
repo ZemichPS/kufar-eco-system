@@ -36,6 +36,7 @@ public class AdvertisementEntity {
     private Side side;
 
 
+    @Builder.Default
     @OneToMany(
             fetch = FetchType.LAZY,
             mappedBy = "advertisement",

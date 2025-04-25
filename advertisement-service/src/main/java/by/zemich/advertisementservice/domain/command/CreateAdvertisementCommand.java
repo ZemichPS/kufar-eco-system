@@ -4,6 +4,7 @@ import by.zemich.advertisementservice.domain.valueobject.*;
 
 import java.time.LocalDateTime;
 
+
 public record CreateAdvertisementCommand(
         AdvertisementId advertisementId,
         UserId userId,

@@ -23,7 +23,8 @@ public class CategoryAttributeAdapter implements CategoryAttributeOutputPort {
 
     @Override
     public void persist(CategoryAttribute categoryAttribute) {
-        CategoryAttributeEntity categoryAttributeEntity = CategoryAttributeMapper.mapToEntity(categoryAttribute);
+        CategoryAttributeEntity categoryAttributeEntity =
+                CategoryAttributeMapper.mapToEntity(categoryAttribute);
         categoryAttributeRepository.save(categoryAttributeEntity);
     }
 

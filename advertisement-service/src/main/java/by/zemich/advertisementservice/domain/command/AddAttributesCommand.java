@@ -5,5 +5,8 @@ import by.zemich.advertisementservice.domain.valueobject.CategoryAttributeId;
 
 import java.util.Map;
 
-public record AddAttributesCommand(AdvertisementId advertisementId, Map<CategoryAttributeId, String> attributes) {
+public record AddAttributesCommand(
+        AdvertisementId advertisementId,
+        Map<CategoryAttributeId, String> attributes
+) {
 }

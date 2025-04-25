@@ -5,7 +5,7 @@ import by.zemich.advertisementservice.application.ports.input.AdvertisementQuery
 import by.zemich.advertisementservice.application.ports.input.CategoryAttributeInputPort;
 import by.zemich.advertisementservice.application.ports.input.CategoryCommandInputPort;
 import by.zemich.advertisementservice.application.ports.output.AdvertisementEventOutputPort;
-import by.zemich.advertisementservice.application.ports.output.AdvertisementOutputPort;
+import by.zemich.advertisementservice.application.ports.output.AdvertisementPerststenceOutputPort;
 import by.zemich.advertisementservice.application.ports.output.CategoryAttributeOutputPort;
 import by.zemich.advertisementservice.application.ports.output.CategoryPersistenceOutputPort;
 import by.zemich.advertisementservice.application.usecases.AdvertisementCommandUseCases;
@@ -26,10 +26,10 @@ public class BeanConfig {
 
     @Bean
     public AdvertisementCommandUseCases advertisementUseCase(
-            AdvertisementOutputPort advertisementOutputPort,
+            AdvertisementPerststenceOutputPort advertisementPerststenceOutputPort,
             AdvertisementEventOutputPort advertisementEventOutputPort
     ) {
-        return new AdvertisementInputPort(advertisementOutputPort, advertisementEventOutputPort);
+        return new AdvertisementInputPort(advertisementPerststenceOutputPort, advertisementEventOutputPort);
     }
 
     @Bean

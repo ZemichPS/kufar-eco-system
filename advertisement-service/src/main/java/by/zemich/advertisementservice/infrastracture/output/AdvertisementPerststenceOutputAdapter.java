@@ -1,15 +1,12 @@
 package by.zemich.advertisementservice.infrastracture.output;
 
-import by.zemich.advertisementservice.application.ports.output.AdvertisementOutputPort;
+import by.zemich.advertisementservice.application.ports.output.AdvertisementPerststenceOutputPort;
 import by.zemich.advertisementservice.domain.entity.Advertisement;
-import by.zemich.advertisementservice.domain.entity.AdvertisementAttribute;
 import by.zemich.advertisementservice.domain.exception.AdvertisementNotFoundException;
 import by.zemich.advertisementservice.domain.exception.CategoryAttributeNotFoundException;
 import by.zemich.advertisementservice.domain.exception.CategoryNotFoundException;
-import by.zemich.advertisementservice.domain.query.Pagination;
 import by.zemich.advertisementservice.domain.valueobject.AdvertisementId;
 import by.zemich.advertisementservice.domain.valueobject.Id;
-import by.zemich.advertisementservice.domain.valueobject.Side;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.api.AdvertisementAttributeRepository;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.api.AdvertisementRepository;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.api.CategoryAttributeRepository;
@@ -21,9 +18,6 @@ import by.zemich.advertisementservice.infrastracture.output.repository.jpa.entit
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.mapper.AdvertisementAttributeMapper;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.mapper.AdvertisementMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -32,7 +26,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class AdvertisementOutputAdapter implements AdvertisementOutputPort {
+public class AdvertisementPerststenceOutputAdapter implements AdvertisementPerststenceOutputPort {
 
     private final AdvertisementRepository advertisementRepository;
     private final AdvertisementAttributeRepository advertisementAttributeRepository;
@@ -58,7 +52,7 @@ public class AdvertisementOutputAdapter implements AdvertisementOutputPort {
                     AdvertisementAttributeEntity advertisementAttributeEntity = advertisementAttributeRepository.findById(attribute.getId().uuid()).orElseGet(() ->
                     {
                         AdvertisementAttributeEntity entity = AdvertisementAttributeMapper.mapToEntity(attribute);
-                        UUID categoryAttributeId = attribute.getCategoryAttribute().getId().uuid();
+                        UUID categoryAttributeId = attribute.getCategoryAttributeId().uuid();
                         CategoryAttributeEntity categoryAttributeEntity = categoryAttributeRepository.findById(categoryAttributeId)
                                 .orElseThrow(() -> new CategoryAttributeNotFoundException(categoryAttributeId.toString()));
                         entity.setCategoryAttribute(categoryAttributeEntity);
@@ -70,7 +64,7 @@ public class AdvertisementOutputAdapter implements AdvertisementOutputPort {
                 }).
                 forEach(advertisementEntity::addAttribute);
 
-        UUID categoryId = advertisement.getCategoryId().getId().uuid();
+        UUID categoryId = advertisement.getCategoryId().uuid();
         CategoryEntity categoryEntity = categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId.toString()));
         advertisementEntity.setCategory(categoryEntity);
         advertisementRepository.save(advertisementEntity);
@@ -78,11 +72,6 @@ public class AdvertisementOutputAdapter implements AdvertisementOutputPort {
 
     @Override
     public void delete(AdvertisementId id) {
-
-    }
-
-    @Override
-    public void updatePrice(Advertisement advertisement) {
 
     }
 

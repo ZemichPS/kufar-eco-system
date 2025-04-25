@@ -2,26 +2,16 @@ package by.zemich.advertisementservice.interfaces.rest;
 
 import by.zemich.advertisementservice.application.usecases.AdvertisementCommandUseCases;
 import by.zemich.advertisementservice.domain.command.*;
-import by.zemich.advertisementservice.domain.entity.Advertisement;
-import by.zemich.advertisementservice.domain.query.Pagination;
 import by.zemich.advertisementservice.domain.valueobject.*;
 import by.zemich.advertisementservice.interfaces.rest.data.request.AdvertisementRequestDTO;
 import by.zemich.advertisementservice.interfaces.rest.data.request.NewAdvertisementDto;
-import by.zemich.advertisementservice.interfaces.rest.data.request.UpdateAdvertisementPriceRequestDTO;
-import by.zemich.advertisementservice.interfaces.rest.data.response.AdvertisementResponseDto;
-import by.zemich.advertisementservice.interfaces.rest.mappers.AdvertisementMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -55,7 +45,7 @@ public class AdvertisementCommandController {
     }
 
     @PutMapping
-    public ResponseEntity<URI> updateAdvertisement(@RequestBody AdvertisementRequestDTO request) {
+    public ResponseEntity<Void> updateAdvertisement(@RequestBody AdvertisementRequestDTO request) {
         UpdateAdvertisementCommand command = new UpdateAdvertisementCommand(
                 new AdvertisementId(request.getAdvertisementId()),
                 Condition.valueOf(request.getCondition().name()),

@@ -80,7 +80,12 @@ public class Advertisement {
         this.photo = photo;
     }
 
-    public void activate(boolean active) {
-        this.active = active;
+    public void activate() {
+        this.active = true;
+        if (active) reactivatedAt = LocalDateTime.now();
+    }
+
+    public void deactivate() {
+        this.active = false;
     }
 }

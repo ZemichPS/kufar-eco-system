@@ -14,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -25,6 +26,7 @@ public class AdvertisementQueryRepositoryImpl implements AdvertisementQueryRepos
     private final AdvertisementRepository advertisementRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<FullAdvertisementDto> getFullResponseById(AdvertisementId advertisementId) {
         UUID advertisemntUuid = advertisementId.uuid();
         return advertisementRepository
@@ -33,6 +35,7 @@ public class AdvertisementQueryRepositoryImpl implements AdvertisementQueryRepos
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<FullAdvertisementDto> getPage(AdvertisementFilter filter, Pageable pageable) {
         AdvertisementSpecificationFilter specificationFilter = new AdvertisementSpecificationFilter();
         BeanUtils.copyProperties(filter, specificationFilter);
