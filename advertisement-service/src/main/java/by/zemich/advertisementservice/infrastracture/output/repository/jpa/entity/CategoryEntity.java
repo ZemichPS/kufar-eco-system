@@ -3,10 +3,7 @@ package by.zemich.advertisementservice.infrastracture.output.repository.jpa.enti
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "categories", schema = "app")
@@ -30,7 +27,6 @@ public class CategoryEntity {
     private List<AdvertisementEntity> advertisements;
 
     @Setter(AccessLevel.NONE)
-
     @OneToMany(
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
@@ -38,7 +34,7 @@ public class CategoryEntity {
             orphanRemoval = true
     )
     @Builder.Default
-    private Set<CategoryAttributeEntity> attributes = new HashSet<>();
+    private List<CategoryAttributeEntity> attributes = new ArrayList<>();
 
     public boolean addAttribute(CategoryAttributeEntity attribute) {
         attribute.setCategory(this);

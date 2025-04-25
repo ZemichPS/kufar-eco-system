@@ -18,11 +18,13 @@ import java.util.UUID;
 public class CategoryAttributeEntity {
     @Id
     private UUID uuid;
-    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_uuid", referencedColumnName = "uuid")
     private CategoryEntity category;
+
+    private String name;
+
 
     @Builder.Default
     @OneToMany(

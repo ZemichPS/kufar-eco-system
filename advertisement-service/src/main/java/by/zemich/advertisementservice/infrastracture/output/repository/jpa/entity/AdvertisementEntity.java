@@ -1,8 +1,6 @@
 package by.zemich.advertisementservice.infrastracture.output.repository.jpa.entity;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.*;
-import jakarta.persistence.Id;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -25,12 +23,12 @@ public class AdvertisementEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_uuid", referencedColumnName = "uuid")
-
     private CategoryEntity category;
+
     @Enumerated(EnumType.STRING)
     private Condition condition;
     private LocalDateTime publishedAt;
-    private LocalDateTime activatedAt;
+    private LocalDateTime reactivatedAt;
     private BigDecimal priceInByn;
     private String comment;
     private String photoFileName;
@@ -53,24 +51,14 @@ public class AdvertisementEntity {
 
     @Getter
     public enum Condition {
-        NEW("новое"),
-        USED("б.у."),
-        BROKEN("неисправно");
-        @Getter
-        private String conditionDescription;
-
-        Condition(String conditionDescription) {
-        }
+        NEW,
+        USED,
+        BROKEN;
     }
 
     public enum Side {
-        BUY("Покупка"),
-        SELL("Продажа");
-        @Getter
-        private String sideDescription;
-
-        Side(String sideDescription) {
-        }
+        BUY,
+        SELL;
     }
 
 }
