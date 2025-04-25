@@ -3,7 +3,9 @@ package by.zemich.advertisementservice.infrastracture.output.repository.jpa.enti
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 
 @Entity
@@ -18,14 +20,16 @@ public class CategoryAttributeEntity {
     private UUID uuid;
     private String name;
 
-    @Builder.Default
-    @ManyToMany
-    private Set<CategoryEntity> categories = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_uuid", referencedColumnName = "uuid")
+    private CategoryEntity category;
 
     @Builder.Default
-    @OneToMany(mappedBy = "categoryAttribute",
+    @OneToMany(
+            mappedBy = "categoryAttribute",
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
-            orphanRemoval = true)
+            orphanRemoval = true
+    )
     private List<AdvertisementAttributeEntity> advertisementAttributes = new ArrayList<>();
 }

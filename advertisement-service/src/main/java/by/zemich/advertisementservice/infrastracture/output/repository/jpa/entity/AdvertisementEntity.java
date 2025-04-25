@@ -22,8 +22,10 @@ public class AdvertisementEntity {
     @Id
     private UUID uuid;
     private UUID userUuid;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_uuid", referencedColumnName = "uuid")
+
     private CategoryEntity category;
     @Enumerated(EnumType.STRING)
     private Condition condition;
@@ -34,7 +36,6 @@ public class AdvertisementEntity {
     private String photoFileName;
     private Boolean active;
     private Side side;
-
 
     @Builder.Default
     @OneToMany(

@@ -30,27 +30,23 @@ public class CategoryEntity {
     private List<AdvertisementEntity> advertisements;
 
     @Setter(AccessLevel.NONE)
-    @ManyToMany(
-            fetch = FetchType.LAZY
+
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            mappedBy = "category",
+            orphanRemoval = true
     )
     @Builder.Default
-    @JoinTable(
-            name = "category_catattributes",
-            joinColumns = @JoinColumn(name = "category_uuid"),
-            inverseJoinColumns = @JoinColumn(name = "category_attribute_uuid")
-    )
     private Set<CategoryAttributeEntity> attributes = new HashSet<>();
 
-    public CategoryEntity(UUID uuid, String name) {
-        this.uuid = uuid;
-        this.name = name;
-    }
-
     public boolean addAttribute(CategoryAttributeEntity attribute) {
+        attribute.setCategory(this);
         return attributes.add(attribute);
     }
 
     public boolean removeAttribute(CategoryAttributeEntity attribute) {
+        attribute.setCategory(null);
         return attributes.remove(attribute);
     }
 }

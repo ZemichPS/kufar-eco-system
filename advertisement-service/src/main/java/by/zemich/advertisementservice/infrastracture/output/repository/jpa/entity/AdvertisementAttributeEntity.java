@@ -13,13 +13,17 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class AdvertisementAttributeEntity {
+
     @Id
     private UUID uuid;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "advertisement_uuid", referencedColumnName = "uuid")
     private AdvertisementEntity advertisement;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "categoryAttribute_uuid")
+    @JoinColumn(name = "category_attribute_uuid", referencedColumnName = "uuid")
     private CategoryAttributeEntity categoryAttribute;
+
     private String value;
 }
