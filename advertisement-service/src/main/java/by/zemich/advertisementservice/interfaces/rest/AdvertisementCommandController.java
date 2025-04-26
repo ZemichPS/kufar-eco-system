@@ -64,7 +64,7 @@ public class AdvertisementCommandController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/{advertisementUuid}")
+    @PatchMapping("/deactivation/{advertisementUuid}")
     public ResponseEntity<Void> deactivateById(@PathVariable UUID advertisementUuid) {
         AdvertisementId advertisementId = new AdvertisementId(advertisementUuid);
         DeactivateAdvertisementCommand command = new DeactivateAdvertisementCommand(advertisementId);
@@ -72,7 +72,7 @@ public class AdvertisementCommandController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/{advertisementUuid}")
+    @PatchMapping("/activation/{advertisementUuid}")
     public ResponseEntity<Void> activateById(@PathVariable UUID advertisementUuid) {
         AdvertisementId advertisementId = new AdvertisementId(advertisementUuid);
         ActivateAdvertisementCommand command = new ActivateAdvertisementCommand(advertisementId);

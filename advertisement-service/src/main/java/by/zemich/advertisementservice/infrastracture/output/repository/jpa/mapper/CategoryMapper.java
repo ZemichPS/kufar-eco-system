@@ -5,6 +5,7 @@ import by.zemich.advertisementservice.domain.valueobject.CategoryId;
 import by.zemich.advertisementservice.domain.valueobject.Id;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.entity.CategoryEntity;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class CategoryMapper {
@@ -12,7 +13,7 @@ public class CategoryMapper {
         return CategoryEntity.builder()
                 .uuid(category.getId().uuid())
                 .name(category.getName())
-                .attributes(new HashSet<>())
+                .attributes(new ArrayList<>())
                 .build();
     }
 

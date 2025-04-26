@@ -26,7 +26,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class AdvertisementPerststenceOutputAdapter implements AdvertisementPerststenceOutputPort {
+public class AdvertisementPersistanceOutputAdapter implements AdvertisementPerststenceOutputPort {
 
     private final AdvertisementRepository advertisementRepository;
     private final AdvertisementAttributeRepository advertisementAttributeRepository;

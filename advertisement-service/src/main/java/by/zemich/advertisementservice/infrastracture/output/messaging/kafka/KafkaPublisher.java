@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.avro.Schema;
 import org.apache.avro.specific.SpecificRecord;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class KafkaPublisher implements AdvertisementEventOutputPort {
 
-    private final KafkaTemplate<String, SpecificRecord> kafkaTemplate;
+//    private final KafkaTemplate<String, SpecificRecord> kafkaTemplate;
 
     @Override
     @SneakyThrows
@@ -37,7 +38,7 @@ public class KafkaPublisher implements AdvertisementEventOutputPort {
                 return null;
             }
         };
-        kafkaTemplate.send("topic", "", specificRecord).get();
+     //   kafkaTemplate.send("topic", "", specificRecord).get();
         SpecificRecord.class.getCanonicalName();
     }
 

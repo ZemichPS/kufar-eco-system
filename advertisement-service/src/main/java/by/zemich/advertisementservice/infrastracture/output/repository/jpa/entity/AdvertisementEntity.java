@@ -51,14 +51,29 @@ public class AdvertisementEntity {
 
     @Getter
     public enum Condition {
-        NEW,
-        USED,
-        BROKEN;
+        NEW("новое"),
+        USED("б.у."),
+        BROKEN("не исправно");
+        private String conditionDescription;
+
+        Condition(String conditionDescription) {
+        }
+
+        public String getConditionDescription() {
+            return conditionDescription;
+        }
+
     }
 
     public enum Side {
-        BUY,
-        SELL;
+        BUY("покупка"),
+        SELL("продажа");
+        @Getter
+        private String description;
+
+        Side(String description) {
+            this.description = description;
+        }
     }
 
 }

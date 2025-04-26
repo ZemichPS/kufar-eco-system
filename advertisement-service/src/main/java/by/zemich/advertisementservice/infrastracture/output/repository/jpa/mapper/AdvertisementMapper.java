@@ -16,11 +16,10 @@ public class AdvertisementMapper {
                 .userUuid(domain.getUserId().uuid())
                 .condition(AdvertisementEntity.Condition.valueOf(domain.getCondition().name()))
                 .publishedAt(domain.getPublishedAt())
-                .activatedAt(domain.getReactivatedAt())
+                .reactivatedAt(domain.getReactivatedAt())
                 .priceInByn(domain.getPrice().priceInByn())
                 .comment(domain.getComment().value())
                 .photoFileName(domain.getPhoto().filename())
-                .activatedAt(domain.getReactivatedAt())
                 .attributes(new ArrayList<>())
                 .active(domain.isActive())
                 .build();
@@ -49,7 +48,7 @@ public class AdvertisementMapper {
                 .condition(entity.getCondition().getConditionDescription())
                 .publishedAt(entity.getPublishedAt())
                 .comment(entity.getComment())
-                .side(entity.getSide().getSideDescription())
+                .side(entity.getSide().getDescription())
                 .build();
     }
 }

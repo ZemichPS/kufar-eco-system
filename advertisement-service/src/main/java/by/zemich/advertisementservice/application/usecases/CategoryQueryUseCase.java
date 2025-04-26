@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CategoryQueryUseCase {
 
-   List<CategoryFullDto> loadAll();
-   CategoryFullDto getById(GetCategoryByIdQuery query);
+    List<CategoryFullDto> loadAll();
 
+    CategoryFullDto getById(GetCategoryByIdQuery query);
 }
