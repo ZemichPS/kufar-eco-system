@@ -25,7 +25,6 @@ public class CategoryAttributeEntity {
 
     private String name;
 
-
     @Builder.Default
     @OneToMany(
             mappedBy = "categoryAttribute",

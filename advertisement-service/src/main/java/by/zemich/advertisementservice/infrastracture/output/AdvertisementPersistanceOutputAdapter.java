@@ -46,7 +46,9 @@ public class AdvertisementPersistanceOutputAdapter implements AdvertisementPerst
     @Override
     public void update(Advertisement advertisement) {
         UUID advertisementId = advertisement.getId().uuid();
-        AdvertisementEntity advertisementEntity = advertisementRepository.findById(advertisementId).orElseThrow(() -> new AdvertisementNotFoundException(advertisementId.toString()));
+        AdvertisementEntity advertisementEntity = advertisementRepository.findById(advertisementId)
+                .orElseThrow(() -> new AdvertisementNotFoundException(advertisementId.toString()));
+
         advertisement.getAttributes().stream()
                 .map(attribute -> {
                     AdvertisementAttributeEntity advertisementAttributeEntity = advertisementAttributeRepository.findById(attribute.getId().uuid()).orElseGet(() ->

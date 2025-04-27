@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface CategoryPersistenceOutputPort {
     Optional<Category> getById(CategoryId id);
 
-    Category persist(Category createdCategory);
+    Category persist(Category category);
 
     boolean existsById(Id categoryId);
 

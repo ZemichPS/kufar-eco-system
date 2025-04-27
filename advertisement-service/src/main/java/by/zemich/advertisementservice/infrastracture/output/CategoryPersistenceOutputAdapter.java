@@ -3,7 +3,6 @@ package by.zemich.advertisementservice.infrastracture.output;
 import by.zemich.advertisementservice.application.ports.output.CategoryPersistenceOutputPort;
 import by.zemich.advertisementservice.domain.entity.Category;
 import by.zemich.advertisementservice.domain.exception.CategoryAttributeNotFoundException;
-import by.zemich.advertisementservice.domain.exception.CategoryNotFoundException;
 import by.zemich.advertisementservice.domain.valueobject.CategoryId;
 import by.zemich.advertisementservice.domain.valueobject.Id;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.api.CategoryAttributeRepository;
@@ -39,15 +38,20 @@ public class CategoryPersistenceOutputAdapter implements CategoryPersistenceOutp
     }
 
     @Override
-    public Category persist(Category createdCategory) {
-        CategoryEntity categoryEntity = CategoryMapper.mapToEntity(createdCategory);
-        createdCategory.getAttributes().stream()
+    public Category persist(Category category) {
+        CategoryEntity categoryEntity = CategoryMapper.mapToEntity(category);
+
+        category.getAttributes().stream()
                 .map(attribute -> {
                     UUID categoryAttributeUuid = attribute.getId().uuid();
-                    CategoryAttributeEntity categoryAttributeEntity = categoryAttributeRepository.findById(categoryAttributeUuid)
-                            .orElseThrow(() -> new CategoryAttributeNotFoundException(categoryAttributeUuid.toString()));
-                    return categoryAttributeEntity;
+                    return categoryAttributeRepository.findById(categoryAttributeUuid)
+                            .orElse(CategoryAttributeEntity.builder()
+                                    .uuid(attribute.getId().uuid())
+                                    .category(categoryEntity)
+                                    .name(attribute.getName())
+                                    .build());
                 }).forEach(categoryEntity::addAttribute);
+
         CategoryEntity savedCategory = categoryRepository.save(categoryEntity);
         return CategoryMapper.mapToDomain(savedCategory);
     }

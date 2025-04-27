@@ -20,7 +20,8 @@ CREATE TABLE app.categories
 (
     uuid uuid,
     name text,
-    CONSTRAINT pk_category PRIMARY KEY (uuid)
+    CONSTRAINT pk_category PRIMARY KEY (uuid),
+    CONSTRAINT unique_category_name UNIQUE (name)
 );
 
 CREATE TABLE app.advertisement_attributes

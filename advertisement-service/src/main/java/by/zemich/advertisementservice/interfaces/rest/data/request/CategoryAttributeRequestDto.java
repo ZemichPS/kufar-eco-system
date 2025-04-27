@@ -6,6 +6,6 @@ import java.util.UUID;
 
 @Data
 public class CategoryAttributeRequestDto {
-    private String name;
     private UUID categoryId;
+    private String name;
 }

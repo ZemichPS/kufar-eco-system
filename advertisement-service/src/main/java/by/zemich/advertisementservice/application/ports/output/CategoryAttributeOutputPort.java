@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CategoryAttributeOutputPort {
+
     void persist(CategoryAttribute categoryAttribute);
 
     boolean existsById(CategoryAttributeId categoryAttributeId);

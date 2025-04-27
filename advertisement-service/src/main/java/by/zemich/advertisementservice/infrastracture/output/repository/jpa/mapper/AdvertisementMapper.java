@@ -19,7 +19,7 @@ public class AdvertisementMapper {
                 .reactivatedAt(domain.getReactivatedAt())
                 .priceInByn(domain.getPrice().priceInByn())
                 .comment(domain.getComment().value())
-                .photoFileName(domain.getPhoto().filename())
+                .photoFileName(domain.getPhoto().orElse(new Photo("")).filename())
                 .attributes(new ArrayList<>())
                 .active(domain.isActive())
                 .build();

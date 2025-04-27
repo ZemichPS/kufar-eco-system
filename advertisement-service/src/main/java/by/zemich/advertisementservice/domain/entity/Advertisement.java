@@ -8,6 +8,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 public class Advertisement {
@@ -87,5 +88,9 @@ public class Advertisement {
 
     public void deactivate() {
         this.active = false;
+    }
+
+    public Optional<Photo> getPhoto() {
+        return Optional.ofNullable(photo);
     }
 }
