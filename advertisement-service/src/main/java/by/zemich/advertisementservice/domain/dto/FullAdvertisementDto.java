@@ -33,6 +33,7 @@ public class FullAdvertisementDto implements Serializable {
      * DTO for {@link by.zemich.advertisementservice.infrastracture.output.repository.jpa.entity.AdvertisementAttributeEntity}
      */
     @Value
+    @Builder
     public static class AdvertisementAttributeDto implements Serializable {
         String name;
         String value;

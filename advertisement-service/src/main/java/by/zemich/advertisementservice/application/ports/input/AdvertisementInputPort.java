@@ -51,6 +51,7 @@ public class AdvertisementInputPort implements AdvertisementCommandUseCases {
     @Override
     public void handle(AddAttributesCommand command) {
         Advertisement advertisement = retrieveByIdOrFromRepoOrThrow(command.advertisementId());
+
         command.attributes().entrySet().stream()
                 .map(entry ->
                         new AdvertisementAttribute(
@@ -59,7 +60,7 @@ public class AdvertisementInputPort implements AdvertisementCommandUseCases {
                                 entry.getValue()
                         )
                 )
-                .forEach(advertisement.getAttributes()::add);
+                .forEach(advertisement::addAttribute);
         advertisementPerststenceOutputPort.update(advertisement);
     }
 

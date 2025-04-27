@@ -1,6 +1,8 @@
 package by.zemich.advertisementservice.infrastracture.output.repository.jpa.specifications;
 
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.entity.AdvertisementEntity;
+import lombok.Builder;
+import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
@@ -8,6 +10,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 
+@Data
+@Builder
 public class AdvertisementSpecificationFilter {
     private String categoryName;
     private Condition condition;
@@ -17,15 +21,15 @@ public class AdvertisementSpecificationFilter {
     private Boolean active;
     private Side side;
 
-    enum Condition {
+    public enum Condition {
         NEW,
         USED,
         BROKEN;
     }
 
-    enum Side {
+    public enum Side {
         BUY,
-        SEll
+        SELL
     }
 
     public Specification<AdvertisementEntity> buildSpecification() {
@@ -37,33 +41,41 @@ public class AdvertisementSpecificationFilter {
     }
 
     private Specification<AdvertisementEntity> activeSpecification() {
-        return ((root, query, criteriaBuilder) -> active
+        return ((root, query, criteriaBuilder) -> active != null
                 ? criteriaBuilder.equal(root.get("active"), active)
                 : null);
     }
 
     private Specification<AdvertisementEntity> categorySpecification() {
         return ((root, query, criteriaBuilder) -> StringUtils.hasText(categoryName)
-                ? criteriaBuilder.like(root.get("category.name"), categoryName)
+                ? criteriaBuilder.equal(root.get("category").get("name"), categoryName)
                 : null);
     }
 
     private Specification<AdvertisementEntity> conditionSpecification() {
-        return ((root, query, criteriaBuilder) -> StringUtils.hasText(condition.name())
+        return ((root, query, criteriaBuilder) -> condition != null
                 ? criteriaBuilder.like(root.get("condition"), condition.name())
                 : null);
     }
 
     private Specification<AdvertisementEntity> sideSpecification() {
-        return ((root, query, criteriaBuilder) -> StringUtils.hasText(side.name())
+        return ((root, query, criteriaBuilder) -> side != null
                 ? criteriaBuilder.equal(root.get("side"), side.name())
                 : null);
     }
 
     private Specification<AdvertisementEntity> priceFromSpecification() {
-        return ((root, query, criteriaBuilder) -> StringUtils.hasText(priceFrom.toString()) && StringUtils.hasText(priceTo.toString())
-                ? criteriaBuilder.between(root.get("priceInByn"), priceFrom, priceTo)
-                : null);
+        return (root, query, criteriaBuilder) -> {
+            if (priceFrom != null && priceTo != null) {
+                return criteriaBuilder.between(root.get("priceInByn"), priceFrom, priceTo);
+            } else if (priceFrom != null) {
+                return criteriaBuilder.greaterThanOrEqualTo(root.get("priceInByn"), priceFrom);
+            } else if (priceTo != null) {
+                return criteriaBuilder.lessThanOrEqualTo(root.get("priceInByn"), priceTo);
+            } else {
+                return null;
+            }
+        };
     }
 
 

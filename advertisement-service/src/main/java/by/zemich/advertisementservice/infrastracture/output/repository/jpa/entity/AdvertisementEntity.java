@@ -33,6 +33,7 @@ public class AdvertisementEntity {
     private String comment;
     private String photoFileName;
     private Boolean active;
+    @Enumerated(EnumType.STRING)
     private Side side;
 
     @Builder.Default
@@ -54,15 +55,13 @@ public class AdvertisementEntity {
         NEW("новое"),
         USED("б.у."),
         BROKEN("не исправно");
+
+        @Getter
         private String conditionDescription;
 
         Condition(String conditionDescription) {
+            this.conditionDescription = conditionDescription;
         }
-
-        public String getConditionDescription() {
-            return conditionDescription;
-        }
-
     }
 
     public enum Side {

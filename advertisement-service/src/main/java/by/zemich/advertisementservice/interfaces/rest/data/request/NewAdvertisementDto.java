@@ -22,7 +22,7 @@ public class NewAdvertisementDto {
 
     public enum Side {
         BUY,
-        SEll
+        SELL
     }
 
 

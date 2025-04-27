@@ -1,7 +1,6 @@
 package by.zemich.advertisementservice.domain.dto;
 
 
-import by.zemich.advertisementservice.infrastracture.output.repository.jpa.specifications.AdvertisementSpecificationFilter;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -17,14 +16,14 @@ public class AdvertisementFilter {
     private Boolean active;
     private Side side;
 
-    enum Condition {
+    public enum Condition {
         NEW,
         USED,
         BROKEN;
     }
 
-    enum Side {
+    public enum Side {
         BUY,
-        SEll
+        SELL
     }
 }

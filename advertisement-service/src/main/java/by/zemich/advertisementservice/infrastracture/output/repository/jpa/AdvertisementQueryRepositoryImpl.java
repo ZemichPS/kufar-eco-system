@@ -37,9 +37,24 @@ public class AdvertisementQueryRepositoryImpl implements AdvertisementQueryRepos
     @Override
     @Transactional(readOnly = true)
     public Page<FullAdvertisementDto> getPage(AdvertisementFilter filter, Pageable pageable) {
-        AdvertisementSpecificationFilter specificationFilter = new AdvertisementSpecificationFilter();
-        BeanUtils.copyProperties(filter, specificationFilter);
+        AdvertisementSpecificationFilter specificationFilter = toSpecificationFilter(filter);
         Page<AdvertisementEntity> entityPage = advertisementRepository.findAll(specificationFilter.buildSpecification(), pageable);
         return entityPage.map(AdvertisementMapper::mapToDto);
+    }
+
+    private AdvertisementSpecificationFilter toSpecificationFilter(AdvertisementFilter filter) {
+        return AdvertisementSpecificationFilter.builder()
+                .active(filter.getActive())
+                .side(Optional.ofNullable(filter.getSide())
+                        .map(value -> AdvertisementSpecificationFilter.Side.valueOf(value.name()))
+                        .orElse(null))
+                .categoryName(filter.getCategoryName())
+                .priceFrom(filter.getPriceFrom())
+                .priceTo(filter.getPriceTo())
+                .publishedAt(filter.getPublishedAt())
+                .condition(Optional.ofNullable(filter.getCondition())
+                        .map(value -> AdvertisementSpecificationFilter.Condition.valueOf(value.name()))
+                        .orElse(null))
+                .build();
     }
 }

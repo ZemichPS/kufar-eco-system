@@ -4,6 +4,7 @@ import by.zemich.advertisementservice.application.usecases.AdvertisementCommandU
 import by.zemich.advertisementservice.domain.command.*;
 import by.zemich.advertisementservice.domain.valueobject.*;
 import by.zemich.advertisementservice.interfaces.rest.data.request.AdvertisementRequestDTO;
+import by.zemich.advertisementservice.interfaces.rest.data.request.AttributesDto;
 import by.zemich.advertisementservice.interfaces.rest.data.request.NewAdvertisementDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/advertisements")
@@ -22,7 +25,6 @@ public class AdvertisementCommandController {
 
     @PostMapping
     public ResponseEntity<URI> createAdvertisement(@RequestBody NewAdvertisementDto request) {
-
         CreateAdvertisementCommand command = new CreateAdvertisementCommand(
                 new AdvertisementId(UUID.randomUUID()),
                 new UserId(request.getUserId()),
@@ -52,6 +54,18 @@ public class AdvertisementCommandController {
                 new Price(request.getPrice()),
                 new Comment(request.getComment())
         );
+        commandUseCases.handle(command);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{advertisementUuid}")
+    public ResponseEntity<Void> addAttributes(@PathVariable UUID advertisementUuid, @RequestBody AttributesDto request) {
+        Map<CategoryAttributeId, String> attributes = request.getAttributes().entrySet().stream()
+                .collect(Collectors.toMap(
+                        entry -> new CategoryAttributeId(entry.getKey()),
+                        Map.Entry::getValue
+                ));
+        AddAttributesCommand command = new AddAttributesCommand(new AdvertisementId(advertisementUuid), attributes);
         commandUseCases.handle(command);
         return ResponseEntity.ok().build();
     }

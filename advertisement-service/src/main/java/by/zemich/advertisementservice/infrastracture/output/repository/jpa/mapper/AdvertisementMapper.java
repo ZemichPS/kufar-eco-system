@@ -20,6 +20,7 @@ public class AdvertisementMapper {
                 .priceInByn(domain.getPrice().priceInByn())
                 .comment(domain.getComment().value())
                 .photoFileName(domain.getPhoto().orElse(new Photo("")).filename())
+                .side(AdvertisementEntity.Side.valueOf(domain.getSide().name()))
                 .attributes(new ArrayList<>())
                 .active(domain.isActive())
                 .build();
@@ -43,12 +44,20 @@ public class AdvertisementMapper {
     public static FullAdvertisementDto mapToDto(AdvertisementEntity entity) {
         return FullAdvertisementDto.builder()
                 .uuid(entity.getUuid())
+                .priceInByn(entity.getPriceInByn())
                 .userUuid(entity.getUserUuid())
                 .category(entity.getCategory().getName())
                 .condition(entity.getCondition().getConditionDescription())
                 .publishedAt(entity.getPublishedAt())
                 .comment(entity.getComment())
                 .side(entity.getSide().getDescription())
+                .attributes(entity.getAttributes().stream()
+                        .map(attributeEntity -> FullAdvertisementDto.AdvertisementAttributeDto.builder()
+                                .name(attributeEntity.getCategoryAttribute().getName())
+                                .value(attributeEntity.getValue())
+                                .build())
+                        .toList()
+                )
                 .build();
     }
 }
