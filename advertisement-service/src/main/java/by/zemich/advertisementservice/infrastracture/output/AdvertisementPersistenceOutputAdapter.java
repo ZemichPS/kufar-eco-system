@@ -34,7 +34,10 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-@CacheConfig(cacheManager = "advertisementCaffeineCacheManager", cacheNames = "advertisementsForCommandCache")
+@CacheConfig(
+        cacheManager = "advertisementCaffeineCacheManager",
+        cacheNames = "advertisementsForCommandCache"
+)
 public class AdvertisementPersistenceOutputAdapter implements AdvertisementPerststenceOutputPort {
 
     private final AdvertisementRepository advertisementRepository;
@@ -44,7 +47,7 @@ public class AdvertisementPersistenceOutputAdapter implements AdvertisementPerst
 
     @Override
     @CachePut(key = "#advertisement.id.uuid()")
-    @CacheEvict(cacheNames = "advertisementsForQuery")
+    @CacheEvict(cacheNames = "advertisementsForQueryCache", allEntries = true)
     public Advertisement saveNew(Advertisement advertisement) {
         AdvertisementEntity advertisementEntity = AdvertisementMapper.mapToEntity(advertisement);
         UUID categoryId = advertisement.getCategoryId().uuid();
@@ -58,8 +61,8 @@ public class AdvertisementPersistenceOutputAdapter implements AdvertisementPerst
 
     @Override
     @CachePut(key = "#advertisement.id.uuid()")
-    @CacheEvict(cacheNames = "advertisementsForQuery")
-    public void update(Advertisement advertisement) {
+    @CacheEvict(cacheNames = "advertisementsForQueryCache", allEntries = true)
+    public Advertisement update(Advertisement advertisement) {
         UUID advertisementId = advertisement.getId().uuid();
         UUID categoryUuid = advertisement.getCategoryId().uuid();
 
@@ -83,19 +86,20 @@ public class AdvertisementPersistenceOutputAdapter implements AdvertisementPerst
                 })
                 .forEach(advertisementEntity::addAttribute);
         advertisementRepository.save(advertisementEntity);
+        return mapToDomain(advertisementEntity);
     }
 
     @Override
     public void delete(AdvertisementId id) {
 
-        Cache advertisementsForCommandCache = cacheManager.getCache("advertisementsForCommand");
+        Cache advertisementsForCommandCache = cacheManager.getCache("advertisementsForCommandCache");
         if (advertisementsForCommandCache != null) {
             advertisementsForCommandCache.evict(id.uuid());
         } else {
             log.warn("Cache 'advertisementsForCommand' not found. Skipping cache eviction.");
         }
 
-        Cache advertisementsForQueryCache = cacheManager.getCache("advertisementsForQuery");
+        Cache advertisementsForQueryCache = cacheManager.getCache("advertisementsForQueryCache");
         if (advertisementsForQueryCache != null) {
             advertisementsForQueryCache.clear();
         } else {

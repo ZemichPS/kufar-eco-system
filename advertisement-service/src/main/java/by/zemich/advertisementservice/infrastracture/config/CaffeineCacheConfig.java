@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 
-import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
@@ -24,11 +23,9 @@ public class CaffeineCacheConfig {
     @Bean
     @Primary
     public CacheManager advertisementCaffeineCacheManager() {
-        CaffeineCacheManager cacheManager = new CaffeineCacheManager(
-                "advertisementsForCommandCache, advertisementsForQueryCache"
-        );
+        CaffeineCacheManager cacheManager = new CaffeineCacheManager();
         cacheManager.setCaffeine(caffeineConfig());
-        cacheManager.setAsyncCacheMode(true);
+        cacheManager.setAsyncCacheMode(false);
         return cacheManager;
     }
 
@@ -51,8 +48,8 @@ public class CaffeineCacheConfig {
         return cacheManager.getCache("advertisementsForQueryCache");
     }
 
-    @Bean
-    public KeyGenerator advertisementKeyGenerator(ObjectMapper objectMapper) {
+    @Bean("advertisementQueryKeyGenerator")
+    public KeyGenerator advertisementQueryKeyGenerator(ObjectMapper objectMapper) {
 
         return (target, method, params) -> {
             try {

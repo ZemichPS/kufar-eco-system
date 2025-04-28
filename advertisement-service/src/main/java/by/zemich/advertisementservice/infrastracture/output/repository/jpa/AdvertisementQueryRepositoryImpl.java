@@ -40,7 +40,7 @@ public class AdvertisementQueryRepositoryImpl implements AdvertisementQueryRepos
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(cacheNames = "advertisementsForQueryCache", key = "advertisementKeyGenerator")
+    @Cacheable(cacheNames = "advertisementsForQueryCache", keyGenerator = "advertisementQueryKeyGenerator")
     public Page<FullAdvertisementDto> getPage(AdvertisementFilter filter, Pageable pageable) {
         AdvertisementSpecificationFilter specificationFilter = toSpecificationFilter(filter);
         Page<AdvertisementEntity> entityPage = advertisementRepository.findAll(specificationFilter.buildSpecification(), pageable);
