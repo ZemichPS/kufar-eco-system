@@ -17,6 +17,8 @@ public class AdvertisementAttributeEntity {
     @Id
     private UUID uuid;
 
+    private String value;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "advertisement_uuid", referencedColumnName = "uuid")
     private AdvertisementEntity advertisement;
@@ -25,5 +27,4 @@ public class AdvertisementAttributeEntity {
     @JoinColumn(name = "category_attribute_uuid", referencedColumnName = "uuid")
     private CategoryAttributeEntity categoryAttribute;
 
-    private String value;
 }

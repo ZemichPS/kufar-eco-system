@@ -46,11 +46,14 @@ public class AdvertisementCommandController {
         return ResponseEntity.created(location).build();
     }
 
-    @PutMapping
-    public ResponseEntity<Void> updateAdvertisement(@RequestBody AdvertisementRequestDTO request) {
+    @PutMapping("/{advertisementUuid}")
+    public ResponseEntity<Void> updateAdvertisement(
+            @PathVariable UUID advertisementUuid,
+            @RequestBody AdvertisementRequestDTO request
+    ) {
         UpdateAdvertisementCommand command = new UpdateAdvertisementCommand(
-                new AdvertisementId(request.getAdvertisementId()),
-                Condition.valueOf(request.getCondition().name()),
+                new AdvertisementId(advertisementUuid),
+                Condition.valueOf(request.getCondition()),
                 new Price(request.getPrice()),
                 new Comment(request.getComment())
         );

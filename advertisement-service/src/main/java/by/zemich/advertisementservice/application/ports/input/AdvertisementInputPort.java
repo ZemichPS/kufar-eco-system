@@ -5,12 +5,8 @@ import by.zemich.advertisementservice.application.ports.output.AdvertisementPers
 import by.zemich.advertisementservice.application.usecases.AdvertisementCommandUseCases;
 import by.zemich.advertisementservice.domain.command.*;
 import by.zemich.advertisementservice.domain.entity.Advertisement;
-import by.zemich.advertisementservice.domain.entity.AdvertisementAttribute;
 import by.zemich.advertisementservice.domain.exception.AdvertisementNotFoundException;
-import by.zemich.advertisementservice.domain.valueobject.AdvertisementAttributeId;
 import by.zemich.advertisementservice.domain.valueobject.AdvertisementId;
-
-import java.util.UUID;
 
 public class AdvertisementInputPort implements AdvertisementCommandUseCases {
 
@@ -34,8 +30,8 @@ public class AdvertisementInputPort implements AdvertisementCommandUseCases {
     @Override
     public void handle(UpdateAdvertisementCommand command) {
         Advertisement advertisement = retrieveByIdOrFromRepoOrThrow(command.advertisementId());
-        advertisement.changeComment(command.comment());
         advertisement.changeCondition(command.condition());
+        advertisement.changeComment(command.comment());
         advertisement.changePrice(command.price());
         advertisementPerststenceOutputPort.update(advertisement);
     }
@@ -51,16 +47,7 @@ public class AdvertisementInputPort implements AdvertisementCommandUseCases {
     @Override
     public void handle(AddAttributesCommand command) {
         Advertisement advertisement = retrieveByIdOrFromRepoOrThrow(command.advertisementId());
-
-        command.attributes().entrySet().stream()
-                .map(entry ->
-                        new AdvertisementAttribute(
-                                new AdvertisementAttributeId(UUID.randomUUID()),
-                                entry.getKey(),
-                                entry.getValue()
-                        )
-                )
-                .forEach(advertisement::addAttribute);
+        command.attributes().forEach(advertisement::addOrUpdateAttribute);
         advertisementPerststenceOutputPort.update(advertisement);
     }
 

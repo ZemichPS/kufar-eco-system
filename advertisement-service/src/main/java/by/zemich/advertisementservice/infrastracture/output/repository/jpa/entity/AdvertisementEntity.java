@@ -45,9 +45,9 @@ public class AdvertisementEntity {
     )
     private List<AdvertisementAttributeEntity> attributes = new ArrayList<>();
 
-    public boolean addAttribute(AdvertisementAttributeEntity attribute) {
+    public void addAttribute(AdvertisementAttributeEntity attribute) {
         attribute.setAdvertisement(this);
-        return attributes.add(attribute);
+        attributes.add(attribute);
     }
 
     @Getter

@@ -7,10 +7,9 @@ import java.util.UUID;
 
 @Data
 public class AdvertisementRequestDTO {
-    private UUID advertisementId;
-    Condition condition;
-    BigDecimal price;
-    String comment;
+    private String condition;
+    private BigDecimal price;
+    private String comment;
 
     public enum Condition {
         NEW,

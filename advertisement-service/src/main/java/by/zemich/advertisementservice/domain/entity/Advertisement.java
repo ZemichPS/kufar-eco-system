@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Getter
 public class Advertisement {
@@ -25,7 +26,7 @@ public class Advertisement {
     private List<AdvertisementAttribute> attributes;
     private Side side;
 
-    public Advertisement (CreateAdvertisementCommand command) {
+    public Advertisement(CreateAdvertisementCommand command) {
         this.id = command.advertisementId();
         this.userId = command.userId();
         this.categoryId = command.categoryId();
@@ -38,16 +39,16 @@ public class Advertisement {
         this.side = command.side();
     }
 
-    public Advertisement (AdvertisementId advertisementId,
-                          UserId userId,
-                          CategoryId categoryId,
-                          Condition condition,
-                          Price price,
-                          LocalDateTime publishedAt,
-                          Comment comment,
-                          boolean active,
-                          Photo photo,
-                          Side side) {
+    public Advertisement(AdvertisementId advertisementId,
+                         UserId userId,
+                         CategoryId categoryId,
+                         Condition condition,
+                         Price price,
+                         LocalDateTime publishedAt,
+                         Comment comment,
+                         boolean active,
+                         Photo photo,
+                         Side side) {
         this.id = advertisementId;
         this.userId = userId;
         this.categoryId = categoryId;
@@ -62,7 +63,24 @@ public class Advertisement {
     }
 
     public void addAttribute(AdvertisementAttribute attribute) {
-        attributes.add(attribute);
+        this.attributes.add(attribute);
+    }
+
+    public void addOrUpdateAttribute(CategoryAttributeId categoryAttributeId, String value) {
+        this.attributes.stream()
+                .filter(attribute -> attribute.getCategoryAttributeId().equals(categoryAttributeId))
+                .findFirst()
+                .ifPresentOrElse(
+                        attribute -> attribute.setValue(value),
+                        () -> {
+                            AdvertisementAttribute attribute = new AdvertisementAttribute(
+                                    new AdvertisementAttributeId(UUID.randomUUID()),
+                                    categoryAttributeId,
+                                    value
+                            );
+                            this.attributes.add(attribute);
+                        }
+                );
     }
 
     public void changeComment(Comment comment) {
