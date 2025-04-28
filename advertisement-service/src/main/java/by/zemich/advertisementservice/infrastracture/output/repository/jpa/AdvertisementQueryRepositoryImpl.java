@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -56,6 +57,7 @@ public class AdvertisementQueryRepositoryImpl implements AdvertisementQueryRepos
                 .categoryName(filter.getCategoryName())
                 .priceFrom(filter.getPriceFrom())
                 .priceTo(filter.getPriceTo())
+                .userId(Objects.nonNull(filter.getUserId()) ? filter.getUserId().uuid() : null)
                 .publishedAt(filter.getPublishedAt())
                 .condition(Optional.ofNullable(filter.getCondition())
                         .map(value -> AdvertisementSpecificationFilter.Condition.valueOf(value.name()))

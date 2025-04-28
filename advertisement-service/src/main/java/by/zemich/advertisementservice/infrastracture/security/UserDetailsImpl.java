@@ -1,10 +1,7 @@
-package by.zemich.userservice.infrastructure.security;
+package by.zemich.advertisementservice.infrastracture.security;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,24 +10,19 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-@Entity
-@Table(schema = "app", name = "users")
+@Builder
+@Getter
 public class UserDetailsImpl implements UserDetails {
-    @Id
-    private String email;
 
-    @Getter
-    private UUID id;
+    private final String username;
+    private final String password;
+    private final UUID uuid;
 
-    @Setter
-    private String password;
-
-    @Getter
-    private String role;
+    List<SimpleGrantedAuthority> authorities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role));
+        return authorities;
     }
 
     @Override
@@ -40,8 +32,6 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
-
-
 }

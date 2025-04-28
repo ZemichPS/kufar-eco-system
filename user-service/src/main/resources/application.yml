@@ -7,7 +7,7 @@ spring:
       enabled: false
 
   datasource:
-    url: jdbc:postgresql://localhost:5434/users
+    url: jdbc:postgresql://localhost:5438/user-db
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver

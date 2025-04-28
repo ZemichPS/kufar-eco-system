@@ -7,7 +7,6 @@ import java.util.UUID;
 
 @Data
 public class NewAdvertisementDto {
-    private UUID userId;
     private UUID categoryId;
     private Condition condition;
     private BigDecimal priceInByn;

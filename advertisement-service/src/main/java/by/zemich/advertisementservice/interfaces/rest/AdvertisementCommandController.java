@@ -3,11 +3,13 @@ package by.zemich.advertisementservice.interfaces.rest;
 import by.zemich.advertisementservice.application.usecases.AdvertisementCommandUseCases;
 import by.zemich.advertisementservice.domain.command.*;
 import by.zemich.advertisementservice.domain.valueobject.*;
-import by.zemich.advertisementservice.interfaces.rest.data.request.AdvertisementRequestDTO;
+import by.zemich.advertisementservice.infrastracture.security.UserDetailsImpl;
+import by.zemich.advertisementservice.interfaces.rest.data.request.AdvertisementUpdateRequestDTO;
 import by.zemich.advertisementservice.interfaces.rest.data.request.AttributesDto;
 import by.zemich.advertisementservice.interfaces.rest.data.request.NewAdvertisementDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -24,10 +26,16 @@ public class AdvertisementCommandController {
     private final AdvertisementCommandUseCases commandUseCases;
 
     @PostMapping
-    public ResponseEntity<URI> createAdvertisement(@RequestBody NewAdvertisementDto request) {
+    public ResponseEntity<URI> createAdvertisement(
+            @RequestBody NewAdvertisementDto request,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+
+    ) {
+        UserId userId = new UserId(userDetails.getUuid());
+
         CreateAdvertisementCommand command = new CreateAdvertisementCommand(
                 new AdvertisementId(UUID.randomUUID()),
-                new UserId(request.getUserId()),
+                userId,
                 new CategoryId(request.getCategoryId()),
                 Condition.valueOf(request.getCondition().name()),
                 new Price(request.getPriceInByn()),
@@ -49,7 +57,7 @@ public class AdvertisementCommandController {
     @PutMapping("/{advertisementUuid}")
     public ResponseEntity<Void> updateAdvertisement(
             @PathVariable UUID advertisementUuid,
-            @RequestBody AdvertisementRequestDTO request
+            @RequestBody AdvertisementUpdateRequestDTO request
     ) {
         UpdateAdvertisementCommand command = new UpdateAdvertisementCommand(
                 new AdvertisementId(advertisementUuid),

@@ -8,6 +8,7 @@ import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 
 @Data
@@ -20,6 +21,7 @@ public class AdvertisementSpecificationFilter {
     private BigDecimal priceTo;
     private Boolean active;
     private Side side;
+    private UUID userId;
 
     public enum Condition {
         NEW,
@@ -37,12 +39,19 @@ public class AdvertisementSpecificationFilter {
                 .and(categorySpecification())
                 .and(conditionSpecification())
                 .and(sideSpecification())
+                .and(userSpecification())
                 .and(priceFromSpecification());
     }
 
     private Specification<AdvertisementEntity> activeSpecification() {
         return ((root, query, criteriaBuilder) -> active != null
                 ? criteriaBuilder.equal(root.get("active"), active)
+                : null);
+    }
+
+    private Specification<AdvertisementEntity> userSpecification() {
+        return ((root, query, criteriaBuilder) -> userId != null
+                ? criteriaBuilder.equal(root.get("userUuid"), userId)
                 : null);
     }
 

@@ -1,8 +1,7 @@
-package by.zemich.userservice.infrastructure.security;
+package by.zemich.advertisementservice.infrastracture.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,8 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.function.Function;
 
 @Service
@@ -30,31 +28,22 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
-    /**
-     * Генерация токена
-     *
-     * @param user данные пользователя
-     * @return токен
-     */
-    public String generateToken(UserDetailsImpl user) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("email", user.getUsername());
-        claims.put("role", user.getRole());
-        claims.put("userId", user.getId());
-
-        return generateToken(claims, user);
+    public String extractAuthorities(String token) {
+        return extractClaim(token, claims ->  claims.get("role", String.class));
     }
 
-    /**
+    public String extractUserId(String token) {
+        return extractClaim(token, claims ->  claims.get("userId", String.class));
+    }
+
+      /**
      * Проверка токена на валидность
      *
      * @param token       токен
-     * @param userDetails данные пользователя
      * @return true, если токен валиден
      */
-    public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String userName = extractUserName(token);
-        return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);
+    public boolean isTokenValid(String token) {
+        return !isTokenExpired(token);
     }
 
     /**
@@ -70,19 +59,8 @@ public class JwtService {
         return claimsResolvers.apply(claims);
     }
 
-    /**
-     * Генерация токена
-     *
-     * @param extraClaims дополнительные данные
-     * @param userDetails данные пользователя
-     * @return токен
-     */
-    private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 100000 * 60 * 24))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
-    }
+
+
 
     /**
      * Проверка токена на просроченность
