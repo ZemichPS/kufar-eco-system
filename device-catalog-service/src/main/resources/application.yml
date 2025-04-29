@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: device-catalog-service
+
+data-provider:
+  resource: device-specification
+server:
+  port: 8714
