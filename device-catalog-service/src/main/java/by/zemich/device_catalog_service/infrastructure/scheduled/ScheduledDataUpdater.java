@@ -22,7 +22,7 @@ public class ScheduledDataUpdater {
     private final DataProvider dataProvider;
     private final BrandService brandService;
 
-    @Scheduled(cron = "0 * * * * *") // каждый час
+    @Scheduled(cron = "* * * * * *") //
     @CacheEvict(cacheNames = "brandsCache", allEntries = true)
     public void updateData() {
         dataProvider.getData().stream()
