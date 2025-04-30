@@ -10,13 +10,31 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-@Table(name = "models", schema = "app")
+@Table(name = "brands", schema = "app")
 @NoArgsConstructor
 @AllArgsConstructor
 public class BrandEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID uuid;
+    @Column(nullable = false, unique = true)
     private String name;
+    @OneToMany(
+            orphanRemoval = true,
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "brand"
+    )
+    @Getter(AccessLevel.NONE)
     private List<Model> models;
+
+    public void addModel(Model model) {
+        model.setBrand(this);
+        models.add(model);
+    }
+
+    public  List<Model> getModels() {
+        return List.copyOf(models);
+    }
+
+
 }

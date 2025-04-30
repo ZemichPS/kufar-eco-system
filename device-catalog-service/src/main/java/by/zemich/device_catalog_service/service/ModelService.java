@@ -15,6 +15,14 @@ public class ModelService {
 
     private final ModelJpaRepository modelRepository;
 
+    public boolean existById(UUID id) {
+        return modelRepository.existsById(id);
+    }
+
+    public boolean existByName(String name) {
+        return modelRepository.existsByName(name);
+    }
+
     public List<Model> findAll() {
         return modelRepository.findAll();
     }

@@ -10,4 +10,6 @@ import java.util.UUID;
 @Repository
 public interface ModelJpaRepository extends JpaRepository<Model, UUID> {
     Optional<Model> findByName(String name);
+
+    boolean existsByName(String name);
 }
