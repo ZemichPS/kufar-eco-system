@@ -18,10 +18,10 @@ import java.util.stream.Collectors;
 @ConditionalOnProperty(
         prefix = "data-provider",
         name = "resource",
-        havingValue = "device-specification"
+        havingValue = "vek21"
 )
 @RequiredArgsConstructor
-public class Vek21DataProviderAdapter implements DataProvider {
+public class Vek21DataProvider implements DataProvider {
 
 
     private final RestClient restClient;
@@ -64,19 +64,19 @@ public class Vek21DataProviderAdapter implements DataProvider {
     }
 
     @Data
-    public static class AttributeValueDto {
+    static class AttributeValueDto {
         private int id;
         private String name;
         private String key;
     }
 
     @Data
-    public static class AttributeValuesDto {
+    static class AttributeValuesDto {
         private Map<String, List<AttributeValueDto>> attributeValues;
     }
 
     @Data
-    public static class MetaResponseDto {
+    static class MetaResponseDto {
         private AttributeValuesDto meta;
     }
 }

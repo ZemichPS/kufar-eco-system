@@ -40,7 +40,7 @@ spring:
       connection-test-query: SELECT 1
 
 data-provider:
-  resource: device-specification
+  resource: kufar
 
 eureka:
   client:
