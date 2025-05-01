@@ -51,7 +51,4 @@ public class GeoDataRestController {
         return ResponseEntity.ok(response);
     }
 
-
-
-
 }
