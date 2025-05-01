@@ -1,20 +1,20 @@
 package by.zemich.device_catalog_service.utils;
 
 import by.zemich.device_catalog_service.domen.dto.ModelDto;
-import by.zemich.device_catalog_service.domen.entities.Model;
+import by.zemich.device_catalog_service.domen.entities.ModelEntity;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ModelMapper {
-    public static ModelDto map(Model model) {
+    public static ModelDto map(ModelEntity modelEntity) {
         return ModelDto.builder()
-                .uuid(model.getUuid())
-                .name(model.getName())
+                .uuid(modelEntity.getUuid())
+                .name(modelEntity.getName())
                 .build();
     }
 
-    public static Model map(ModelDto dto) {
-        return Model.builder()
+    public static ModelEntity map(ModelDto dto) {
+        return ModelEntity.builder()
                 .uuid(dto.getUuid())
                 .name(dto.getName())
                 .build();

@@ -25,16 +25,14 @@ public class BrandEntity {
             mappedBy = "brand"
     )
     @Getter(AccessLevel.NONE)
-    private List<Model> models;
+    private List<ModelEntity> modelEntities;
 
-    public void addModel(Model model) {
-        model.setBrand(this);
-        models.add(model);
+    public void addModel(ModelEntity modelEntity) {
+        modelEntity.setBrand(this);
+        modelEntities.add(modelEntity);
     }
 
-    public  List<Model> getModels() {
-        return List.copyOf(models);
+    public  List<ModelEntity> getModelEntities() {
+        return List.copyOf(modelEntities);
     }
-
-
 }

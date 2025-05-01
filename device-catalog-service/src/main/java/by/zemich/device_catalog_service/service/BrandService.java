@@ -3,10 +3,6 @@ package by.zemich.device_catalog_service.service;
 import by.zemich.device_catalog_service.domen.entities.BrandEntity;
 import by.zemich.device_catalog_service.repository.BrandJpaRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,16 +12,12 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-@CacheConfig(
-        cacheManager = "caffeineCacheManager",
-        cacheNames = "brandsCache"
-)
 public class BrandService {
 
     private final BrandJpaRepository brandRepository;
 
     @Transactional(readOnly = true)
-    public Optional<BrandEntity> getById(UUID uuid) {
+    public Optional<BrandEntity> getByUuid(UUID uuid) {
         return brandRepository.findById(uuid);
     }
 
@@ -49,4 +41,7 @@ public class BrandService {
         return brandRepository.save(brand);
     }
 
+    public void delete(BrandEntity brand) {
+        brandRepository.delete(brand);
+    }
 }

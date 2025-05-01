@@ -17,7 +17,7 @@ public class CaffeineCacheConfig {
     @Bean
     @Primary
     public CacheManager caffeineCacheManager() {
-        CaffeineCacheManager cacheManager = new CaffeineCacheManager("brandsCache");
+        CaffeineCacheManager cacheManager = new CaffeineCacheManager("brandsDtoCache");
         cacheManager.setCaffeine(caffeineConfig());
         cacheManager.setAsyncCacheMode(false);
         return cacheManager;
@@ -30,12 +30,6 @@ public class CaffeineCacheConfig {
                 .expireAfterAccess(10, TimeUnit.MINUTES) // Удаление неиспользуемых данных
                 .recordStats(); // Включаем статистику (для мониторинга)
     }
-
-//TODO удулить если не используется
-//    @Bean
-//    public Cache advertisementsForCommandCache(CacheManager cacheManager) {
-//        return cacheManager.getCache("brandsCache");
-//    }
 
 }
 

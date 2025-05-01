@@ -1,16 +1,19 @@
 package by.zemich.device_catalog_service.api.rest;
 
 import by.zemich.device_catalog_service.domen.dto.BrandDto;
+import by.zemich.device_catalog_service.domen.dto.BrandModifyDto;
+import by.zemich.device_catalog_service.domen.dto.ModelCreateDto;
 import by.zemich.device_catalog_service.service.BrandServiceFacade;
 import by.zemich.device_catalog_service.service.DataProvider;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/brands")
@@ -27,11 +30,48 @@ public class BrandController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/id/{uuid}")
+    public ResponseEntity<BrandDto> getById(@PathVariable UUID uuid) {
+        BrandDto response = brandServiceFacade.getByUuid(uuid);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<BrandDto> getByName(@PathVariable String name) {
+        BrandDto response = brandServiceFacade.getByName(name);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping
+    public ResponseEntity<BrandDto> create(@RequestBody @Valid BrandModifyDto dto) {
+
+        BrandDto savedBrand = brandServiceFacade.create(dto);
+        return ResponseEntity.ok(savedBrand);
+    }
+
+    @PostMapping("{uuid}")
+    public ResponseEntity<BrandDto> addModel(@PathVariable(name = "uuid") UUID brandUuid, @RequestBody @Valid ModelCreateDto createDto) {
+        BrandDto savedBrand = brandServiceFacade.addModel(brandUuid, createDto);
+        return ResponseEntity.ok(savedBrand);
+    }
+
+    @PatchMapping("{uuid}")
+    public ResponseEntity<BrandDto> update(@PathVariable(name = "uuid") UUID brandUuid, BrandModifyDto updateDto) {
+        brandServiceFacade.update(brandUuid, updateDto);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("{uuid}")
+    public ResponseEntity<Void> deleteById(@PathVariable(name = "uuid") UUID brandUuid) {
+        brandServiceFacade.deleteByUuid(brandUuid);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/response")
     public ResponseEntity<List<BrandDto>> response() {
         List<BrandDto> data = dataProvider.getData();
         log.info("Producer count: {}", data.size());
-        data.forEach(brandServiceFacade::saveBrand);
+        data.forEach(brandServiceFacade::saveOrUpdateBrand);
         return ResponseEntity.ok(data);
     }
 

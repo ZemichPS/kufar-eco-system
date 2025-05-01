@@ -12,7 +12,6 @@ import org.springframework.web.client.RestClient;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 @Component
@@ -22,10 +21,11 @@ import java.util.UUID;
         name = "resource",
         havingValue = "kufar"
 )
-public class KufarProvider implements DataProvider {
+public class KufarDataProvider implements DataProvider {
 
     private final RestClient restClient;
-    private final String FILTER_URL = "https://api.kufar.by/taxonomy-proxy/v1/dispatch?routing=web_generalist&parent=17000&application=ad_listing&platform=web";
+    private final String FILTER_URL
+            = "https://api.kufar.by/taxonomy-proxy/v1/dispatch?routing=web_generalist&parent=17000&application=ad_listing&platform=web";
 
     @Override
     public List<BrandDto> getData() {
@@ -52,7 +52,7 @@ public class KufarProvider implements DataProvider {
                 .map(
                         ruleWrapper -> {
                             String brandId = ruleWrapper.getRule().getPhonesBrand();
-                            String brandName = phonesBrand.stream().flatMap(ref -> ref.getValues().stream())
+                            String brandName = phonesBrand.getFirst().values.stream()
                                     .filter(value -> value.getValue().equalsIgnoreCase(brandId))
                                     .map(value -> value.getLabels().get("ru"))
                                     .findFirst().orElse("");
@@ -74,6 +74,7 @@ public class KufarProvider implements DataProvider {
                                     .build();
                         }
                 )
+                .filter(brandDto -> !brandDto.getName().isEmpty())
                 .toList();
     }
 
@@ -90,8 +91,6 @@ public class KufarProvider implements DataProvider {
         @Data
         @JsonIgnoreProperties(ignoreUnknown = true)
         public static class Parameters {
-            private String dispatchType;
-            private String deduplicationKey;
             private Map<String, Ref> refs;
             private List<RuleWrapper> rules;
         }
@@ -99,45 +98,11 @@ public class KufarProvider implements DataProvider {
         @Data
         @JsonIgnoreProperties(ignoreUnknown = true)
         public static class Ref {
+            @JsonProperty("variation_id")
             private String variationId;
             private String name;
-            private String urlName;
-            private boolean required;
-            private String type;
-            private String meta;
-            private boolean multi;
-            private Hint hint;
-            private List<Action> actions;
-            private Object grouping;
-            private Labels labels;
             private List<Value> values;
-            private String externalValuesUrl;
-            private Range range;
-            private int minTaxonomyVersion;
-            private String imageUrl;
-            @JsonProperty("is_type")
-            private boolean isType;
-        }
 
-        @Data
-        public static class Hint {
-            private String ru;
-            private String by;
-        }
-
-        @Data
-        public static class Action {
-            private int actionId;
-            private Object args;
-            private Object dependsOn;
-            private String name;
-            private String type;
-        }
-
-        @Data
-        public static class Labels {
-            private Map<String, String> name;
-            private Map<String, String> placeholder;
         }
 
         @Data
@@ -149,27 +114,17 @@ public class KufarProvider implements DataProvider {
         }
 
         @Data
-        public static class Range {
-            private String defaultLower;
-            private String defaultUpper;
-            private String lower;
-            private String upper;
-            private String step;
-        }
-
-        @Data
         public static class RuleWrapper {
             private Rule rule;
             private List<String> refs;
         }
 
         @Data
+        @JsonIgnoreProperties(ignoreUnknown = true)
         public static class Rule {
-            private String region;
             private String category;
+            @JsonProperty("phones_brand")
             private String phonesBrand;
-            private String companyAd;
-            private String phabletSmartWatchesType;
         }
     }
 }

@@ -1,6 +1,6 @@
 package by.zemich.device_catalog_service.service;
 
-import by.zemich.device_catalog_service.domen.entities.Model;
+import by.zemich.device_catalog_service.domen.entities.ModelEntity;
 import by.zemich.device_catalog_service.repository.ModelJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,15 +23,15 @@ public class ModelService {
         return modelRepository.existsByName(name);
     }
 
-    public List<Model> findAll() {
+    public List<ModelEntity> findAll() {
         return modelRepository.findAll();
     }
 
-    public Optional<Model> findById(UUID uuid) {
+    public Optional<ModelEntity> findById(UUID uuid) {
         return modelRepository.findById(uuid);
     }
 
-    public Optional<Model> findByName(String name) {
+    public Optional<ModelEntity> findByName(String name) {
         return modelRepository.findByName(name);
     }
 

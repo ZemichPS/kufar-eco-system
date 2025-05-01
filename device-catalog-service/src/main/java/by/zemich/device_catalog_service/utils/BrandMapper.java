@@ -21,7 +21,7 @@ public class BrandMapper {
         return BrandEntity.builder()
                 .uuid(dto.getUuid())
                 .name(dto.getName())
-                .models(new ArrayList<>())
+                .modelEntities(new ArrayList<>())
                 .build();
     }
 }
