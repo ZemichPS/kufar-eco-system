@@ -1,10 +1,10 @@
 package by.zemich.device_catalog_service.service;
 
-import by.zemich.device_catalog_service.domen.BusinessException;
-import by.zemich.device_catalog_service.domen.dto.BrandDto;
-import by.zemich.device_catalog_service.domen.dto.BrandModifyDto;
-import by.zemich.device_catalog_service.domen.dto.ModelCreateDto;
-import by.zemich.device_catalog_service.domen.dto.ModelDto;
+import by.zemich.device_catalog_service.domen.exceptions.BusinessException;
+import by.zemich.device_catalog_service.domen.dtos.BrandDto;
+import by.zemich.device_catalog_service.domen.dtos.BrandModifyDto;
+import by.zemich.device_catalog_service.domen.dtos.ModelCreateDto;
+import by.zemich.device_catalog_service.domen.dtos.ModelDto;
 import by.zemich.device_catalog_service.domen.entities.BrandEntity;
 import by.zemich.device_catalog_service.domen.entities.ModelEntity;
 import by.zemich.device_catalog_service.utils.BrandMapper;

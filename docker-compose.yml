@@ -76,6 +76,29 @@ services:
       retries: 3             # Количество попыток перед тем, как контейнер будет помечен как unhealthy
       start_period: 30s      # Время ожидания перед первой проверкой (например, пока база поднимается)
 
+  geo-data-db:
+    image: postgres:17.2
+    container_name: geo-postgres-db
+    restart: always
+    #    depends_on:
+    #      - service-discovery
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: geo-data
+    volumes:
+      - D:/docker-data/advertisements/geo-service-db:/var/lib/postgresql/data
+    ports:
+      - "5412:5432"
+    networks:
+      - application-net
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d geo-data" ]
+      interval: 10s          # Интервал между проверками (здесь каждые 10 секунд)
+      timeout: 5s            # Таймаут команды проверки
+      retries: 3             # Количество попыток перед тем, как контейнер будет помечен как unhealthy
+      start_period: 30s      # Время ожидания перед первой проверкой (например, пока база поднимается)
+
 
   kufarspy:
     # image: kufarspy-application:latest // стабильная версия

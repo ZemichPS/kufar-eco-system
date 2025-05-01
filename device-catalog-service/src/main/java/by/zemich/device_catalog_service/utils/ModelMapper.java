@@ -1,6 +1,6 @@
 package by.zemich.device_catalog_service.utils;
 
-import by.zemich.device_catalog_service.domen.dto.ModelDto;
+import by.zemich.device_catalog_service.domen.dtos.ModelDto;
 import by.zemich.device_catalog_service.domen.entities.ModelEntity;
 import lombok.experimental.UtilityClass;
 

@@ -1,7 +1,7 @@
 package by.zemich.device_catalog_service.service;
 
-import by.zemich.device_catalog_service.domen.dto.BrandDto;
-import by.zemich.device_catalog_service.domen.dto.ModelDto;
+import by.zemich.device_catalog_service.domen.dtos.BrandDto;
+import by.zemich.device_catalog_service.domen.dtos.ModelDto;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

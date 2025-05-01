@@ -1,4 +1,4 @@
-package by.zemich.device_catalog_service.domen.dto;
+package by.zemich.device_catalog_service.domen.dtos;
 
 
 import lombok.*;

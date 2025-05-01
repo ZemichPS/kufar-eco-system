@@ -1,7 +1,8 @@
-package by.zemich.device_catalog_service.api.rest;
+package by.zemich.geo_service.api.rest;
 
-import by.zemich.device_catalog_service.domen.exceptions.BusinessException;
+import by.zemich.geo_service.domain.exceptions.BusinessException;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -17,6 +18,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
+@Slf4j
 public class ControllerAdvice {
 
 
@@ -48,6 +50,7 @@ public class ControllerAdvice {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGenericException(Exception ex, HttpServletRequest request) {
+        log.error(ex.getMessage(), ex);
         return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", "Произошла непредвиденная ошибка", request.getRequestURI());
     }
 

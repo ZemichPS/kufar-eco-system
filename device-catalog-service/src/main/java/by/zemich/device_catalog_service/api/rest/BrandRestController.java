@@ -1,8 +1,8 @@
 package by.zemich.device_catalog_service.api.rest;
 
-import by.zemich.device_catalog_service.domen.dto.BrandDto;
-import by.zemich.device_catalog_service.domen.dto.BrandModifyDto;
-import by.zemich.device_catalog_service.domen.dto.ModelCreateDto;
+import by.zemich.device_catalog_service.domen.dtos.BrandDto;
+import by.zemich.device_catalog_service.domen.dtos.BrandModifyDto;
+import by.zemich.device_catalog_service.domen.dtos.ModelCreateDto;
 import by.zemich.device_catalog_service.service.BrandServiceFacade;
 import by.zemich.device_catalog_service.service.DataProvider;
 import jakarta.validation.Valid;
@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,7 +18,7 @@ import java.util.UUID;
 @RequestMapping("/api/v1/brands")
 @RequiredArgsConstructor
 @Slf4j
-public class BrandController {
+public class BrandRestController {
 
     private final BrandServiceFacade brandServiceFacade;
     private final DataProvider dataProvider;
