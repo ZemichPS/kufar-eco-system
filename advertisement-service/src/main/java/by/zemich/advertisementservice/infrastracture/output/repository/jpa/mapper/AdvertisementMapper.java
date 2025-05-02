@@ -46,7 +46,7 @@ public class AdvertisementMapper {
                 .uuid(entity.getUuid())
                 .priceInByn(entity.getPriceInByn())
                 .userUuid(entity.getUserUuid())
-                .category(entity.getCategory().getName())
+                .categoryName(entity.getCategory().getName())
                 .condition(entity.getCondition().getConditionDescription())
                 .publishedAt(entity.getPublishedAt())
                 .comment(entity.getComment())

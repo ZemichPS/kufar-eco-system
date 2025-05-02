@@ -19,7 +19,7 @@
 //                    CategoryAttribute attribute = category.getAttributes().stream()
 //                            .filter(attr -> categoryAttributeId.equals(attr.getId()))
 //                            .findFirst().orElseThrow(); // TODO продумать
-//                    String attributeValue = entry.getValue();
+//                    String attributeValue = entry.getAttributeValue();
 //                    return new AdvertisementAttribute(categoryAttributeId, attribute, attributeValue);
 //                }).toList();
 //    }

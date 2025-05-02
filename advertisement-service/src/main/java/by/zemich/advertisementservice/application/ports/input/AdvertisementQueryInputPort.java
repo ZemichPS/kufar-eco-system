@@ -33,4 +33,9 @@ public class AdvertisementQueryInputPort implements AdvertisementQueryUseCases {
     public Page<FullAdvertisementDto> loadMyAdsPage(GetFilteredPageWithMyAdsQuery query) {
         return advertisementQueryRepository.getPage(query.filter(), query.pageable());
     }
+
+    @Override
+    public FullAdvertisementDto search(String query) {
+        return null;
+    }
 }

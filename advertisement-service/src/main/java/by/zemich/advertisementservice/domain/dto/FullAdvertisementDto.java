@@ -19,7 +19,7 @@ import java.util.UUID;
 public class FullAdvertisementDto implements Serializable {
     UUID uuid;
     UUID userUuid;
-    String category;
+    String categoryName;
     String condition;
     LocalDateTime publishedAt;
     BigDecimal priceInByn;

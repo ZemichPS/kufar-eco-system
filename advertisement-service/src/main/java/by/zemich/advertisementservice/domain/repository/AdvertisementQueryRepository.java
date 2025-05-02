@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 
 public interface AdvertisementQueryRepository {
+
     Optional<FullAdvertisementDto> getFullResponseById(AdvertisementId id);
 
     Page<FullAdvertisementDto> getPage(AdvertisementFilter filter, Pageable pageable);

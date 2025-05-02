@@ -19,6 +19,7 @@ import java.util.UUID;
 public class AdvertisementEntity {
     @Id
     private UUID uuid;
+
     private UUID userUuid;
 
     @ManyToOne(fetch = FetchType.LAZY)
