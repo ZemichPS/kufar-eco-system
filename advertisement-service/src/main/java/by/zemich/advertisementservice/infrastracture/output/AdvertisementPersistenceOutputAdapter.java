@@ -7,6 +7,8 @@ import by.zemich.advertisementservice.domain.exception.CategoryAttributeNotFound
 import by.zemich.advertisementservice.domain.exception.CategoryNotFoundException;
 import by.zemich.advertisementservice.domain.valueobject.AdvertisementId;
 import by.zemich.advertisementservice.domain.valueobject.UserId;
+import by.zemich.advertisementservice.infrastracture.events.AdvertisementCreatedEvent;
+import by.zemich.advertisementservice.infrastracture.output.repository.elastic.repository.AdvertisementElasticRepository;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.api.AdvertisementRepository;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.api.CategoryAttributeRepository;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.api.CategoryRepository;
@@ -24,6 +26,7 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,10 +47,12 @@ public class AdvertisementPersistenceOutputAdapter implements AdvertisementPerst
     private final CategoryRepository categoryRepository;
     private final CategoryAttributeRepository categoryAttributeRepository;
     private final CacheManager cacheManager;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     @CachePut(key = "#advertisement.id.uuid()")
     @CacheEvict(cacheNames = "advertisementsForQueryCache", allEntries = true)
+    @Transactional
     public Advertisement saveNew(Advertisement advertisement) {
         AdvertisementEntity advertisementEntity = AdvertisementMapper.mapToEntity(advertisement);
         UUID categoryId = advertisement.getCategoryId().uuid();
@@ -55,8 +60,9 @@ public class AdvertisementPersistenceOutputAdapter implements AdvertisementPerst
                 .findById(categoryId)
                 .orElseThrow(() -> new CategoryNotFoundException(categoryId.toString()));
         advertisementEntity.setCategory(categoryEntity);
-        advertisementRepository.save(advertisementEntity);
-        return mapToDomain(advertisementEntity);
+        AdvertisementEntity savedAdvertisementEntity = advertisementRepository.save(advertisementEntity);
+        eventPublisher.publishEvent(new AdvertisementCreatedEvent(savedAdvertisementEntity.getUuid()));
+        return mapToDomain(savedAdvertisementEntity);
     }
 
     @Override
@@ -85,8 +91,9 @@ public class AdvertisementPersistenceOutputAdapter implements AdvertisementPerst
                     return advertisementAttributeEntity;
                 })
                 .forEach(advertisementEntity::addAttribute);
-        advertisementRepository.save(advertisementEntity);
-        return mapToDomain(advertisementEntity);
+        AdvertisementEntity savedAdvertisementEntity = advertisementRepository.save(advertisementEntity);
+        advertisementElasticRepository.save(savedAdvertisementEntity);
+        return mapToDomain(savedAdvertisementEntity);
     }
 
     @Override

@@ -5,16 +5,21 @@ import by.zemich.advertisementservice.domain.exception.AdvertisementNotFoundExce
 import by.zemich.advertisementservice.domain.query.GetFilteredPageQuery;
 import by.zemich.advertisementservice.domain.query.GetFilteredPageWithMyAdsQuery;
 import by.zemich.advertisementservice.domain.query.GetFullAdvertisementQuery;
+import by.zemich.advertisementservice.domain.repository.AdvertisementFullTextQueryRepository;
 import by.zemich.advertisementservice.domain.repository.AdvertisementQueryRepository;
 import by.zemich.advertisementservice.domain.dto.FullAdvertisementDto;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public class AdvertisementQueryInputPort implements AdvertisementQueryUseCases {
 
     private final AdvertisementQueryRepository advertisementQueryRepository;
+    private final AdvertisementFullTextQueryRepository  advertisementFullTextQueryRepository;
 
-    public AdvertisementQueryInputPort(AdvertisementQueryRepository advertisementQueryRepository) {
+    public AdvertisementQueryInputPort(AdvertisementQueryRepository advertisementQueryRepository,
+                                       AdvertisementFullTextQueryRepository advertisementFullTextQueryRepository) {
         this.advertisementQueryRepository = advertisementQueryRepository;
+        this.advertisementFullTextQueryRepository = advertisementFullTextQueryRepository;
     }
 
     @Override
@@ -35,7 +40,7 @@ public class AdvertisementQueryInputPort implements AdvertisementQueryUseCases {
     }
 
     @Override
-    public FullAdvertisementDto search(String query) {
-        return null;
+    public Page<FullAdvertisementDto> fullTextSearch(String query, Pageable pageable) {
+        return advertisementFullTextQueryRepository.fullTextSearch(query, pageable);
     }
 }

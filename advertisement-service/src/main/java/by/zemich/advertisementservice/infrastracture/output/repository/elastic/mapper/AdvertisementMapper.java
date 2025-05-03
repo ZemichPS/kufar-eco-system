@@ -2,6 +2,7 @@ package by.zemich.advertisementservice.infrastracture.output.repository.elastic.
 
 import by.zemich.advertisementservice.domain.dto.FullAdvertisementDto;
 import by.zemich.advertisementservice.infrastracture.output.repository.elastic.documents.AdvertisementDocument;
+import by.zemich.advertisementservice.infrastracture.output.repository.jpa.entity.AdvertisementEntity;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -22,4 +23,20 @@ public class AdvertisementMapper {
                 .build();
 
     }
+
+    public static AdvertisementDocument map(AdvertisementEntity entity) {
+        return AdvertisementDocument.builder()
+                .uuid(entity.getUuid())
+                .categoryName(entity.getCategory().getName())
+                .side(entity.getSide().name())
+                .comment(entity.getComment())
+                .priceInByn(entity.getPriceInByn())
+                .userUuid(entity.getUserUuid())
+                .publishedAt(entity.getPublishedAt())
+                .photoFileName(entity.getPhotoFileName())
+                .condition(entity.getCondition().getConditionDescription())
+                .active(entity.getActive())
+                .build();
+    }
+
 }

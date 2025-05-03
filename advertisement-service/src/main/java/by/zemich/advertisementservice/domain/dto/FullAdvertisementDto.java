@@ -17,6 +17,7 @@ import java.util.UUID;
 @Builder
 @Data
 public class FullAdvertisementDto implements Serializable {
+
     UUID uuid;
     UUID userUuid;
     String categoryName;

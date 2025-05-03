@@ -5,6 +5,7 @@ import by.zemich.advertisementservice.domain.dto.FullAdvertisementDto;
 import by.zemich.advertisementservice.domain.repository.AdvertisementFullTextQueryRepository;
 import by.zemich.advertisementservice.domain.repository.AdvertisementQueryRepository;
 import by.zemich.advertisementservice.domain.valueobject.AdvertisementId;
+import by.zemich.advertisementservice.infrastracture.output.repository.elastic.documents.AdvertisementDocument;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.api.AdvertisementRepository;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.entity.AdvertisementEntity;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.mapper.AdvertisementMapper;
@@ -13,11 +14,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -27,7 +33,7 @@ import java.util.UUID;
 @CacheConfig(
         cacheManager = "advertisementCaffeineCacheManager"
 )
-public class AdvertisementQueryRepositoryImpl implements AdvertisementQueryRepository, AdvertisementFullTextQueryRepository {
+public class AdvertisementQueryOutputPort implements AdvertisementQueryRepository, AdvertisementFullTextQueryRepository {
 
     private final AdvertisementRepository advertisementRepository;
     private final ElasticsearchOperations elasticsearchOperations;
@@ -51,12 +57,6 @@ public class AdvertisementQueryRepositoryImpl implements AdvertisementQueryRepos
         return entityPage.map(AdvertisementMapper::mapToDto);
     }
 
-    @Override
-    public Page<FullAdvertisementDto> fullTextSearch(String query, Pageable pageable) {
-
-        return null;
-    }
-
     private AdvertisementSpecificationFilter toSpecificationFilter(AdvertisementFilter filter) {
         return AdvertisementSpecificationFilter.builder()
                 .active(filter.getActive())
@@ -72,5 +72,26 @@ public class AdvertisementQueryRepositoryImpl implements AdvertisementQueryRepos
                         .map(value -> AdvertisementSpecificationFilter.Condition.valueOf(value.name()))
                         .orElse(null))
                 .build();
+    }
+
+    @Override
+    public Page<FullAdvertisementDto> fullTextSearch(String query, Pageable pageable) {
+        NativeQuery searchQuery = NativeQuery.builder()
+                .withQuery(q -> q
+                        .match(m -> m
+                                .field("categoryName")
+                                .query(query)
+                        )
+                )
+                .withPageable(pageable)
+                .build();
+
+        SearchHits<AdvertisementDocument> hits = elasticsearchOperations.search(searchQuery, AdvertisementDocument.class);
+        List<FullAdvertisementDto> fullAdvertisementDtoList = hits
+                .map(SearchHit::getContent)
+                .map(by.zemich.advertisementservice.infrastracture.output.repository.elastic.mapper.AdvertisementMapper::map)
+                .toList();
+
+        return new PageImpl<>(fullAdvertisementDtoList, pageable, hits.getTotalHits());
     }
 }

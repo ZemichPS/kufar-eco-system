@@ -6,6 +6,7 @@ import by.zemich.advertisementservice.application.ports.output.AdvertisementPers
 import by.zemich.advertisementservice.application.ports.output.CategoryAttributeOutputPort;
 import by.zemich.advertisementservice.application.ports.output.CategoryPersistenceOutputPort;
 import by.zemich.advertisementservice.application.usecases.*;
+import by.zemich.advertisementservice.domain.repository.AdvertisementFullTextQueryRepository;
 import by.zemich.advertisementservice.domain.repository.AdvertisementQueryRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,8 +15,9 @@ import org.springframework.context.annotation.Configuration;
 public class BeanConfig {
 
     @Bean
-    public AdvertisementQueryUseCases advertisementQueryUseCases(AdvertisementQueryRepository advertisementQueryRepository) {
-        return new AdvertisementQueryInputPort(advertisementQueryRepository);
+    public AdvertisementQueryUseCases advertisementQueryUseCases(AdvertisementQueryRepository advertisementQueryRepository,
+                                                                 AdvertisementFullTextQueryRepository advertisementFullTextQueryRepository) {
+        return new AdvertisementQueryInputPort(advertisementQueryRepository, advertisementFullTextQueryRepository);
     }
 
     @Bean

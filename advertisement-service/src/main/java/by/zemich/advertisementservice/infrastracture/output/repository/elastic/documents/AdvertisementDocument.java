@@ -1,6 +1,5 @@
 package by.zemich.advertisementservice.infrastracture.output.repository.elastic.documents;
 
-import by.zemich.advertisementservice.domain.dto.FullAdvertisementDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,6 +23,7 @@ public class AdvertisementDocument {
     @Id
     private UUID uuid;
 
+    @Field(type = FieldType.Keyword, index = false)
     UUID userUuid;
 
     @Field(
@@ -32,14 +32,32 @@ public class AdvertisementDocument {
             searchAnalyzer = "russian"
     )
     private String categoryName;
-    private String condition;
-    private LocalDateTime publishedAt;
-    private BigDecimal priceInByn;
-    private String comment;
-    private String photoFileName;
-    private Boolean active;
-    private String side;
-    private List<NestedAttributeDocument> attributes;
 
+    @Field(type = FieldType.Text,
+            analyzer = "russian",
+            searchAnalyzer = "russian"
+    )
+    private String condition;
+
+    @Field(type = FieldType.Date, index = false)
+    private LocalDateTime publishedAt;
+
+    @Field(type = FieldType.Keyword, index = false)
+    private BigDecimal priceInByn;
+
+    @Field(type = FieldType.Keyword, index = false)
+    private String comment;
+
+    @Field(type = FieldType.Keyword, index = false)
+    private String photoFileName;
+
+    @Field(type = FieldType.Boolean, index = false)
+    private Boolean active;
+
+    @Field(type = FieldType.Keyword, index = false)
+    private String side;
+
+    @Field(type = FieldType.Nested, searchAnalyzer = "russian", analyzer = "russian")
+    private List<NestedAttributeDocument> attributes;
 }
 

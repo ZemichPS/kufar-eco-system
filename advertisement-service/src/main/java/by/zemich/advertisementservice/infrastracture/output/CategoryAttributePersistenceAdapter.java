@@ -1,10 +1,8 @@
 package by.zemich.advertisementservice.infrastracture.output;
 
 import by.zemich.advertisementservice.application.ports.output.CategoryAttributeOutputPort;
-import by.zemich.advertisementservice.domain.exception.CategoryAttributeNotFoundException;
 import by.zemich.advertisementservice.domain.valueobject.CategoryAttribute;
 import by.zemich.advertisementservice.domain.valueobject.CategoryAttributeId;
-import by.zemich.advertisementservice.domain.valueobject.Id;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.api.CategoryAttributeRepository;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.entity.CategoryAttributeEntity;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.mapper.CategoryAttributeMapper;
@@ -17,7 +15,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class CategoryAttributeAdapter implements CategoryAttributeOutputPort {
+public class CategoryAttributePersistenceAdapter implements CategoryAttributeOutputPort {
 
     private final CategoryAttributeRepository categoryAttributeRepository;
 
