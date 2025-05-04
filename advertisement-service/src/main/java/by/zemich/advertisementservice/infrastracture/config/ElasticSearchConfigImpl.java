@@ -8,10 +8,12 @@ import java.time.Duration;
 
 @Configuration
 public class ElasticSearchConfigImpl extends ElasticsearchConfiguration {
+
     @Override
     public ClientConfiguration clientConfiguration() {
         return ClientConfiguration.builder()
                 .connectedTo("localhost:9200")
+                .withBasicAuth("elastic", "elastic")
                 .withSocketTimeout(Duration.ofSeconds(2))
                 .build();
     }

@@ -10,6 +10,8 @@ import by.zemich.advertisementservice.infrastracture.output.repository.jpa.api.A
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.entity.AdvertisementEntity;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.mapper.AdvertisementMapper;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.specifications.AdvertisementSpecificationFilter;
+import co.elastic.clients.elasticsearch._types.query_dsl.Operator;
+import co.elastic.clients.elasticsearch._types.query_dsl.TextQueryType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
@@ -57,6 +59,22 @@ public class AdvertisementQueryOutputPort implements AdvertisementQueryRepositor
         return entityPage.map(AdvertisementMapper::mapToDto);
     }
 
+    @Override
+    public Page<FullAdvertisementDto> fullTextSearch(String query, Pageable pageable) {
+        NativeQuery searchQuery = createNativeQuery(query, pageable);
+
+        SearchHits<AdvertisementDocument> hits = elasticsearchOperations.search(searchQuery, AdvertisementDocument.class);
+        List<FullAdvertisementDto> fullAdvertisementDtoList = hits
+                .map(SearchHit::getContent)
+                .map(AdvertisementDocument::getUuid)
+                .map(advertisementRepository::findById)
+                .flatMap(Optional::stream)
+                .map(AdvertisementMapper::mapToDto)
+                .toList();
+
+        return new PageImpl<>(fullAdvertisementDtoList, pageable, hits.getTotalHits());
+    }
+
     private AdvertisementSpecificationFilter toSpecificationFilter(AdvertisementFilter filter) {
         return AdvertisementSpecificationFilter.builder()
                 .active(filter.getActive())
@@ -74,24 +92,18 @@ public class AdvertisementQueryOutputPort implements AdvertisementQueryRepositor
                 .build();
     }
 
-    @Override
-    public Page<FullAdvertisementDto> fullTextSearch(String query, Pageable pageable) {
-        NativeQuery searchQuery = NativeQuery.builder()
+    private NativeQuery createNativeQuery(String query, Pageable pageable) {
+        return NativeQuery.builder()
                 .withQuery(q -> q
-                        .match(m -> m
-                                .field("categoryName")
+                        .multiMatch(m -> m
+                                .fields("categoryName", "attributesValues")
                                 .query(query)
+                                .operator(Operator.Or)
+                                .type(TextQueryType.BestFields)
+                                .fuzziness("3")
                         )
                 )
                 .withPageable(pageable)
                 .build();
-
-        SearchHits<AdvertisementDocument> hits = elasticsearchOperations.search(searchQuery, AdvertisementDocument.class);
-        List<FullAdvertisementDto> fullAdvertisementDtoList = hits
-                .map(SearchHit::getContent)
-                .map(by.zemich.advertisementservice.infrastracture.output.repository.elastic.mapper.AdvertisementMapper::map)
-                .toList();
-
-        return new PageImpl<>(fullAdvertisementDtoList, pageable, hits.getTotalHits());
     }
 }

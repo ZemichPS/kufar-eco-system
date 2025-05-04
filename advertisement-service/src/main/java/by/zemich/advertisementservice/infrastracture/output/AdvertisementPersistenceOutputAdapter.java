@@ -8,7 +8,6 @@ import by.zemich.advertisementservice.domain.exception.CategoryNotFoundException
 import by.zemich.advertisementservice.domain.valueobject.AdvertisementId;
 import by.zemich.advertisementservice.domain.valueobject.UserId;
 import by.zemich.advertisementservice.infrastracture.events.AdvertisementCreatedEvent;
-import by.zemich.advertisementservice.infrastracture.output.repository.elastic.repository.AdvertisementElasticRepository;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.api.AdvertisementRepository;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.api.CategoryAttributeRepository;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.api.CategoryRepository;
@@ -92,7 +91,6 @@ public class AdvertisementPersistenceOutputAdapter implements AdvertisementPerst
                 })
                 .forEach(advertisementEntity::addAttribute);
         AdvertisementEntity savedAdvertisementEntity = advertisementRepository.save(advertisementEntity);
-        advertisementElasticRepository.save(savedAdvertisementEntity);
         return mapToDomain(savedAdvertisementEntity);
     }
 
