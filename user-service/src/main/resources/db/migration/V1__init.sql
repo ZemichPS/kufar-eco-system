@@ -1,7 +1,7 @@
 DROP SCHEMA IF EXISTS app CASCADE;
 CREATE SCHEMA IF NOT EXISTS app;
 
-CREATE TABLE app.userIds
+CREATE TABLE app.users
 (
     id               uuid PRIMARY KEY,
     role             text,
@@ -13,7 +13,8 @@ CREATE TABLE app.userIds
     phone_number     text,
     telegram_user_id text,
     password         text,
-    organization_id  uuid
+    organization_id  uuid,
+    active           bool
 
 );
 
@@ -33,7 +34,19 @@ CREATE TABLE app.organizations
     owner_id         uuid
 );
 
-ALTER table app.userIds
+CREATE TABLE app.confirmation_codes
+(
+    uuid       UUID PRIMARY KEY,
+    user_uuid  UUID,
+    email      VARCHAR(255),
+    code       VARCHAR(255),
+    expires_at TIMESTAMP WITHOUT TIME ZONE,
+    confirmed  BOOLEAN NOT NULL,
+    CONSTRAINT pk_confirmation_codes PRIMARY KEY (uuid)
+);
+
+ALTER table app.users
     ADD CONSTRAINT uniq_user_email UNIQUE (email);
 
-ALTER TABLE app.userIds ADD CONSTRAINT uniq_username UNIQUE (username);
+ALTER TABLE app.users
+    ADD CONSTRAINT uniq_username UNIQUE (username);

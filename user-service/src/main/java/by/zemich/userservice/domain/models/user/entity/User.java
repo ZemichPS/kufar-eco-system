@@ -1,7 +1,9 @@
 package by.zemich.userservice.domain.models.user.entity;
 
-import by.zemich.userservice.domain.models.commands.CreateUserCommand;
+import by.zemich.userservice.domain.models.commands.RegisterUserCommand;
+import by.zemich.userservice.domain.models.organization.vo.OrganizationId;
 import by.zemich.userservice.domain.models.user.vo.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,15 +15,17 @@ import java.util.UUID;
 public class User {
     private UserId userId;
     private LocalDateTime registeredAt;
+    @Setter(AccessLevel.NONE)
     private Role role;
     private Name name;
     private Email email;
     private PhoneNumber phoneNumber;
     private String telegramUserId;
     private String password;
-    private UUID organizationId;
+    private OrganizationId organizationId;
+    private boolean enabled;
 
-    public User(CreateUserCommand command) {
+    public User(RegisterUserCommand command) {
         this.userId = new UserId(UUID.randomUUID());
         this.role = Role.valueOf(command.role());
         this.name = new Name(command.username(), command.firstname(), command.lastname());
@@ -33,8 +37,12 @@ public class User {
         this.userId = userId;
     }
 
-    public void assignOrganization(UUID organizationId) {
+    public void assignOrganization(OrganizationId organizationId) {
         this.organizationId = organizationId;
+    }
+
+    public void assignRole(Role role) {
+        this.role = role;
     }
 
 

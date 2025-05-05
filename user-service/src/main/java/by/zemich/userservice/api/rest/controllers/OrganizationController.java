@@ -4,6 +4,7 @@ package by.zemich.userservice.api.rest.controllers;
 import by.zemich.userservice.application.query.dto.OrganizationResponseDto;
 import by.zemich.userservice.api.rest.mapper.OrganizationMapper;
 import by.zemich.userservice.application.query.OrganizationQueryService;
+import by.zemich.userservice.domain.models.organization.entity.Organization;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,6 +29,8 @@ public class OrganizationController {
                 .toList();
         return ResponseEntity.ok(response);
     }
+
+
 
     @GetMapping("/{ownerId}")
     public ResponseEntity<OrganizationResponseDto> getByOwnerId(UUID ownerId) {

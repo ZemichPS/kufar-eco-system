@@ -5,6 +5,7 @@ import by.zemich.userservice.domain.models.organization.vo.Address;
 import by.zemich.userservice.domain.models.organization.vo.OrganizationId;
 import by.zemich.userservice.domain.models.organization.vo.OrganizationType;
 import by.zemich.userservice.domain.models.organization.vo.PhoneNumber;
+import by.zemich.userservice.domain.models.user.vo.UserId;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -18,10 +19,10 @@ public class Organization {
     private OrganizationType organizationType;
     private Address address;
     private PhoneNumber phoneNumber;
-    private List<UUID> staff = new ArrayList<>();
+    private List<UserId> staff = new ArrayList<>();
 
     public Organization(CreateOrganizationCommand command) {
-        this.organizationId = new OrganizationId(UUID.randomUUID());
+        this.organizationId = command.organizationId();
         this.name = command.name();
         this.organizationType = OrganizationType.valueOf(command.organizationType());
         this.phoneNumber = new PhoneNumber(command.phoneNumber());
@@ -43,7 +44,7 @@ public class Organization {
                         OrganizationType organizationType,
                         Address address,
                         PhoneNumber phoneNumber,
-                        List<UUID> staff
+                        List<UserId> staff
     ) {
         this.organizationId = organizationId;
         this.name = name;
@@ -53,7 +54,7 @@ public class Organization {
         this.staff = staff;
     }
 
-    public boolean addStaff(UUID id) {
+    public boolean addStaff(UserId id) {
         return staff.add(id);
     }
 }

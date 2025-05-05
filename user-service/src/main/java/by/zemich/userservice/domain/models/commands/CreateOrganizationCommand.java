@@ -1,13 +1,17 @@
 package by.zemich.userservice.domain.models.commands;
 
 
+import by.zemich.userservice.domain.models.organization.vo.OrganizationId;
+import by.zemich.userservice.domain.models.user.vo.UserId;
+
 import java.util.UUID;
 
 
 public record CreateOrganizationCommand(
+        OrganizationId organizationId,
+        UserId ownerId,
         String name,
         String organizationType,
-        UUID ownerId,
         String phoneNumber,
         String postalCode,
         String region,

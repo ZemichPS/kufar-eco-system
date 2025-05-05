@@ -12,6 +12,7 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class OrganizationQueryService {
+
     private final OrganizationRepository organizationRepository;
     private final UserRepository userRepository;
 

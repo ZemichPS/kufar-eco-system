@@ -17,6 +17,7 @@ public class UserMapper {
         user.setTelegramUserId(entity.getTelegramUserId());
         user.setPassword(entity.getPassword());
         user.setOrganizationId(entity.getOrganizationId());
+        user.setEnabled(entity.getActive());
         return user;
     }
 
@@ -31,6 +32,8 @@ public class UserMapper {
                 .telegramUserId(domain.getTelegramUserId())
                 .password(domain.getPassword())
                 .role(UserEntity.Role.valueOf(domain.getRole().toString()))
+                .organizationId(domain.getOrganizationId())
+                .active(domain.isEnabled())
                 .build();
     }
 }

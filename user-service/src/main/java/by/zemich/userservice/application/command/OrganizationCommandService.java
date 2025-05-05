@@ -17,7 +17,7 @@ public class OrganizationCommandService {
     private final UserRepository userRepository;
 
     public Organization handle(CreateOrganizationCommand command) {
-        UserId userId = new UserId(command.ownerId());
+        UserId userId = command.ownerId();
         if(!userRepository.existsById(userId)) throw new UserNotFoundException(userId.getId().toString());
         Organization organization = new Organization(command);
         return organizationRepository.save(organization);

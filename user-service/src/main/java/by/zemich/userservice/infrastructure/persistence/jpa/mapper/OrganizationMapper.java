@@ -5,6 +5,7 @@ import by.zemich.userservice.domain.models.organization.vo.Address;
 import by.zemich.userservice.domain.models.organization.vo.OrganizationId;
 import by.zemich.userservice.domain.models.organization.vo.OrganizationType;
 import by.zemich.userservice.domain.models.organization.vo.PhoneNumber;
+import by.zemich.userservice.domain.models.user.vo.UserId;
 import by.zemich.userservice.infrastructure.persistence.jpa.entities.OrganizationEntity;
 import by.zemich.userservice.infrastructure.persistence.jpa.entities.UserEntity;
 import lombok.experimental.UtilityClass;
@@ -26,7 +27,7 @@ public class OrganizationMapper {
                         .houseNumber(entity.getAddress().getHouseNumber())
                         .build(),
                 new PhoneNumber(entity.getPhoneNumber()),
-                entity.getStaff().stream().toList()
+                entity.getStaff().stream().map(UserId::new).toList()
         );
     }
 
@@ -45,7 +46,7 @@ public class OrganizationMapper {
                 .phoneNumber(organization.getPhoneNumber().number())
                 .organizationType(organization.getOrganizationType().toString())
                 .name(organization.getName())
-                .staff(organization.getStaff().stream().toList())
+                .staff(organization.getStaff().stream().map(UserId::getId).toList())
                 .build();
     }
 }

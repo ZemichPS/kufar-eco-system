@@ -1,6 +1,6 @@
 package by.zemich.userservice.domain.models.commands;
 
-public record CreateUserCommand(
+public record RegisterUserCommand(
         String role,
         String username,
         String firstname,

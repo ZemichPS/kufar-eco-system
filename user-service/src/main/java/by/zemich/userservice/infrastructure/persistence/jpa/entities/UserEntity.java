@@ -29,6 +29,7 @@ public class UserEntity {
     private String phoneNumber;
     private String password;
     private UUID organizationId;
+    private Boolean active;
 
     @Getter
     public enum Role {
