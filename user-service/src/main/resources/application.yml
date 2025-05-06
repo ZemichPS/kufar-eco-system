@@ -11,13 +11,13 @@ spring:
       client:
         registration:
           google:
-            client-id:
-            client-secret:
+            client-id: 326426427488-9e2otl1vudf6nsd3ifd6v8k5hm28act4.apps.googleusercontent.com
+            client-secret: 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
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             scope:
               - email
               - profile
-
+              - openid
         provider:
           google:
             authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
@@ -56,8 +56,16 @@ spring:
     schemas: app
     baseline-on-migrate: true
 
+logging:
+  level:
+    org.springframework.security: DEBUG
+    by.zemich.userservice.infrastructure.security.*: DEBUG
+
 server:
   port: 8012
+
+urls:
+  success-register-url: http://localhost:3000/oauth-success
 
 token:
   signing:

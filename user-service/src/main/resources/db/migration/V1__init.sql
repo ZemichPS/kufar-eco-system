@@ -6,7 +6,7 @@ CREATE TABLE app.users
     id               uuid PRIMARY KEY,
     role             text,
     username         text,
-    registered_at    timestamp with time zone,
+    registration_date    timestamp with time zone,
     first_name       text,
     last_name        text,
     email            text,
@@ -14,8 +14,7 @@ CREATE TABLE app.users
     telegram_user_id text,
     password         text,
     organization_id  uuid,
-    active           bool
-
+    enabled           bool
 );
 
 CREATE TABLE app.organizations
@@ -36,7 +35,7 @@ CREATE TABLE app.organizations
 
 CREATE TABLE app.confirmation_codes
 (
-    uuid       UUID PRIMARY KEY,
+    uuid       UUID,
     user_uuid  UUID,
     email      VARCHAR(255),
     code       VARCHAR(255),

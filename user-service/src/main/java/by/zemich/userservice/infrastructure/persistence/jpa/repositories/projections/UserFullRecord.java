@@ -11,7 +11,7 @@ public record UserFullRecord(
         String firstName,
         String lastName,
         UserEntity.Role role,
-        LocalDateTime registeredAt,
+        LocalDateTime registrationDate,
         String email,
         String telegramUserId,
         String phoneNumber,

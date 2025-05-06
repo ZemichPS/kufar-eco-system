@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -23,6 +24,16 @@ public class UserDetailsImpl implements UserDetails {
 
     @Getter
     private UUID id;
+
+    private String firstName;
+
+    private String lastName;
+
+    private String username;
+
+    private LocalDateTime registrationDate;
+
+    private boolean enabled;
 
     @Setter
     private String password;

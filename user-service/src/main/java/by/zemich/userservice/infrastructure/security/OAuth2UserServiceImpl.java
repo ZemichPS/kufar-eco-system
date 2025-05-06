@@ -1,50 +1,59 @@
 package by.zemich.userservice.infrastructure.security;
 
-import by.zemich.userservice.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.stereotype.Component;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
-@Component
+@Service
 @RequiredArgsConstructor
-public class OAuth2UserServiceImpl implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
+@Slf4j
+public class OAuth2UserServiceImpl implements OAuth2UserService<OidcUserRequest, OidcUser> {
 
     private final UserDetailsRepository detailsRepository;
     private final JwtService jwtService;
 
     @Override
-    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        var delegate = new DefaultOAuth2UserService();
-        OAuth2User oAuth2User = delegate.loadUser(userRequest);
-        String email = oAuth2User.getAttribute("email");
+    public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
+        OidcUserService delegate = new OidcUserService();
+        OidcUser oidcUser = delegate.loadUser(userRequest);
+        log.debug("User data was received.  OAuth2User: {}", oidcUser);
+        String email = oidcUser.getEmail();
+
+        if (email == null) {
+            throw new OAuth2AuthenticationException("Email not found in OAuth2 provider");
+        }
 
         UserDetailsImpl details = detailsRepository.findByEmail(email)
-                .orElse(UserDetailsImpl.builder()
-                        .id(UUID.randomUUID())
-                        .email(email)
-                        .role("USER")
-                        .build());
+                .orElseGet(() -> {
+                    log.debug("User has not registered yet. Try to register new user");
+                    UserDetailsImpl detailsImpl = UserDetailsImpl.builder()
+                            .id(UUID.randomUUID())
+                            .email(email)
+                            .username(oidcUser.getGivenName() + " " + oidcUser.getFamilyName())
+                            .firstName(oidcUser.getGivenName())
+                            .lastName(oidcUser.getFamilyName())
+                            .registrationDate(LocalDateTime.now())
+                            .role("USER")
+                            .enabled(true)
+                            .build();
+                    return detailsRepository.save(detailsImpl);
+                });
 
-        String jwt = jwtService.generateToken(details);
-        Map<String, Object> attributes = new HashMap<>(oAuth2User.getAttributes());
-
-        attributes.put("jwt", jwt);
-
-        return new DefaultOAuth2User(
+        return new DefaultOidcUser(
                 Collections.singleton(new SimpleGrantedAuthority(details.getRole())),
-                attributes,
+                oidcUser.getIdToken(),
+                oidcUser.getUserInfo(),
                 "email"
         );
     }

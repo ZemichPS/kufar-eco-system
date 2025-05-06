@@ -29,7 +29,7 @@ public class JpaConfirmationCodeRepository implements EmailConfirmationCodeRepos
 
     @Override
     public Optional<EmailConfirmationCode> findByUserId(UserId userId) {
-        return emailConfirmationRepository.findUserId(userId.getId())
+        return emailConfirmationRepository.findByUserUuid(userId.getId())
                 .map(CodeMapper::mapToDomain);
     }
 

@@ -23,13 +23,13 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
     @CreationTimestamp
-    private LocalDateTime registeredAt;
+    private LocalDateTime registrationDate;
     private String email;
     private String telegramUserId;
     private String phoneNumber;
     private String password;
     private UUID organizationId;
-    private Boolean active;
+    private Boolean enabled;
 
     @Getter
     public enum Role {
