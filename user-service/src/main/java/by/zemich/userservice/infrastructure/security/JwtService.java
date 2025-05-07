@@ -1,5 +1,6 @@
 package by.zemich.userservice.infrastructure.security;
 
+import by.zemich.userservice.infrastructure.security.entities.UserDetailsImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

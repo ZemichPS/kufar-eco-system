@@ -1,5 +1,6 @@
-package by.zemich.userservice.infrastructure.security;
+package by.zemich.userservice.infrastructure.security.repository;
 
+import by.zemich.userservice.infrastructure.security.entities.UserDetailsImpl;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

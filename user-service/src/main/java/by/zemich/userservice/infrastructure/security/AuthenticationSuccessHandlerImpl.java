@@ -1,5 +1,7 @@
 package by.zemich.userservice.infrastructure.security;
 
+import by.zemich.userservice.infrastructure.security.entities.UserDetailsImpl;
+import by.zemich.userservice.infrastructure.security.repository.UserDetailsRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

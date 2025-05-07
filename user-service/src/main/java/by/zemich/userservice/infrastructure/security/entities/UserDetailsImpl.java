@@ -1,8 +1,6 @@
-package by.zemich.userservice.infrastructure.security;
+package by.zemich.userservice.infrastructure.security.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -35,6 +33,14 @@ public class UserDetailsImpl implements UserDetails {
 
     private boolean enabled;
 
+    @OneToMany(
+            mappedBy = "userDetails",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<ExternalIdentity> externalIdentities;
+
     @Setter
     private String password;
 
@@ -56,5 +62,9 @@ public class UserDetailsImpl implements UserDetails {
         return email;
     }
 
+    public void addExternalIdentity(ExternalIdentity externalIdentity) {
+        externalIdentity.setUserDetails(this);
+        externalIdentities.add(externalIdentity);
+    }
 
 }

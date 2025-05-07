@@ -1,5 +1,6 @@
 package by.zemich.userservice.infrastructure.security;
 
+import by.zemich.userservice.infrastructure.security.repository.UserDetailsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

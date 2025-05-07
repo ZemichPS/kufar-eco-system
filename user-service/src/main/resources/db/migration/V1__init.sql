@@ -3,17 +3,17 @@ CREATE SCHEMA IF NOT EXISTS app;
 
 CREATE TABLE app.users
 (
-    id               uuid PRIMARY KEY,
-    role             text,
-    username         text,
-    registration_date    timestamp with time zone,
-    first_name       text,
-    last_name        text,
-    email            text,
-    phone_number     text,
-    telegram_user_id text,
-    password         text,
-    organization_id  uuid,
+    id                uuid PRIMARY KEY,
+    role              text,
+    username          text,
+    registration_date timestamp with time zone,
+    first_name        text,
+    last_name         text,
+    email             text,
+    phone_number      text,
+    telegram_user_id  text,
+    password          text,
+    organization_id   uuid,
     enabled           bool
 );
 
@@ -49,3 +49,15 @@ ALTER table app.users
 
 ALTER TABLE app.users
     ADD CONSTRAINT uniq_username UNIQUE (username);
+
+CREATE TABLE app.identities
+(
+    id               UUID NOT NULL,
+    user_id          UUID,
+    provider_name    VARCHAR(255),
+    provider_user_id VARCHAR(255),
+    CONSTRAINT pk_identities PRIMARY KEY (id)
+);
+
+ALTER TABLE app.identities
+    ADD CONSTRAINT FK_IDENTITIES_ON_USER_UUID FOREIGN KEY (user_id) REFERENCES app.users (id);
