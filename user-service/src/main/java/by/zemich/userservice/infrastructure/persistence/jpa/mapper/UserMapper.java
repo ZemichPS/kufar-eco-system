@@ -1,8 +1,8 @@
 package by.zemich.userservice.infrastructure.persistence.jpa.mapper;
 
-import by.zemich.userservice.domain.models.organization.vo.OrganizationId;
-import by.zemich.userservice.domain.models.user.entity.User;
-import by.zemich.userservice.domain.models.user.vo.*;
+import by.zemich.userservice.domain.model.organization.vo.OrganizationId;
+import by.zemich.userservice.domain.model.user.entity.User;
+import by.zemich.userservice.domain.model.user.vo.*;
 import by.zemich.userservice.infrastructure.persistence.jpa.entities.UserEntity;
 import lombok.experimental.UtilityClass;
 
@@ -33,7 +33,7 @@ public class UserMapper {
                 .telegramUserId(domain.getTelegramUserId())
                 .password(domain.getPassword())
                 .role(UserEntity.Role.valueOf(domain.getRole().toString()))
-                .organizationId(domain.getOrganizationId().id())
+                .organizationId(domain.getOrganizationId() != null ? domain.getOrganizationId().id() : null)
                 .enabled(domain.isEnabled())
                 .build();
     }

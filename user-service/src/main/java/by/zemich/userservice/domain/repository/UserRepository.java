@@ -1,8 +1,8 @@
 package by.zemich.userservice.domain.repository;
 
-import by.zemich.userservice.domain.models.user.entity.User;
-import by.zemich.userservice.domain.models.user.vo.Email;
-import by.zemich.userservice.domain.models.user.vo.UserId;
+import by.zemich.userservice.domain.model.user.entity.User;
+import by.zemich.userservice.domain.model.user.vo.Email;
+import by.zemich.userservice.domain.model.user.vo.UserId;
 
 import java.util.List;
 import java.util.Optional;

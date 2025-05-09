@@ -28,8 +28,14 @@ public class UserEntity {
     private String telegramUserId;
     private String phoneNumber;
     private String password;
-    private UUID organizationId;
+    @OneToOne(
+            fetch = FetchType.EAGER,
+            mappedBy = "owner",
+            cascade = CascadeType.ALL
+    )
+    private OrganizationEntity organization;
     private Boolean enabled;
+
 
     @Getter
     public enum Role {

@@ -12,8 +12,8 @@ spring:
       client:
         registration:
           google:
-            client-id:
-            client-secret:
+            client-id: 326426427488-9e2otl1vudf6nsd3ifd6v8k5hm28act4.apps.googleusercontent.com
+            client-secret: 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
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             scope:
               - email
@@ -58,14 +58,24 @@ spring:
   mail:
     host: smtp.rambler.ru
     username: partsflow@rambler.ru
-    password: cs2402zzzXxx
+    password: cs2402zzzXxx  # Проверьте пароль!
     port: 465
+    protocol: smtps
     properties:
       mail:
         smtp:
           auth: true
+          ssl:
+            enable: true  # 🔹 Обязательно для порта 465
           starttls:
-            enable: true
+            enable: false  # Отключаем, так как используем SSL
+          connectiontimeout: 30000  # 30 секунд на подключение
+          timeout: 30000  # 30 секунд на операции
+          writetimeout: 30000  # 30 секунд на запись
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+          socketFactoryFallback: false
+
 
 logging:
   level:

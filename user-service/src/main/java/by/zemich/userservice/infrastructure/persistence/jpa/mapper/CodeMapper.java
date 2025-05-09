@@ -1,8 +1,8 @@
 package by.zemich.userservice.infrastructure.persistence.jpa.mapper;
 
-import by.zemich.userservice.domain.models.code.entity.EmailConfirmationCode;
-import by.zemich.userservice.domain.models.code.vo.CodeId;
-import by.zemich.userservice.domain.models.user.vo.UserId;
+import by.zemich.userservice.domain.model.code.entity.EmailConfirmationCode;
+import by.zemich.userservice.domain.model.code.vo.CodeId;
+import by.zemich.userservice.domain.model.user.vo.UserId;
 import by.zemich.userservice.infrastructure.persistence.jpa.entities.EmailConfirmationCodeEntity;
 import lombok.experimental.UtilityClass;
 

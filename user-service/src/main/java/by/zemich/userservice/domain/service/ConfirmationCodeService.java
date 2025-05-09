@@ -1,13 +1,14 @@
 package by.zemich.userservice.domain.service;
 
-import by.zemich.userservice.domain.models.code.entity.EmailConfirmationCode;
-import by.zemich.userservice.domain.models.code.vo.CodeId;
-import by.zemich.userservice.domain.models.user.vo.UserId;
+import by.zemich.userservice.domain.model.code.entity.EmailConfirmationCode;
+import by.zemich.userservice.domain.model.code.vo.CodeId;
+import by.zemich.userservice.domain.model.user.vo.UserId;
 import by.zemich.userservice.domain.repository.EmailConfirmationCodeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -40,5 +41,9 @@ public class ConfirmationCodeService {
 
     public Optional<EmailConfirmationCode> findByUserId(UserId userId) {
         return repository.findByUserId(userId);
+    }
+
+    public Optional<EmailConfirmationCode> findByUserIdAndCode(UserId userId, String confirmationCode) {
+        return repository.findByUserIdAndCode(userId, confirmationCode);
     }
 }

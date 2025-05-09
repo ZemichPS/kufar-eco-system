@@ -20,11 +20,17 @@ public class OrganizationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
+    private UserEntity owner;
     private String name;
     @Embedded
     private Address address;
     private String organizationType;
     private String phoneNumber;
+    private String specialization;
+
     @ElementCollection
     @CollectionTable(name = "organization_staff", joinColumns = @JoinColumn(name = "organization_id"))
     @Column(name = "staff_user_id")

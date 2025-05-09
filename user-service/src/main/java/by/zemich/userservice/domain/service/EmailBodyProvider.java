@@ -1,5 +1,6 @@
 package by.zemich.userservice.domain.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +11,7 @@ import java.nio.file.Files;
 @Component
 public class EmailBodyProvider {
 
-    private final String CONFIRM_CODE_TEMPLATE = "templates/confirmation.html";
+    private final String CONFIRM_CODE_TEMPLATE = "/templates/confirmation_body.htm";
 
     public String generateEmailApproveMessageBody(String code) {
         String emailBody = "";
@@ -19,7 +20,7 @@ public class EmailBodyProvider {
         } catch (IOException e) {
             throw new RuntimeException("Не удалось загрузить шаблон", e);
         }
-        emailBody = emailBody.replace("[[]]", code);
+        emailBody = emailBody.replace("[[code]]", code);
         return emailBody;
     }
 

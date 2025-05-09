@@ -1,9 +1,9 @@
 package by.zemich.userservice.application.command;
 
-import by.zemich.userservice.domain.models.commands.CreateOrganizationCommand;
-import by.zemich.userservice.domain.models.exceptions.UserNotFoundException;
-import by.zemich.userservice.domain.models.organization.entity.Organization;
-import by.zemich.userservice.domain.models.user.vo.UserId;
+import by.zemich.userservice.domain.model.commands.CreateOrganizationCommand;
+import by.zemich.userservice.domain.exception.UserNotFoundException;
+import by.zemich.userservice.domain.model.organization.entity.Organization;
+import by.zemich.userservice.domain.model.user.vo.UserId;
 import by.zemich.userservice.domain.repository.OrganizationRepository;
 import by.zemich.userservice.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,9 +1,9 @@
 package by.zemich.userservice.api.rest.mapper;
 
 import by.zemich.userservice.application.query.dto.OrganizationRequestDto;
-import by.zemich.userservice.domain.models.commands.CreateOrganizationCommand;
-import by.zemich.userservice.domain.models.organization.vo.OrganizationId;
-import by.zemich.userservice.domain.models.user.vo.UserId;
+import by.zemich.userservice.domain.model.commands.CreateOrganizationCommand;
+import by.zemich.userservice.domain.model.organization.vo.OrganizationId;
+import by.zemich.userservice.domain.model.user.vo.UserId;
 import lombok.experimental.UtilityClass;
 
 import java.util.UUID;

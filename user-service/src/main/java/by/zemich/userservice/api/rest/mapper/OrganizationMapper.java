@@ -1,7 +1,7 @@
 package by.zemich.userservice.api.rest.mapper;
 
 import by.zemich.userservice.application.query.dto.OrganizationResponseDto;
-import by.zemich.userservice.domain.models.organization.entity.Organization;
+import by.zemich.userservice.domain.model.organization.entity.Organization;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass

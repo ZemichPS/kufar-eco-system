@@ -1,7 +1,7 @@
 package by.zemich.userservice.infrastructure.persistence.jpa.repositories;
 
-import by.zemich.userservice.domain.models.code.entity.EmailConfirmationCode;
-import by.zemich.userservice.domain.models.user.vo.UserId;
+import by.zemich.userservice.domain.model.code.entity.EmailConfirmationCode;
+import by.zemich.userservice.domain.model.user.vo.UserId;
 import by.zemich.userservice.domain.repository.EmailConfirmationCodeRepository;
 import by.zemich.userservice.infrastructure.persistence.jpa.entities.EmailConfirmationCodeEntity;
 import by.zemich.userservice.infrastructure.persistence.jpa.mapper.CodeMapper;
@@ -30,6 +30,12 @@ public class JpaConfirmationCodeRepository implements EmailConfirmationCodeRepos
     @Override
     public Optional<EmailConfirmationCode> findByUserId(UserId userId) {
         return emailConfirmationRepository.findByUserUuid(userId.getId())
+                .map(CodeMapper::mapToDomain);
+    }
+
+    @Override
+    public Optional<EmailConfirmationCode> findByUserIdAndCode(UserId userId, String confirmationCode) {
+        return emailConfirmationRepository.findByUserUuidAndCode(userId.getId(), confirmationCode)
                 .map(CodeMapper::mapToDomain);
     }
 

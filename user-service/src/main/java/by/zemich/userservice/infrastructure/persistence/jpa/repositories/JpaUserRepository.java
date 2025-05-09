@@ -1,8 +1,8 @@
 package by.zemich.userservice.infrastructure.persistence.jpa.repositories;
 
-import by.zemich.userservice.domain.models.user.entity.User;
-import by.zemich.userservice.domain.models.user.vo.Email;
-import by.zemich.userservice.domain.models.user.vo.UserId;
+import by.zemich.userservice.domain.model.user.entity.User;
+import by.zemich.userservice.domain.model.user.vo.Email;
+import by.zemich.userservice.domain.model.user.vo.UserId;
 import by.zemich.userservice.domain.repository.UserRepository;
 import by.zemich.userservice.infrastructure.persistence.jpa.entities.UserEntity;
 import by.zemich.userservice.infrastructure.persistence.jpa.mapper.UserMapper;

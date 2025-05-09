@@ -1,12 +1,8 @@
 package by.zemich.userservice.api.rest.controllers;
 
 import by.zemich.userservice.application.query.dto.GetUserByEmilQuery;
-import by.zemich.userservice.application.query.dto.UserResponseDto;
-import by.zemich.userservice.api.rest.mapper.UserMapper;
 import by.zemich.userservice.application.query.UserQueryService;
-import by.zemich.userservice.domain.models.queries.GetUserByIdQuery;
-import by.zemich.userservice.domain.models.queries.GetUserByTelegramIdQuery;
-import by.zemich.userservice.domain.models.user.entity.User;
+import by.zemich.userservice.domain.model.queries.GetUserByTelegramIdQuery;
 import by.zemich.userservice.infrastructure.persistence.jpa.repositories.projections.UserFullRecord;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.UUID;
 
 
 @RestController

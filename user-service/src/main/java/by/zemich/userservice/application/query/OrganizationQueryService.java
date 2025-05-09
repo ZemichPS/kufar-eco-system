@@ -1,6 +1,6 @@
 package by.zemich.userservice.application.query;
 
-import by.zemich.userservice.domain.models.organization.entity.Organization;
+import by.zemich.userservice.domain.model.organization.entity.Organization;
 import by.zemich.userservice.domain.repository.OrganizationRepository;
 import by.zemich.userservice.domain.repository.UserRepository;
 import lombok.AllArgsConstructor;

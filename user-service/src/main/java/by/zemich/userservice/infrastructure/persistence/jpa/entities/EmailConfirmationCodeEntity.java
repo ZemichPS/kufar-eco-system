@@ -1,7 +1,6 @@
 package by.zemich.userservice.infrastructure.persistence.jpa.entities;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
@@ -11,11 +10,13 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "confirmation_codes", schema = "app")
-@Getter @Setter @NoArgsConstructor
-@AllArgsConstructor @Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class EmailConfirmationCodeEntity {
     @Id
-    @GeneratedValue
     private UUID uuid;
 
     private UUID userUuid;

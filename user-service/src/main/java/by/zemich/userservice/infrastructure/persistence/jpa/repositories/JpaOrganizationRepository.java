@@ -1,7 +1,7 @@
 package by.zemich.userservice.infrastructure.persistence.jpa.repositories;
 
-import by.zemich.userservice.domain.models.organization.entity.Organization;
-import by.zemich.userservice.domain.models.organization.vo.OrganizationId;
+import by.zemich.userservice.domain.model.organization.entity.Organization;
+import by.zemich.userservice.domain.model.organization.vo.OrganizationId;
 import by.zemich.userservice.domain.repository.OrganizationRepository;
 import by.zemich.userservice.infrastructure.persistence.jpa.entities.OrganizationEntity;
 import by.zemich.userservice.infrastructure.persistence.jpa.mapper.OrganizationMapper;
