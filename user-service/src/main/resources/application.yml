@@ -2,6 +2,7 @@ spring:
   application:
     name: user-application
 
+
   cloud:
     config:
       enabled: false
@@ -23,8 +24,6 @@ spring:
             authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
             token-uri: https://oauth2.googleapis.com/token
             user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
-
-
 
   datasource:
     url: jdbc:postgresql://localhost:5438/user-db
@@ -56,10 +55,24 @@ spring:
     schemas: app
     baseline-on-migrate: true
 
+  mail:
+    host: smtp.rambler.ru
+    username: partsflow@rambler.ru
+    password: cs2402zzzXxx
+    port: 465
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 logging:
   level:
     org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
     by.zemich.userservice.infrastructure.security.*: DEBUG
+
 
 server:
   port: 8012

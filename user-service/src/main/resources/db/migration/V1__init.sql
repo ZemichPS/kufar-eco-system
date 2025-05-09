@@ -44,12 +44,6 @@ CREATE TABLE app.confirmation_codes
     CONSTRAINT pk_confirmation_codes PRIMARY KEY (uuid)
 );
 
-ALTER table app.users
-    ADD CONSTRAINT uniq_user_email UNIQUE (email);
-
-ALTER TABLE app.users
-    ADD CONSTRAINT uniq_username UNIQUE (username);
-
 CREATE TABLE app.identities
 (
     id               UUID NOT NULL,
@@ -58,6 +52,12 @@ CREATE TABLE app.identities
     provider_user_id VARCHAR(255),
     CONSTRAINT pk_identities PRIMARY KEY (id)
 );
+
+ALTER table app.users
+    ADD CONSTRAINT uniq_user_email UNIQUE (email);
+
+ALTER TABLE app.users
+    ADD CONSTRAINT uniq_username UNIQUE (username);
 
 ALTER TABLE app.identities
     ADD CONSTRAINT FK_IDENTITIES_ON_USER_UUID FOREIGN KEY (user_id) REFERENCES app.users (id);
