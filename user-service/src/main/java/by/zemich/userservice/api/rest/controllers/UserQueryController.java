@@ -1,6 +1,5 @@
 package by.zemich.userservice.api.rest.controllers;
 
-import by.zemich.userservice.api.rest.mapper.OrganizationMapper;
 import by.zemich.userservice.application.query.OrganizationQueryService;
 import by.zemich.userservice.application.query.UserQueryService;
 import by.zemich.userservice.application.query.dto.OrganizationResponseDto;

@@ -2,7 +2,6 @@ package by.zemich.userservice.api.rest.controllers;
 
 
 import by.zemich.userservice.application.query.dto.OrganizationResponseDto;
-import by.zemich.userservice.api.rest.mapper.OrganizationMapper;
 import by.zemich.userservice.application.query.OrganizationQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

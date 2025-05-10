@@ -4,8 +4,6 @@ import by.zemich.userservice.api.rest.dto.AssignRoleDto;
 import by.zemich.userservice.api.rest.dto.ConfirmationCodeDto;
 import by.zemich.userservice.api.rest.dto.OrganizationRequestDto;
 import by.zemich.userservice.api.rest.dto.UserCreateRequestDto;
-import by.zemich.userservice.api.rest.mapper.UserCommandMapper;
-import by.zemich.userservice.api.rest.mapper.UserMapper;
 import by.zemich.userservice.application.command.ConfirmRegistrationCodeCommand;
 import by.zemich.userservice.application.command.OrganizationCommandService;
 import by.zemich.userservice.application.command.UserCommandService;
@@ -24,7 +22,6 @@ import by.zemich.userservice.domain.model.user.vo.UserId;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
