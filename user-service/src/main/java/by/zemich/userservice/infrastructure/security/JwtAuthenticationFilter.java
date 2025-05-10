@@ -1,5 +1,6 @@
 package by.zemich.userservice.infrastructure.security;
 
+import by.zemich.userservice.infrastructure.security.entities.UserDetailsImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +27,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserDetailsService detailsService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain) throws ServletException, IOException {
 
         var authHeader = request.getHeader(HEADER_NAME);
         if (StringUtils.isEmpty(authHeader) || !StringUtils.startsWithIgnoreCase(authHeader, BEARER_PREFIX)) {
@@ -38,7 +42,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         var username = jwtService.extractUserName(jwt);
 
         if (!username.isEmpty() && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = detailsService.loadUserByUsername(username);
+
+            UserDetailsImpl userDetails = (UserDetailsImpl) detailsService.loadUserByUsername(username);
 
             if (jwtService.isTokenValid(jwt, userDetails)) {
                 SecurityContext context = SecurityContextHolder.createEmptyContext();

@@ -1,5 +1,7 @@
-package by.zemich.userservice.infrastructure.security;
+package by.zemich.userservice.infrastructure.security.config;
 
+import by.zemich.userservice.infrastructure.security.JwtAuthenticationFilter;
+import by.zemich.userservice.infrastructure.security.OAuth2UserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

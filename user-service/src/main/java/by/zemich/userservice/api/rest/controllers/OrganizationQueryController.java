@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1/organizations")
+@RequestMapping("api/v1/users/{}/organizations")
 @RequiredArgsConstructor
 public class OrganizationQueryController {
     private final OrganizationQueryService queryService;

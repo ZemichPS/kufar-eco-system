@@ -19,18 +19,19 @@ CREATE TABLE app.users
 
 CREATE TABLE app.organizations
 (
-    id               uuid PRIMARY KEY,
-    name             text,
-    postal_code      text,
-    region           text,
-    district         text,
-    city             text,
-    street           text,
-    house_number     text,
-    apartment_number text,
-    type             text,
-    phone_number     text,
-    owner_id         uuid
+    id                uuid PRIMARY KEY,
+    owner_id          uuid,
+    name              text,
+    specialization    text,
+    organization_type text,
+    phone_number      text,
+    postal_code       text,
+    region            text,
+    district          text,
+    city              text,
+    street            text,
+    house_number      text,
+    apartment_number  text
 );
 
 CREATE TABLE app.confirmation_codes

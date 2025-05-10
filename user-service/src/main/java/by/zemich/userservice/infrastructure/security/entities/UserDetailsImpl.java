@@ -17,11 +17,13 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDetailsImpl implements UserDetails {
-    @Id
-    private String email;
 
     @Getter
+    @Id
     private UUID id;
+
+    @Getter
+    private String email;
 
     private String firstName;
 

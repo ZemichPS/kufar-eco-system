@@ -7,11 +7,11 @@ import by.zemich.userservice.domain.model.organization.vo.OrganizationType;
 import by.zemich.userservice.domain.model.organization.vo.PhoneNumber;
 import by.zemich.userservice.domain.model.user.vo.UserId;
 import lombok.Getter;
-
-import java.util.ArrayList;
-import java.util.List;
+import lombok.Setter;
+import org.springframework.stereotype.Service;
 
 @Getter
+@Setter
 public class Organization {
     private OrganizationId organizationId;
     private UserId ownerId;
@@ -20,7 +20,6 @@ public class Organization {
     private OrganizationType organizationType;
     private PhoneNumber phoneNumber;
     private Address address;
-    private List<UserId> staff = new ArrayList<>();
 
     public Organization(CreateOrganizationCommand command) {
         this.organizationId = command.organizationId();
@@ -40,23 +39,23 @@ public class Organization {
                 .build();
     }
 
-    public Organization(OrganizationId organizationId,
-                        String name,
-                        OrganizationType organizationType,
-                        Address address,
-                        PhoneNumber phoneNumber,
-                        List<UserId> staff
+    public Organization(
+            OrganizationId organizationId,
+            UserId ownerId,
+            String name,
+            OrganizationType organizationType,
+            PhoneNumber phoneNumber,
+            String specialization,
+            Address address
     ) {
         this.organizationId = organizationId;
         this.name = name;
         this.organizationType = organizationType;
         this.address = address;
         this.phoneNumber = phoneNumber;
-        this.staff = staff;
+        this.specialization = specialization;
+        this.ownerId = ownerId;
     }
 
-    public boolean addStaff(UserId id) {
-        return staff.add(id);
-    }
 }
 

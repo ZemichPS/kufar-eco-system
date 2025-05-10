@@ -1,8 +1,8 @@
 package by.zemich.userservice.application.query;
 
-import by.zemich.userservice.application.query.dto.GetUserByEmilQuery;
 import by.zemich.userservice.domain.exception.UserNotFoundException;
 import by.zemich.userservice.domain.model.queries.GetUserByTelegramIdQuery;
+import by.zemich.userservice.domain.model.queries.GetUserByUserId;
 import by.zemich.userservice.infrastructure.persistence.jpa.repositories.UserViewRepository;
 import by.zemich.userservice.infrastructure.persistence.jpa.repositories.projections.UserFullRecord;
 import lombok.RequiredArgsConstructor;
@@ -28,5 +28,10 @@ public class UserQueryService {
     public UserFullRecord getFullRecordByEmail(GetUserByEmilQuery query) {
         return viewRepository.findByEmail(query.email())
                 .orElseThrow(() -> new UserNotFoundException(query.email().toString()));
+    }
+
+    public UserFullRecord getFullRecordById(GetUserByUserId query) {
+        return viewRepository.findRecordById(query.userId().getId())
+                .orElseThrow(() -> new UserNotFoundException(query.userId().getId().toString()));
     }
 }

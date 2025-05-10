@@ -1,12 +1,8 @@
 package by.zemich.userservice.application.command;
 
-import by.zemich.userservice.domain.exception.OrganizationNotFoundException;
 import by.zemich.userservice.domain.exception.UserNotFoundException;
-import by.zemich.userservice.domain.model.commands.AssignOrganizationCommand;
 import by.zemich.userservice.domain.model.commands.AssignUserRoleCommand;
 import by.zemich.userservice.domain.model.commands.RegisterUserCommand;
-import by.zemich.userservice.domain.model.organization.entity.Organization;
-import by.zemich.userservice.domain.model.organization.vo.OrganizationId;
 import by.zemich.userservice.domain.model.user.entity.User;
 import by.zemich.userservice.domain.model.user.vo.UserId;
 import by.zemich.userservice.domain.policy.UserActivationAllowedPolicy;
@@ -48,20 +44,6 @@ public class UserCommandService {
                 .orElseThrow(() -> new UserNotFoundException(userId.getId().toString()));
         user.assignRole(command.role());
         userRepository.save(user);
-    }
-
-    public User handle(AssignOrganizationCommand command) {
-        UserId userId = command.userId();
-        OrganizationId organizationId = command.organizationId();
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(command.userId().toString()));
-        Organization organization = organizationRepository.findById(organizationId)
-                .orElseThrow(() -> new OrganizationNotFoundException(command.organizationId().toString()));
-        user.assignOrganization(organization.getOrganizationId());
-        organization.addStaff(userId);
-        organizationRepository.save(organization);
-        return userRepository.save(user);
     }
 
 }

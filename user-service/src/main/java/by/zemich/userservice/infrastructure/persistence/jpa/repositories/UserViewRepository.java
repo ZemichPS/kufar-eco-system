@@ -17,4 +17,6 @@ public interface UserViewRepository extends JpaRepository<UserEntity, UUID> {
     Optional<UserFullRecord> findFullRecordByTelegramUserId(String telegramId);
 
     Optional<UserFullRecord> findByEmail(String email);
+
+    Optional<UserFullRecord> findRecordById(UUID id);
 }

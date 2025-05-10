@@ -11,28 +11,34 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class OrganizationMapper {
+
     public static Organization map(OrganizationEntity entity) {
         return new Organization(
                 new OrganizationId(entity.getId()),
+                new UserId(entity.getOwner().getId()),
                 entity.getName(),
                 OrganizationType.valueOf(entity.getOrganizationType()),
-                Address.builder()
-                        .city(entity.getAddress().getCity())
-                        .apartmentNumber(entity.getAddress().getApartmentNumber())
-                        .district(entity.getAddress().getDistrict())
-                        .region(entity.getAddress().getRegion())
-                        .street(entity.getAddress().getStreet())
-                        .postalCode(entity.getAddress().getPostalCode())
-                        .houseNumber(entity.getAddress().getHouseNumber())
-                        .build(),
                 new PhoneNumber(entity.getPhoneNumber()),
-                entity.getStaff().stream().map(UserId::new).toList()
+                entity.getSpecialization(),
+                Address.builder()
+                        .postalCode(entity.getAddress().getPostalCode())
+                        .region(entity.getAddress().getRegion())
+                        .district(entity.getAddress().getDistrict())
+                        .city(entity.getAddress().getCity())
+                        .street(entity.getAddress().getStreet())
+                        .houseNumber(entity.getAddress().getHouseNumber())
+                        .apartmentNumber(entity.getAddress().getApartmentNumber())
+                        .build()
         );
     }
 
     public static OrganizationEntity map(Organization organization) {
         return OrganizationEntity.builder()
                 .id(organization.getOrganizationId().id())
+                .name(organization.getName())
+                .specialization(organization.getSpecialization())
+                .organizationType(organization.getOrganizationType().toString())
+                .phoneNumber(organization.getPhoneNumber().number())
                 .address(by.zemich.userservice.infrastructure.persistence.jpa.entities.Address.builder()
                         .city(organization.getAddress().getCity())
                         .apartmentNumber(organization.getAddress().getApartmentNumber())
@@ -41,11 +47,8 @@ public class OrganizationMapper {
                         .street(organization.getAddress().getStreet())
                         .postalCode(organization.getAddress().getPostalCode())
                         .houseNumber(organization.getAddress().getHouseNumber())
-                        .build())
-                .phoneNumber(organization.getPhoneNumber().number())
-                .organizationType(organization.getOrganizationType().toString())
-                .name(organization.getName())
-                .staff(organization.getStaff().stream().map(UserId::getId).toList())
+                        .build()
+                )
                 .build();
     }
 }
