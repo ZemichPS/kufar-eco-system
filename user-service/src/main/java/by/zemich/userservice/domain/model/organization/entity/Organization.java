@@ -1,6 +1,6 @@
 package by.zemich.userservice.domain.model.organization.entity;
 
-import by.zemich.userservice.domain.model.commands.CreateOrganizationCommand;
+import by.zemich.userservice.domain.commands.CreateOrganizationCommand;
 import by.zemich.userservice.domain.model.organization.vo.Address;
 import by.zemich.userservice.domain.model.organization.vo.OrganizationId;
 import by.zemich.userservice.domain.model.organization.vo.OrganizationType;
@@ -8,7 +8,6 @@ import by.zemich.userservice.domain.model.organization.vo.PhoneNumber;
 import by.zemich.userservice.domain.model.user.vo.UserId;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.stereotype.Service;
 
 @Getter
 @Setter

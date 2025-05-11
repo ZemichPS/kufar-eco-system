@@ -1,7 +1,7 @@
 package by.zemich.userservice.infrastructure.persistence.jpa.repositories;
 
 import by.zemich.userservice.infrastructure.persistence.jpa.entities.UserEntity;
-import by.zemich.userservice.infrastructure.persistence.jpa.repositories.projections.UserFullRecord;
+import by.zemich.userservice.domain.dto.UserFullRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

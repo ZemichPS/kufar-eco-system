@@ -1,4 +1,4 @@
-package by.zemich.userservice.application.query;
+package by.zemich.userservice.domain.queries;
 
 public record GetUserByEmilQuery(String email) {
 }

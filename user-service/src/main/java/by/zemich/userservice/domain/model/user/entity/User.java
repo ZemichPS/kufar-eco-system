@@ -1,6 +1,6 @@
 package by.zemich.userservice.domain.model.user.entity;
 
-import by.zemich.userservice.domain.model.commands.RegisterUserCommand;
+import by.zemich.userservice.domain.commands.RegisterUserCommand;
 import by.zemich.userservice.domain.model.organization.vo.OrganizationId;
 import by.zemich.userservice.domain.model.user.vo.*;
 import lombok.AccessLevel;
@@ -17,7 +17,7 @@ public class User {
     private LocalDateTime registeredAt;
     @Setter(AccessLevel.NONE)
     private Role role;
-    private Name name;
+    private FullName fullName;
     private Email email;
     private PhoneNumber phoneNumber;
     private String telegramUserId;
@@ -27,8 +27,8 @@ public class User {
 
     public User(RegisterUserCommand command) {
         this.userId = new UserId(UUID.randomUUID());
-        this.role = Role.valueOf(command.role());
-        this.name = new Name(command.username(), command.firstname(), command.lastname());
+        this.role = command.role();
+        this.fullName = new FullName(command.username(), command.firstname(), command.lastname());
         this.email = new Email(command.email());
         this.phoneNumber = new PhoneNumber(command.phoneNumber());
     }

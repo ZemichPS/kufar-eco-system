@@ -1,17 +1,18 @@
 package by.zemich.userservice.api.rest.controllers;
 
+import by.zemich.userservice.api.rest.CommandMapper;
 import by.zemich.userservice.api.rest.dto.AssignRoleDto;
 import by.zemich.userservice.api.rest.dto.ConfirmationCodeDto;
 import by.zemich.userservice.api.rest.dto.OrganizationRequestDto;
 import by.zemich.userservice.api.rest.dto.UserCreateRequestDto;
-import by.zemich.userservice.application.command.ConfirmRegistrationCodeCommand;
+import by.zemich.userservice.domain.commands.ConfirmRegistrationCodeCommand;
 import by.zemich.userservice.application.command.OrganizationCommandService;
 import by.zemich.userservice.application.command.UserCommandService;
-import by.zemich.userservice.application.query.dto.UserResponseDto;
-import by.zemich.userservice.domain.model.commands.AssignUserRoleCommand;
-import by.zemich.userservice.domain.model.commands.CreateOrganizationCommand;
-import by.zemich.userservice.domain.model.commands.RegisterUserCommand;
-import by.zemich.userservice.domain.model.commands.UpdateOrganizationCommand;
+import by.zemich.userservice.domain.dto.UserResponseDto;
+import by.zemich.userservice.domain.commands.AssignUserRoleCommand;
+import by.zemich.userservice.domain.commands.CreateOrganizationCommand;
+import by.zemich.userservice.domain.commands.RegisterUserCommand;
+import by.zemich.userservice.domain.commands.UpdateOrganizationCommand;
 import by.zemich.userservice.domain.model.organization.entity.Organization;
 import by.zemich.userservice.domain.model.organization.vo.OrganizationId;
 import by.zemich.userservice.domain.model.organization.vo.OrganizationType;
@@ -41,15 +42,14 @@ public class UserCommandController {
     public ResponseEntity<UserResponseDto> register(
             @Valid @RequestBody UserCreateRequestDto dto
     ) {
-        RegisterUserCommand command = UserCommandMapper.map(dto);
+        RegisterUserCommand command = CommandMapper.map(dto);
         User newUser = userCommandService.handle(command);
-        UserResponseDto response = UserMapper.map(newUser);
         String location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(response.getId())
+                .buildAndExpand(newUser.getUserId())
                 .toUriString();
-        return ResponseEntity.created(URI.create(location)).body(response);
+        return ResponseEntity.created(URI.create(location)).build();
     }
 
     @PostMapping("/{user_key}/confirmations")
@@ -65,7 +65,7 @@ public class UserCommandController {
     }
 
     @PostMapping("/{user_key}/roles")
-    public ResponseEntity<Void> assignRole(
+    public  ResponseEntity<Void> assignRole(
             @PathVariable(name = "user_key") UUID IdUser,
             @RequestBody AssignRoleDto assignRoleDto
     ) {
@@ -79,21 +79,7 @@ public class UserCommandController {
 
     @PostMapping("/user_key/organizations")
     public ResponseEntity<URI> createOrganization(@RequestBody @Valid OrganizationRequestDto dto) {
-        CreateOrganizationCommand command = new CreateOrganizationCommand(
-                new OrganizationId(UUID.randomUUID()),
-                new UserId(dto.getOwnerId()),
-                dto.getName(),
-                dto.getSpecialization(),
-                OrganizationType.valueOf(dto.getOrganizationType()),
-                new PhoneNumber(dto.getPhoneNumber()),
-                dto.getPostalCode(),
-                dto.getRegion(),
-                dto.getDistrict(),
-                dto.getCity(),
-                dto.getStreet(),
-                dto.getHouseNumber(),
-                dto.getApartmentNumber()
-        );
+        CreateOrganizationCommand command =  CommandMapper.map(dto);
         Organization organization = commandService.handle(command);
         String location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -109,22 +95,7 @@ public class UserCommandController {
             @PathVariable(name = "organization_key") UUID organizationId,
             @RequestBody @Valid OrganizationRequestDto dto
     ) {
-        UpdateOrganizationCommand command = new UpdateOrganizationCommand(
-                new UserId(idUser),
-                new OrganizationId(organizationId),
-                dto.getName(),
-                dto.getSpecialization(),
-                OrganizationType.valueOf(dto.getOrganizationType()),
-                new PhoneNumber(dto.getPhoneNumber()),
-                dto.getPostalCode(),
-                dto.getRegion(),
-                dto.getDistrict(),
-                dto.getCity(),
-                dto.getStreet(),
-                dto.getHouseNumber(),
-                dto.getApartmentNumber()
-        );
-
+        UpdateOrganizationCommand command = CommandMapper.map(dto, idUser, organizationId);
         Organization organization = commandService.handle(command);
         String location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -133,6 +104,4 @@ public class UserCommandController {
                 .toUriString();
         return ResponseEntity.created(URI.create(location)).build();
     }
-
-
 }

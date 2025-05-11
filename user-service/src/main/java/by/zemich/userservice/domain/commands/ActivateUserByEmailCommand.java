@@ -1,4 +1,4 @@
-package by.zemich.userservice.domain.model.commands;
+package by.zemich.userservice.domain.commands;
 
 import by.zemich.userservice.domain.model.user.vo.UserId;
 

@@ -1,4 +1,4 @@
-package by.zemich.userservice.infrastructure.persistence.jpa.repositories.projections;
+package by.zemich.userservice.domain.dto;
 
 import by.zemich.userservice.infrastructure.persistence.jpa.entities.UserEntity;
 

@@ -1,10 +1,11 @@
 package by.zemich.userservice.application.query;
 
 import by.zemich.userservice.domain.exception.UserNotFoundException;
-import by.zemich.userservice.domain.model.queries.GetUserByTelegramIdQuery;
-import by.zemich.userservice.domain.model.queries.GetUserByUserId;
+import by.zemich.userservice.domain.queries.GetUserByEmilQuery;
+import by.zemich.userservice.domain.queries.GetUserByTelegramIdQuery;
+import by.zemich.userservice.domain.queries.GetUserByUserId;
 import by.zemich.userservice.infrastructure.persistence.jpa.repositories.UserViewRepository;
-import by.zemich.userservice.infrastructure.persistence.jpa.repositories.projections.UserFullRecord;
+import by.zemich.userservice.domain.dto.UserFullRecord;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

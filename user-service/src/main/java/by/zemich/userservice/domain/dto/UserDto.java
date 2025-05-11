@@ -1,4 +1,4 @@
-package by.zemich.userservice.application.query.dto;
+package by.zemich.userservice.domain.dto;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;

@@ -1,6 +1,6 @@
-package by.zemich.userservice.application.query.utils;
+package by.zemich.userservice.domain.utils;
 
-import by.zemich.userservice.application.query.dto.UserResponseDto;
+import by.zemich.userservice.domain.dto.UserResponseDto;
 import by.zemich.userservice.infrastructure.persistence.jpa.entities.UserEntity;
 import lombok.experimental.UtilityClass;
 

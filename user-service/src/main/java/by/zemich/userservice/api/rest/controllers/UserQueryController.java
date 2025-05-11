@@ -2,11 +2,14 @@ package by.zemich.userservice.api.rest.controllers;
 
 import by.zemich.userservice.application.query.OrganizationQueryService;
 import by.zemich.userservice.application.query.UserQueryService;
-import by.zemich.userservice.application.query.dto.OrganizationResponseDto;
-import by.zemich.userservice.domain.model.queries.GetUserByTelegramIdQuery;
-import by.zemich.userservice.domain.model.queries.GetUserByUserId;
+import by.zemich.userservice.domain.dto.OrganizationDto;
+import by.zemich.userservice.domain.dto.OrganizationFullDto;
+import by.zemich.userservice.domain.model.organization.entity.Organization;
+import by.zemich.userservice.domain.model.organization.vo.OrganizationId;
+import by.zemich.userservice.domain.queries.GetUserByTelegramIdQuery;
+import by.zemich.userservice.domain.queries.GetUserByUserId;
 import by.zemich.userservice.domain.model.user.vo.UserId;
-import by.zemich.userservice.infrastructure.persistence.jpa.repositories.projections.UserFullRecord;
+import by.zemich.userservice.domain.dto.UserFullRecord;
 import by.zemich.userservice.infrastructure.security.annotations.CurrentUserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -44,18 +47,4 @@ public class UserQueryController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/organizations")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<OrganizationResponseDto>> getAllOrganizations() {
-        List<OrganizationResponseDto> response = organizationQueryService.getAll().stream()
-                .map(OrganizationMapper::map)
-                .toList();
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/organizations/my")
-    public ResponseEntity<OrganizationResponseDto> getMyOrganization(@CurrentUserId UserId userId) {
-        OrganizationResponseDto response = organizationQueryService.getByOwnerId(userId);
-        return ResponseEntity.ok(response);
-    }
 }

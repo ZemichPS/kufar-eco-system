@@ -5,8 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Name {
-    private String username;
+public class FullName {
     private String firstname;
     private String lastname;
 }

@@ -2,8 +2,8 @@ package by.zemich.userservice.application.command;
 
 import by.zemich.userservice.domain.exception.OrganizationNotFoundException;
 import by.zemich.userservice.domain.exception.UserNotFoundException;
-import by.zemich.userservice.domain.model.commands.CreateOrganizationCommand;
-import by.zemich.userservice.domain.model.commands.UpdateOrganizationCommand;
+import by.zemich.userservice.domain.commands.CreateOrganizationCommand;
+import by.zemich.userservice.domain.commands.UpdateOrganizationCommand;
 import by.zemich.userservice.domain.model.organization.entity.Organization;
 import by.zemich.userservice.domain.model.organization.vo.Address;
 import by.zemich.userservice.domain.model.organization.vo.OrganizationId;

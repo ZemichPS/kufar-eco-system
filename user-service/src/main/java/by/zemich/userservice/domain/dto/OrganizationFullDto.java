@@ -1,4 +1,4 @@
-package by.zemich.userservice.application.query.dto;
+package by.zemich.userservice.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrganizationResponseDto {
+public class OrganizationFullDto {
     private UUID id;
     private String name;
     private String organizationType;
