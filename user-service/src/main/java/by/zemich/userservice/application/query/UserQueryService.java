@@ -26,13 +26,13 @@ public class UserQueryService {
                 .orElseThrow(() -> new UserNotFoundException(telegramId));
     }
 
+    public UserFullRecord getFullRecordById(GetUserByUserId query) {
+        return viewRepository.findRecordById(query.userId().id())
+                .orElseThrow(() -> new UserNotFoundException(query.userId().id().toString()));
+    }
+
     public UserFullRecord getFullRecordByEmail(GetUserByEmilQuery query) {
         return viewRepository.findByEmail(query.email())
                 .orElseThrow(() -> new UserNotFoundException(query.email().toString()));
-    }
-
-    public UserFullRecord getFullRecordById(GetUserByUserId query) {
-        return viewRepository.findRecordById(query.userId().getId())
-                .orElseThrow(() -> new UserNotFoundException(query.userId().getId().toString()));
     }
 }

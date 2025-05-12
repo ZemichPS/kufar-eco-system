@@ -1,12 +1,11 @@
 package by.zemich.userservice.application.query;
 
-import by.zemich.userservice.domain.dto.OrganizationDto;
-import by.zemich.userservice.domain.dto.OrganizationFullDto;
-import by.zemich.userservice.domain.model.organization.entity.Organization;
+import by.zemich.userservice.domain.dto.OrganizationFullProjection;
+import by.zemich.userservice.domain.dto.OrganizationProjection;
+import by.zemich.userservice.domain.exception.OrganizationNotFoundException;
 import by.zemich.userservice.domain.model.organization.vo.OrganizationId;
 import by.zemich.userservice.domain.model.user.vo.UserId;
-import by.zemich.userservice.domain.repository.OrganizationQueryRepository;
-import by.zemich.userservice.domain.repository.OrganizationRepository;
+import by.zemich.userservice.infrastructure.persistence.jpa.repositories.OrganizationViewRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,18 +15,21 @@ import java.util.List;
 @AllArgsConstructor
 public class OrganizationQueryService {
 
-    private final OrganizationQueryRepository organizationQueryRepository;
+    private final OrganizationViewRepository OrganizationViewRepository;
 
-    public OrganizationDto getByOwnerId(UserId userId) {
-        return organizationQueryRepository.findByOwnerId(userId);
+    public OrganizationProjection getByOwnerId(UserId userId) {
+        return OrganizationViewRepository.findProjectedByOwnerId(userId.id())
+                .orElseThrow(() -> new OrganizationNotFoundException(userId.toString()));
     }
 
-    public OrganizationDto getById(OrganizationId organizationId) {
-        return organizationQueryRepository.findById(organizationId);
+    public OrganizationProjection getById(OrganizationId organizationId) {
+        return OrganizationViewRepository.findProjectedById(organizationId.id())
+                .orElseThrow(() -> new OrganizationNotFoundException(organizationId.toString()));
+
     }
 
-    public List<OrganizationFullDto> getAll() {
-        return organizationQueryRepository.findAll();
+    public List<OrganizationFullProjection> getAll() {
+        return OrganizationViewRepository.findAllProjectedBy();
     }
 
 

@@ -5,8 +5,5 @@ import lombok.Data;
 
 import java.util.UUID;
 
-@Data
-@AllArgsConstructor
-public class UserId {
-    private UUID id;
+public record UserId(UUID id) {
 }

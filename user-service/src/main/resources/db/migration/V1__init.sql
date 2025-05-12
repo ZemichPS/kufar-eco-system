@@ -5,7 +5,6 @@ CREATE TABLE app.users
 (
     id                uuid PRIMARY KEY,
     role              text,
-    username          text,
     registration_date timestamp with time zone,
     first_name        text,
     last_name         text,
@@ -56,9 +55,6 @@ CREATE TABLE app.identities
 
 ALTER table app.users
     ADD CONSTRAINT uniq_user_email UNIQUE (email);
-
-ALTER TABLE app.users
-    ADD CONSTRAINT uniq_username UNIQUE (username);
 
 ALTER TABLE app.identities
     ADD CONSTRAINT FK_IDENTITIES_ON_USER_UUID FOREIGN KEY (user_id) REFERENCES app.users (id);

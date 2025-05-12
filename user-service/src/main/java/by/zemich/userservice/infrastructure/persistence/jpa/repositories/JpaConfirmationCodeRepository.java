@@ -29,13 +29,13 @@ public class JpaConfirmationCodeRepository implements EmailConfirmationCodeRepos
 
     @Override
     public Optional<EmailConfirmationCode> findByUserId(UserId userId) {
-        return emailConfirmationRepository.findByUserUuid(userId.getId())
+        return emailConfirmationRepository.findByUserUuid(userId.id())
                 .map(CodeMapper::mapToDomain);
     }
 
     @Override
     public Optional<EmailConfirmationCode> findByUserIdAndCode(UserId userId, String confirmationCode) {
-        return emailConfirmationRepository.findByUserUuidAndCode(userId.getId(), confirmationCode)
+        return emailConfirmationRepository.findByUserUuidAndCode(userId.id(), confirmationCode)
                 .map(CodeMapper::mapToDomain);
     }
 

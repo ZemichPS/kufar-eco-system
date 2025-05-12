@@ -17,6 +17,7 @@ public class User {
     private LocalDateTime registeredAt;
     @Setter(AccessLevel.NONE)
     private Role role;
+    @Setter
     private FullName fullName;
     private Email email;
     private PhoneNumber phoneNumber;
@@ -28,9 +29,9 @@ public class User {
     public User(RegisterUserCommand command) {
         this.userId = new UserId(UUID.randomUUID());
         this.role = command.role();
-        this.fullName = new FullName(command.username(), command.firstname(), command.lastname());
+        this.fullName = command.fullName();
         this.email = new Email(command.email());
-        this.phoneNumber = new PhoneNumber(command.phoneNumber());
+        this.phoneNumber = getPhoneNumber();
     }
 
     public User(UserId userId) {

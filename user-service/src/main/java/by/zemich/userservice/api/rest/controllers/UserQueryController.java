@@ -2,10 +2,6 @@ package by.zemich.userservice.api.rest.controllers;
 
 import by.zemich.userservice.application.query.OrganizationQueryService;
 import by.zemich.userservice.application.query.UserQueryService;
-import by.zemich.userservice.domain.dto.OrganizationDto;
-import by.zemich.userservice.domain.dto.OrganizationFullDto;
-import by.zemich.userservice.domain.model.organization.entity.Organization;
-import by.zemich.userservice.domain.model.organization.vo.OrganizationId;
 import by.zemich.userservice.domain.queries.GetUserByTelegramIdQuery;
 import by.zemich.userservice.domain.queries.GetUserByUserId;
 import by.zemich.userservice.domain.model.user.vo.UserId;

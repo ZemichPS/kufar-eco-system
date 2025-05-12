@@ -7,7 +7,6 @@ import java.util.UUID;
 
 public record UserFullRecord(
         UUID id,
-        String username,
         String firstName,
         String lastName,
         UserEntity.Role role,
@@ -15,7 +14,6 @@ public record UserFullRecord(
         String email,
         String telegramUserId,
         String phoneNumber,
-        String password,
         UUID organizationId
 ) {
 }

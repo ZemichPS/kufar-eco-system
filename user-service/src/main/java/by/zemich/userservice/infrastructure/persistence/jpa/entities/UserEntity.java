@@ -17,7 +17,6 @@ import java.util.UUID;
 public class UserEntity {
     @Id
     private UUID id;
-    private String username;
     private String firstName;
     private String lastName;
     @Enumerated(EnumType.STRING)

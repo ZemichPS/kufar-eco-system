@@ -21,7 +21,7 @@ public class UserDto {
     private String surname;
     private String postalCode;
     private String region;
-    private String district;        // Район (если применимо)
+    private String district;
     private String city;
     private String street;
     private String houseNumber;

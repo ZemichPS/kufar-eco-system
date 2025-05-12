@@ -41,7 +41,7 @@ public class UserCommandService {
     public void handle(AssignUserRoleCommand command) {
         UserId userId = command.userId();
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId.getId().toString()));
+                .orElseThrow(() -> new UserNotFoundException(userId.id().toString()));
         user.assignRole(command.role());
         userRepository.save(user);
     }

@@ -23,7 +23,7 @@ public class OrganizationCommandService {
 
     public Organization handle(CreateOrganizationCommand command) {
         UserId userId = command.ownerId();
-        if (!userRepository.existsById(userId)) throw new UserNotFoundException(userId.getId().toString());
+        if (!userRepository.existsById(userId)) throw new UserNotFoundException(userId.id().toString());
         Organization organization = new Organization(command);
         return organizationRepository.save(organization);
     }

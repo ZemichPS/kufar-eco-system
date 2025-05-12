@@ -23,7 +23,7 @@ public class CodeMapper {
     public static EmailConfirmationCodeEntity mapToEntity(EmailConfirmationCode code) {
         return EmailConfirmationCodeEntity.builder()
                 .uuid(code.getCodeId().uuid())
-                .userUuid(code.getUserId().getId())
+                .userUuid(code.getUserId().id())
                 .email(code.getEmail())
                 .code(code.getCode())
                 .expiresAt(code.getExpiresAt())

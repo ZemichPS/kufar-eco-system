@@ -33,12 +33,12 @@ public class JpaUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findById(UserId userId) {
-        return springDataUserRepository.findById(userId.getId()).map(UserMapper::map);
+        return springDataUserRepository.findById(userId.id()).map(UserMapper::map);
     }
 
     @Override
     public boolean existsById(UserId userId) {
-        return springDataUserRepository.existsById(userId.getId());
+        return springDataUserRepository.existsById(userId.id());
     }
 
     @Override
@@ -53,6 +53,6 @@ public class JpaUserRepository implements UserRepository {
 
     @Override
     public Optional<User> getUserId(UserId userId) {
-        return springDataUserRepository.findById(userId.getId()).map(UserMapper::map);
+        return springDataUserRepository.findById(userId.id()).map(UserMapper::map);
     }
 }

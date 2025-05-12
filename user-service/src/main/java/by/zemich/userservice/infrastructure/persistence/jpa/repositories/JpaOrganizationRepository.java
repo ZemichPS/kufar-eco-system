@@ -29,7 +29,7 @@ public class JpaOrganizationRepository implements OrganizationRepository {
     public Organization save(Organization organization) {
         OrganizationEntity organizationEntity = OrganizationMapper.map(organization);
         UserId userId = organization.getOwnerId();
-        UserEntity user = userRepository.findById(userId.getId()).orElseThrow(() -> new EntityNotFoundException("User with id" + userId.getId() + " not found"));
+        UserEntity user = userRepository.findById(userId.id()).orElseThrow(() -> new EntityNotFoundException("User with id" + userId.id() + " not found"));
         organizationEntity.setOwner(user);
         OrganizationEntity saved = organizationRepository.save(organizationEntity);
         return OrganizationMapper.map(saved);
