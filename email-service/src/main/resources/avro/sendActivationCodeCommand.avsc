@@ -1,0 +1,15 @@
+{
+  "type": "record",
+  "name": "SendActivationCodeCommand",
+  "namespace": "com.zemich.email_service.domain.command",
+  "fields": [
+    {
+      "name": "to",
+      "type": "string"
+    },
+    {
+      "name": "code",
+      "type": "string"
+    }
+  ]
+}

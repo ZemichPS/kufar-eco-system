@@ -1,6 +1,6 @@
 package by.zemich.userservice.domain.model.user.entity;
 
-import by.zemich.userservice.domain.commands.RegisterUserCommand;
+import by.zemich.userservice.domain.command.RegisterUserCommand;
 import by.zemich.userservice.domain.model.organization.vo.OrganizationId;
 import by.zemich.userservice.domain.model.user.vo.*;
 import lombok.AccessLevel;

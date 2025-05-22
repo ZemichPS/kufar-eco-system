@@ -1,4 +1,4 @@
-package by.zemich.advertisementservice.infrastracture.events;
+package by.zemich.advertisementservice.domain.event;
 
 import java.util.UUID;
 

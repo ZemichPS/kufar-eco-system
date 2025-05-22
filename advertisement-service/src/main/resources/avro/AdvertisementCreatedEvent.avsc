@@ -1,7 +1,7 @@
 {
   "type": "record",
   "name": "AdvertisementCreatedEvent",
-  "namespace": "by.zemich.advertisementservice.domain.events",
+  "namespace": "by.zemich.advertisementservice.domain.event",
   "fields": [
     {
       "name": "uuid",

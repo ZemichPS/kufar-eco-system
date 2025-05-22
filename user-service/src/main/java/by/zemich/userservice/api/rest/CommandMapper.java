@@ -2,9 +2,9 @@ package by.zemich.userservice.api.rest;
 
 import by.zemich.userservice.api.rest.dto.OrganizationRequestDto;
 import by.zemich.userservice.api.rest.dto.UserCreateRequestDto;
-import by.zemich.userservice.domain.commands.CreateOrganizationCommand;
-import by.zemich.userservice.domain.commands.RegisterUserCommand;
-import by.zemich.userservice.domain.commands.UpdateOrganizationCommand;
+import by.zemich.userservice.domain.command.CreateOrganizationCommand;
+import by.zemich.userservice.domain.command.RegisterUserCommand;
+import by.zemich.userservice.domain.command.UpdateOrganizationCommand;
 import by.zemich.userservice.domain.model.organization.vo.OrganizationId;
 import by.zemich.userservice.domain.model.organization.vo.OrganizationType;
 import by.zemich.userservice.domain.model.user.vo.FullName;

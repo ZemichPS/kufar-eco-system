@@ -1,6 +1,6 @@
 package by.zemich.userservice.domain.model.organization.entity;
 
-import by.zemich.userservice.domain.commands.CreateOrganizationCommand;
+import by.zemich.userservice.domain.command.CreateOrganizationCommand;
 import by.zemich.userservice.domain.model.organization.vo.Address;
 import by.zemich.userservice.domain.model.organization.vo.OrganizationId;
 import by.zemich.userservice.domain.model.organization.vo.OrganizationType;

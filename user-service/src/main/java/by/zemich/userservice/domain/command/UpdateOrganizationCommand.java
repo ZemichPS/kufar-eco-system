@@ -1,4 +1,4 @@
-package by.zemich.userservice.domain.commands;
+package by.zemich.userservice.domain.command;
 
 
 import by.zemich.userservice.domain.model.organization.vo.OrganizationId;
@@ -7,9 +7,9 @@ import by.zemich.userservice.domain.model.organization.vo.PhoneNumber;
 import by.zemich.userservice.domain.model.user.vo.UserId;
 
 
-public record CreateOrganizationCommand(
+public record UpdateOrganizationCommand(
+        UserId userId,
         OrganizationId organizationId,
-        UserId ownerId,
         String name,
         String specialization,
         OrganizationType organizationType,

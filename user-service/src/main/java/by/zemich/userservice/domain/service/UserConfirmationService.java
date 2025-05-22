@@ -1,5 +1,6 @@
 package by.zemich.userservice.domain.service;
 
+import by.zemich.userservice.domain.command.SendActivationCodeCommand;
 import by.zemich.userservice.domain.exception.ConfirmationException;
 import by.zemich.userservice.domain.model.code.entity.EmailConfirmationCode;
 import by.zemich.userservice.domain.model.user.vo.UserId;
@@ -11,16 +12,16 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserConfirmationService {
 
-    private final EmailBodyProvider emailBodyProvider;
     private final ConfirmationCodeService confirmationCodeService;
-    private final EmailService emailService;
+    private final MessageService messageService;
+
 
     public void sendConfirmationEmail(String email, UserId userId) {
-        EmailConfirmationCode emailConfirmationCode =
+        EmailConfirmationCode code =
                 confirmationCodeService.generateConfirmationCode(email, userId);
-        String bodyMessage = emailBodyProvider.generateEmailApproveMessageBody(emailConfirmationCode.getCode());
-        emailService.sendEmail(email, bodyMessage, "Подтверждение регистрации PartsFlow");
-        confirmationCodeService.save(emailConfirmationCode);
+        SendActivationCodeCommand command = new SendActivationCodeCommand(email, code.getCode());
+        messageService.sendActivationCode(command);
+        confirmationCodeService.save(code);
     }
 
 

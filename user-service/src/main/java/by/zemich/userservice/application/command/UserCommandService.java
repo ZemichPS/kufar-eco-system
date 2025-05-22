@@ -1,9 +1,9 @@
 package by.zemich.userservice.application.command;
 
-import by.zemich.userservice.domain.commands.ConfirmRegistrationCodeCommand;
+import by.zemich.userservice.domain.command.ConfirmRegistrationCodeCommand;
 import by.zemich.userservice.domain.exception.UserNotFoundException;
-import by.zemich.userservice.domain.commands.AssignUserRoleCommand;
-import by.zemich.userservice.domain.commands.RegisterUserCommand;
+import by.zemich.userservice.domain.command.AssignUserRoleCommand;
+import by.zemich.userservice.domain.command.RegisterUserCommand;
 import by.zemich.userservice.domain.model.user.entity.User;
 import by.zemich.userservice.domain.model.user.vo.UserId;
 import by.zemich.userservice.domain.policy.UserActivationAllowedPolicy;

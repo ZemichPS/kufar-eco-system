@@ -1,6 +1,6 @@
 package by.zemich.advertisementservice.infrastracture.listeners;
 
-import by.zemich.advertisementservice.infrastracture.events.AdvertisementCreatedEvent;
+import by.zemich.advertisementservice.domain.event.AdvertisementCreatedEvent;
 import by.zemich.advertisementservice.infrastracture.output.repository.elastic.documents.AdvertisementDocument;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.api.AdvertisementRepository;
 import by.zemich.advertisementservice.infrastracture.output.repository.jpa.entity.AdvertisementAttributeEntity;
