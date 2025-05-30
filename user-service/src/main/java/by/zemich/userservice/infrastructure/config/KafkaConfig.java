@@ -59,8 +59,8 @@ public class KafkaConfig {
     }
 
     @Bean
-    public NewTopic adsTopic() {
-        return TopicBuilder.name("advertisement.created")
+    public NewTopic registrationApproveTopic() {
+        return TopicBuilder.name("users.registration.approve")
                 .partitions(3)
                 .replicas(1)
                 .compact()

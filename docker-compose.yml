@@ -10,8 +10,8 @@ services:
     image: postgres:17.2
     container_name: user_postgres_db
     restart: always
-#    depends_on:
-#      - service-discovery
+    depends_on:
+      - service-discovery
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -233,11 +233,11 @@ services:
     restart: always
     ports:
       - "8761:8761"
-    depends_on:
-      - grafana
-      - prometheus
-      - redis
-      - minio
+#    depends_on:
+#      - grafana
+#      - prometheus
+#      - redis
+#      - minio
     networks:
       - application-net
     healthcheck:

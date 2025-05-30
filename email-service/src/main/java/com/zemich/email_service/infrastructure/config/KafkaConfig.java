@@ -56,7 +56,7 @@ public class KafkaConfig {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaAvroDeserializer.class);
         props.put("schema.registry.url", schemaRegistryUrl);
-        props.put("specific.avro.reader", "true");
+        props.put("specific.avro.reader", "false");
         return new DefaultKafkaConsumerFactory<>(props);
     }
 

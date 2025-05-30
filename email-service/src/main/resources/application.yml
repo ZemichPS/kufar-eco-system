@@ -24,9 +24,12 @@ spring:
             readTimeout: 5000
             loggerLevel: basic
 
-  config:
-    enabled: false
-    import: configserver:http://localhost:8888
+    config:
+      enabled: false
+      import: configserver:http://localhost:8888
+
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 
 eureka:
   client:

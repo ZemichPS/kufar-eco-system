@@ -6,9 +6,8 @@ import lombok.Getter;
 public enum Role {
     ADMIN("администратор"),
     MODERATOR("модератор"),
-    OWNER("владелец"),
-    SELLER("продавец"),
-    STAFF("сотрудник");
+    BUSINESS_OWNER("владелец"),
+    SELLER("продавец");
     private String title;
 
     Role(String title) {

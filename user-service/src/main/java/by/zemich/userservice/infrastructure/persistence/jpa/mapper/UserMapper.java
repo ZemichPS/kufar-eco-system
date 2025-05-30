@@ -17,8 +17,9 @@ public class UserMapper {
         user.setPhoneNumber(new PhoneNumber(entity.getPhoneNumber()));
         user.setTelegramUserId(entity.getTelegramUserId());
         user.setPassword(entity.getPassword());
-        user.setOrganizationId(new OrganizationId(entity.getOrganization().getId()));
         user.setEnabled(entity.getEnabled());
+        if (entity.getOrganization() != null)
+            user.setOrganizationId(new OrganizationId(entity.getOrganization().getId()));
         return user;
     }
 
@@ -29,6 +30,7 @@ public class UserMapper {
                 .lastName(domain.getFullName().getLastname())
                 .registrationDate(domain.getRegisteredAt())
                 .email(domain.getEmail().getEmail())
+                .phoneNumber(domain.getPhoneNumber().phoneNumber())
                 .telegramUserId(domain.getTelegramUserId())
                 .password(domain.getPassword())
                 .role(UserEntity.Role.valueOf(domain.getRole().toString()))

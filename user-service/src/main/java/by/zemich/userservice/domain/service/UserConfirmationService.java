@@ -5,6 +5,7 @@ import by.zemich.userservice.domain.exception.ConfirmationException;
 import by.zemich.userservice.domain.model.code.entity.EmailConfirmationCode;
 import by.zemich.userservice.domain.model.user.vo.UserId;
 import by.zemich.userservice.domain.specification.ExpiredCodeSpecification;
+import by.zemich.userservice.infrastructure.messaging.kafka.KafkaProducerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,14 +14,14 @@ import org.springframework.stereotype.Service;
 public class UserConfirmationService {
 
     private final ConfirmationCodeService confirmationCodeService;
-    private final MessageService messageService;
+    private final KafkaProducerService kafkaProducerService;
 
 
     public void sendConfirmationEmail(String email, UserId userId) {
         EmailConfirmationCode code =
                 confirmationCodeService.generateConfirmationCode(email, userId);
         SendActivationCodeCommand command = new SendActivationCodeCommand(email, code.getCode());
-        messageService.sendActivationCode(command);
+        kafkaProducerService.send(command);
         confirmationCodeService.save(code);
     }
 

@@ -14,4 +14,5 @@ public interface SpringDataUserRepository extends JpaRepository<UserEntity, UUID
 
     Optional<UserEntity> findByTelegramUserId(String telegramId);
 
+    boolean existsByEmail(String email);
 }

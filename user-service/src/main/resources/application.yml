@@ -2,6 +2,10 @@ spring:
   application:
     name: user-application
 
+  kafka:
+    bootstrap-servers: localhost:9092
+    properties:
+      schema.registry.url: http://localhost:8085
 
   cloud:
     config:
@@ -55,34 +59,11 @@ spring:
     schemas: app
     baseline-on-migrate: true
 
-  mail:
-    host: smtp.rambler.ru
-    username: partsflow@rambler.ru
-    password: cs2402zzzXxx  # Проверьте пароль!
-    port: 465
-    protocol: smtps
-    properties:
-      mail:
-        smtp:
-          auth: true
-          ssl:
-            enable: true  #  Обязательно для порта 465
-          starttls:
-            enable: false  # Отключаем, так как используем SSL
-          connectiontimeout: 30000  # 30 секунд на подключение
-          timeout: 30000  # 30 секунд на операции
-          writetimeout: 30000  # 30 секунд на запись
-          socketFactory:
-            class: javax.net.ssl.SSLSocketFactory
-          socketFactoryFallback: false
-
-
 logging:
   level:
     org.springframework.security: DEBUG
     org.springframework.web: DEBUG
     by.zemich.userservice.infrastructure.security.*: DEBUG
-
 
 server:
   port: 8012

@@ -16,6 +16,7 @@ public interface UserRepository {
     Optional<User> findById(UserId userId);
 
     boolean existsById(UserId userId);
+    boolean existsByEmail(String email);
 
     Optional<User> getByTelegramId(String telegramId);
 

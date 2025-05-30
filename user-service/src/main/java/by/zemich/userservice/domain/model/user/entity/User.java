@@ -30,8 +30,8 @@ public class User {
         this.userId = new UserId(UUID.randomUUID());
         this.role = command.role();
         this.fullName = command.fullName();
-        this.email = new Email(command.email());
-        this.phoneNumber = getPhoneNumber();
+        this.email = command.email();
+        this.phoneNumber = command.phoneNumber();
     }
 
     public User(UserId userId) {

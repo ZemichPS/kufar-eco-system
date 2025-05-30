@@ -44,7 +44,7 @@ public class UserCommandController {
         String location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(newUser.getUserId())
+                .buildAndExpand(newUser.getUserId().id())
                 .toUriString();
         return ResponseEntity.created(URI.create(location)).build();
     }

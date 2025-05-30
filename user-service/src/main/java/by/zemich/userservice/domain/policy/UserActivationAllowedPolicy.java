@@ -7,7 +7,7 @@ public class UserActivationAllowedPolicy implements Policy<User> {
 
     @Override
     public User apply(User user) {
-        user.setEnabled(!user.getRole().equals(Role.ADMIN));
+        user.setEnabled(user.getRole() != Role.ADMIN);
         return user;
     }
 }

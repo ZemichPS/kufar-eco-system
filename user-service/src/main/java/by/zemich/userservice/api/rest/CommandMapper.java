@@ -7,10 +7,7 @@ import by.zemich.userservice.domain.command.RegisterUserCommand;
 import by.zemich.userservice.domain.command.UpdateOrganizationCommand;
 import by.zemich.userservice.domain.model.organization.vo.OrganizationId;
 import by.zemich.userservice.domain.model.organization.vo.OrganizationType;
-import by.zemich.userservice.domain.model.user.vo.FullName;
-import by.zemich.userservice.domain.model.user.vo.PhoneNumber;
-import by.zemich.userservice.domain.model.user.vo.Role;
-import by.zemich.userservice.domain.model.user.vo.UserId;
+import by.zemich.userservice.domain.model.user.vo.*;
 import lombok.experimental.UtilityClass;
 
 import java.util.UUID;
@@ -22,7 +19,7 @@ public class CommandMapper {
         return new RegisterUserCommand(
                 new FullName(requestDto.getFirstName(), requestDto.getLastName()),
                 Role.valueOf(requestDto.getRole()),
-                requestDto.getEmail(),
+                new Email(requestDto.getEmail()),
                 new PhoneNumber(requestDto.getPhoneNumber()),
                 requestDto.getPassword()
         );

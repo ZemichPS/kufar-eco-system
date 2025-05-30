@@ -42,6 +42,11 @@ public class JpaUserRepository implements UserRepository {
     }
 
     @Override
+    public boolean existsByEmail(String email) {
+        return springDataUserRepository.existsByEmail(email);
+    }
+
+    @Override
     public Optional<User> getByTelegramId(String telegramId) {
         return springDataUserRepository.findByTelegramUserId(telegramId).map(UserMapper::map);
     }
