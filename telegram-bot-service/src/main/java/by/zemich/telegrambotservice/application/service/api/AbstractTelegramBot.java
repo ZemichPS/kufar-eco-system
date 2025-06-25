@@ -21,11 +21,7 @@ public abstract class AbstractTelegramBot extends TelegramLongPollingBot {
         super(token);
     }
 
-    @Override
-    public void onUpdateReceived(Update update) {
-    }
-
-    public void sendMessage(String chatId, String message) {
+      public void sendMessage(String chatId, String message) {
         try {
             execute(new SendMessage(chatId, message));
         } catch (TelegramApiException e) {
@@ -51,7 +47,7 @@ public abstract class AbstractTelegramBot extends TelegramLongPollingBot {
         try {
             this.execute(message);
         } catch (TelegramApiException e) {
-            log.error("Failed to sendPhoto message to chatId {}, cause: {}", message.getChatId(), e.getMessage());
+            log.error("Failed to sendPhotoByChatId message to chatId {}, cause: {}", message.getChatId(), e.getMessage());
         }
     }
 

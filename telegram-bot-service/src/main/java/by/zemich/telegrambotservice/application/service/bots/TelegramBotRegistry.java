@@ -26,12 +26,19 @@ public class TelegramBotRegistry {
     private void initBots() {
         telegramProperties
                 .getBots()
-                .forEach((key, value) -> telegramBotList.add(new TelegramBot(key, value)));
+                .forEach((name, token) -> telegramBotList.add(new TelegramBot(name, token)));
     }
 
-    TelegramBot getByChatId(String chatId) {
+    public TelegramBot getByChatId(String chatId) {
         return chatIdToBotCache.computeIfAbsent(chatId, this::findBotByChatId);
     }
+
+    public TelegramBot getByName(String name) {
+        return telegramBotList.stream().filter(telegramBot -> telegramBot.getBotUsername().equalsIgnoreCase(name))
+                .findFirst()
+                .orElseThrow();
+    }
+
 
     private TelegramBot findBotByChatId(String chatId) {
         lock.lock();

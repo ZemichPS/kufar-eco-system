@@ -11,16 +11,22 @@ public class TelegramBotService {
 
     private final TelegramBotRegistry telegramBotRegistry;
 
-    public void sendPhoto(SendPhoto message) {
+    public void sendPhotoByChatId(SendPhoto message) {
         String chatId = message.getChatId();
         TelegramBot bot = telegramBotRegistry.getByChatId(chatId);
         bot.sendPhoto(message);
     }
 
-    public void sendText(SendMessage message) {
+    public void sendTextByChatId(SendMessage message) {
         String chatId = message.getChatId();
         TelegramBot bot = telegramBotRegistry.getByChatId(chatId);
         bot.sendText(message);
     }
+
+    public void sendMessageToDialog(SendMessage message) {
+        TelegramBot bot = telegramBotRegistry.getByName("dialogBot");
+        bot.sendText(message);
+    }
+
 
 }

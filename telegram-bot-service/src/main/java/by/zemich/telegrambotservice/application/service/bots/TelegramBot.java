@@ -2,6 +2,7 @@ package by.zemich.telegrambotservice.application.service.bots;
 
 import by.zemich.telegrambotservice.application.service.api.AbstractTelegramBot;
 import lombok.extern.slf4j.Slf4j;
+import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Slf4j
 public class TelegramBot extends AbstractTelegramBot {
@@ -16,5 +17,10 @@ public class TelegramBot extends AbstractTelegramBot {
     @Override
     public String getBotUsername() {
         return botUserName;
+    }
+
+    @Override
+    public void onUpdateReceived(Update update) {
+
     }
 }

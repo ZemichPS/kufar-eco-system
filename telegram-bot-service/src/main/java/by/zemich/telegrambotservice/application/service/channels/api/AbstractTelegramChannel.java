@@ -40,7 +40,7 @@ public abstract class AbstractTelegramChannel extends Channel {
         doDelay();
         SendPhoto photoPost = postManager.create(kufarAdvertisement);
         photoPost.setChatId(getChannelId());
-        telegramBotService.sendPhoto(photoPost);
+        telegramBotService.sendPhotoByChatId(photoPost);
         return true;
     }
 
@@ -48,7 +48,7 @@ public abstract class AbstractTelegramChannel extends Channel {
     public void notify(Notification notification) {
         SendPhoto photoPost = notificationPostManager.create(notification);
         photoPost.setChatId(getChannelId());
-        telegramBotService.sendPhoto(photoPost);
+        telegramBotService.sendPhotoByChatId(photoPost);
     }
 
     private void doDelay() {

@@ -2,7 +2,19 @@
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/advertisement-service" />
+    <file type="web" url="file://$PROJECT_DIR$/analytics-service" />
+    <file type="web" url="file://$PROJECT_DIR$/config-server" />
+    <file type="web" url="file://$PROJECT_DIR$/device-catalog-service" />
+    <file type="web" url="file://$PROJECT_DIR$/devices-service" />
+    <file type="web" url="file://$PROJECT_DIR$/discoveryms" />
+    <file type="web" url="file://$PROJECT_DIR$/email-service" />
+    <file type="web" url="file://$PROJECT_DIR$/gateway-service" />
+    <file type="web" url="file://$PROJECT_DIR$/geo-service" />
+    <file type="web" url="file://$PROJECT_DIR$/kufar-parser" />
+    <file type="web" url="file://$PROJECT_DIR$/kufar-spy-application" />
     <file type="web" url="file://$PROJECT_DIR$/telegram-bot-service" />
+    <file type="web" url="file://$PROJECT_DIR$/user-service" />
   </component>
   <component name="ProjectRootManager">
     <output url="file://$PROJECT_DIR$/out" />
