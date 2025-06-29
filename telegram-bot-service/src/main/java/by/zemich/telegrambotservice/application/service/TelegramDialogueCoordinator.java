@@ -1,8 +1,6 @@
 package by.zemich.telegrambotservice.application.service;
 
-import by.zemich.telegrambotservice.application.service.bots.TelegramBotService;
-import by.zemich.telegrambotservice.application.service.dialogs.DialogType;
-import by.zemich.telegrambotservice.application.service.dialogs.StateMachineHandler;
+import by.zemich.telegrambotservice.application.service.botscenarious.ScenarioType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.statemachine.StateMachine;
@@ -23,16 +21,16 @@ public class TelegramDialogueCoordinator {
 
     public void handle(Update update) {
         Long chatId = update.getMessage().getChat().getId();
-        DialogType dialogType = getCurrentDialogTypeForChatId(chatId);
-        StateMachineFactory<?, ?> stateMachineFactory = stateMachineHandler.getByDialogType(dialogType);
+        ScenarioType scenarioType = getCurrentDialogTypeForChatId(chatId);
+        StateMachineFactory<?, ?> stateMachineFactory = stateMachineHandler.getByDialogType(scenarioType);
         StateMachine<?, ?> stateMachine = stateMachineFactory.getStateMachine(String.valueOf(chatId));
         String text = update.getMessage().getText();
     }
 
-    private DialogType getCurrentDialogTypeForChatId(Long chatId){
+    private ScenarioType getCurrentDialogTypeForChatId(Long chatId){
         Map<String, ? extends Session> sessionsMap = sessions.findByIndexNameAndIndexValue(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, chatId.toString());
         if (sessionsMap.isEmpty()) {
-            return DialogType.NONE;
+            return ScenarioType.DEFAULT;
         }
         Session session = sessionsMap.values().iterator().next();
         return session.getAttribute("dialog_type");
