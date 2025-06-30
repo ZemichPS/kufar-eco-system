@@ -20,7 +20,6 @@ public class DialogBot extends TelegramLongPollingBot implements TelegramSender<
     private final TelegramBotRegistry telegramBotRegistry;
     private final StateMachineOrchestrator stateMachineOrchestrator;
     private final ScenarioDetector scenarioDetector;
-    private final UserSessionService sessionService;
 
     @Override
     public String getBotUsername() {
@@ -31,7 +30,6 @@ public class DialogBot extends TelegramLongPollingBot implements TelegramSender<
     public void onUpdateReceived(Update update) {
         Long chatId = update.getMessage().getChatId();
         ScenarioType scenarioType = scenarioDetector.detectScenario(update);
-        sessionService.findByChatId(chatId).get().getLastEvent()
         stateMachineOrchestrator.handleEvent(chatId, scenarioType);
     }
 
