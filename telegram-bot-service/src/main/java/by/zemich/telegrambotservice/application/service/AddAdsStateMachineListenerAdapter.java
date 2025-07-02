@@ -16,19 +16,10 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class AddAdsStateMachineListenerAdapter extends StateMachineListenerAdapter<AdCreationState, AddAdvertisementEvent> {
 
-    private final StateProcessorHandler stateProcessorHandler;
-
-    @Override
-    public void stateEntered(State<AdCreationState, AddAdvertisementEvent> state) {
-        AdCreationState currentState = state.getId();
-        String chatId = state.getStateMachine().getId();
-        stateProcessorHandler.getProcessorByState(currentState.name()).proceed(chatId);
-    }
-
     @Override
     public void transition(Transition<AdCreationState, AddAdvertisementEvent> transition) {
         log.info("Переход из {} в {}", transition.getSource(), transition.getTarget());
-        //super.transition(transition);
+        super.transition(transition);
     }
 
     @Override

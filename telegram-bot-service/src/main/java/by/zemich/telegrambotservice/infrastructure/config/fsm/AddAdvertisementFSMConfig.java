@@ -5,8 +5,6 @@ import by.zemich.telegrambotservice.application.service.botscenarious.adcreation
 import by.zemich.telegrambotservice.application.service.botscenarious.adcreation.AddAdvertisementEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.statemachine.StateContext;
-import org.springframework.statemachine.action.Action;
 import org.springframework.statemachine.config.EnableStateMachineFactory;
 import org.springframework.statemachine.config.StateMachineConfigurerAdapter;
 import org.springframework.statemachine.config.builders.StateMachineConfigurationConfigurer;
@@ -27,7 +25,7 @@ public class AddAdvertisementFSMConfig extends StateMachineConfigurerAdapter<AdC
     public void configure(StateMachineStateConfigurer<AdCreationState, AddAdvertisementEvent> states) throws Exception {
         states.withStates()
                 .initial(AdCreationState.START_AD_CREATION)
-                .end(AdCreationState.COMPLETED_AD_CREATION)
+                .end(AdCreationState.CONFIRMATION)
                 .states(EnumSet.allOf(AdCreationState.class));
     }
 
@@ -35,40 +33,40 @@ public class AddAdvertisementFSMConfig extends StateMachineConfigurerAdapter<AdC
     public void configure(StateMachineTransitionConfigurer<AdCreationState, AddAdvertisementEvent> transitions) throws Exception {
         transitions
                 .withExternal()
-                .source(AdCreationState.START_AD_CREATION)
-                .target(AdCreationState.CATEGORY_INPUT)
-                .event(AddAdvertisementEvent.CATEGORY_RECEIVED)
+                    .source(AdCreationState.START_AD_CREATION)
+                    .target(AdCreationState.CATEGORY_INPUT)
+                    .event(AddAdvertisementEvent.STARTED)
                 .and()
                 .withExternal()
-                .source(AdCreationState.CATEGORY_INPUT)
-                .target(AdCreationState.CONDITION_INPUT)
-                .event(AddAdvertisementEvent.CONDITION_RECEIVED)
+                    .source(AdCreationState.CATEGORY_INPUT)
+                    .target(AdCreationState.CONDITION_INPUT)
+                    .event(AddAdvertisementEvent.CATEGORY_RECEIVED)
                 .and()
                 .withExternal()
-                .source(AdCreationState.CONDITION_INPUT)
-                .target(AdCreationState.PRICE_INPUT)
-                .event(AddAdvertisementEvent.PRICE_RECEIVED)
-                .action(stateContext -> stateContext.getExtendedState().getVariables().put("nextEvent", AddAdvertisementEvent.COMMENT_RECEIVED))
+                    .source(AdCreationState.CONDITION_INPUT)
+                    .target(AdCreationState.PRICE_INPUT)
+                    .event(AddAdvertisementEvent.CONDITION_RECEIVED)
+                    .action(stateContext -> stateContext.getExtendedState().getVariables().put("nextEvent", AddAdvertisementEvent.COMMENT_RECEIVED))
                 .and()
                 .withExternal()
-                .source(AdCreationState.PRICE_INPUT)
-                .target(AdCreationState.COMMENT_INPUT)
-                .event(AddAdvertisementEvent.COMMENT_RECEIVED)
+                    .source(AdCreationState.PRICE_INPUT)
+                    .target(AdCreationState.COMMENT_INPUT)
+                    .event(AddAdvertisementEvent.PRICE_RECEIVED)
                 .and()
                 .withExternal()
-                .source(AdCreationState.COMMENT_INPUT)
-                .target(AdCreationState.PHOTO_INPUT)
-                .event(AddAdvertisementEvent.PHOTO_RECEIVED)
+                    .source(AdCreationState.COMMENT_INPUT)
+                    .target(AdCreationState.PHOTO_INPUT)
+                    .event(AddAdvertisementEvent.COMMENT_RECEIVED)
                 .and()
                 .withExternal()
-                .source(AdCreationState.PHOTO_INPUT)
-                .target(AdCreationState.ATTRIBUTES_INPUT)
-                .event(AddAdvertisementEvent.ATTRIBUTES_RECEIVED)
+                    .source(AdCreationState.PHOTO_INPUT)
+                    .target(AdCreationState.ATTRIBUTES_INPUT)
+                    .event(AddAdvertisementEvent.PHOTO_RECEIVED)
                 .and()
                 .withExternal()
-                .source(AdCreationState.ATTRIBUTES_INPUT)
-                .target(AdCreationState.CONFIRMATION)
-                .event(AddAdvertisementEvent.CONFIRM);
+                    .source(AdCreationState.ATTRIBUTES_INPUT)
+                    .target(AdCreationState.CONFIRMATION)
+                    .event(AddAdvertisementEvent.ATTRIBUTES_RECEIVED);
 
     }
 

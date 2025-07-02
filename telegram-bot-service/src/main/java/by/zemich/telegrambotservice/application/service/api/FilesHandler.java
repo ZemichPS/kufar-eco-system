@@ -4,7 +4,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 
 public interface FilesHandler {
-    void upload(String fileName, FileInputStream fileInputStream, String to);
+    void upload(String fileName, InputStream fileInputStream, String to);
 
     InputStream download(String fileName, String from);
 }

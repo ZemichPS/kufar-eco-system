@@ -13,17 +13,17 @@ import java.io.InputStream;
 
 @Service
 @RequiredArgsConstructor
-public class FilesService implements FilesHandler {
+public class MinioFilesService implements FilesHandler {
 
     private final MinioClient minioClient;
 
     @Override
-    public void upload(String fileName, FileInputStream fileInputStream, String to) {
+    public void upload(String fileName, InputStream inputStream, String to) {
         try {
             minioClient.putObject(PutObjectArgs.builder()
                     .bucket(to)
                     .object(fileName)
-                    .stream(fileInputStream, fileInputStream.available(), -1)
+                    .stream(inputStream, inputStream.available(), -1)
                     .build()
             );
         } catch (Exception exception) {

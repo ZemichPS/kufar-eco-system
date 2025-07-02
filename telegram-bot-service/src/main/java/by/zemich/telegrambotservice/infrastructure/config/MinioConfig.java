@@ -13,8 +13,6 @@ public class MinioConfig {
                 .endpoint("http://127.0.0.1:9000")
                 .credentials("minio-root-user","minio-root-password")
                 .build();
-
-
     }
 
 

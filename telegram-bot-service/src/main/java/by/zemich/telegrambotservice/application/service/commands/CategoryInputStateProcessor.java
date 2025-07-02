@@ -1,8 +1,8 @@
 package by.zemich.telegrambotservice.application.service.commands;
 
-import by.zemich.telegrambotservice.application.service.TelegramSender;
+import by.zemich.telegrambotservice.application.service.api.TelegramSender;
 import by.zemich.telegrambotservice.application.service.botscenarious.adcreation.AdCreationState;
-import by.zemich.telegrambotservice.application.service.openfeign.CategoryOpenFeign;
+import by.zemich.telegrambotservice.application.service.openfeign.AdvertisementServiceOpenFeign;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -17,7 +17,7 @@ import java.util.List;
 public class CategoryInputStateProcessor implements StateProcessor {
 
     private final TelegramSender<SendMessage> telegramSender;
-    private final CategoryOpenFeign categoryOpenFeign;
+    private final AdvertisementServiceOpenFeign advertisementServiceOpenFeign;
 
 
     @Override
@@ -37,7 +37,7 @@ public class CategoryInputStateProcessor implements StateProcessor {
     }
 
     private ReplyKeyboardMarkup getReplyKeyboardMarkup() {
-        List<KeyboardRow> keyboard = categoryOpenFeign.getCategories()
+        List<KeyboardRow> keyboard = advertisementServiceOpenFeign.getCategories()
                 .stream()
                 .map(KeyboardButton::new)
                 .map(keyboardButton-> new KeyboardRow(List.of(keyboardButton)))

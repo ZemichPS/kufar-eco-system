@@ -1,4 +1,4 @@
-package by.zemich.telegrambotservice.application.service.dialogbotapi;
+package by.zemich.telegrambotservice.application.service.botscenarious.api;
 
 import by.zemich.telegrambotservice.application.service.botscenarious.ScenarioType;
 import by.zemich.telegrambotservice.domain.model.UserSession;

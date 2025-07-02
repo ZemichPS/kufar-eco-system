@@ -5,6 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import java.util.List;
 
 @FeignClient("getcategoriespath")
-public interface CategoryOpenFeign {
+public interface AdvertisementServiceOpenFeign {
+
     List<String> getCategories();
 }

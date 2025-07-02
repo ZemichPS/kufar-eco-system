@@ -1,26 +1,25 @@
 package by.zemich.telegrambotservice.application.service.bots;
 
-import by.zemich.telegrambotservice.application.service.TelegramSender;
-import by.zemich.telegrambotservice.application.service.botscenarious.ScenarioType;
-import by.zemich.telegrambotservice.application.service.botscenarious.adcreation.AddAdvertisementEvent;
-import by.zemich.telegrambotservice.application.service.dialogbotapi.StateMachineOrchestrator;
-import by.zemich.telegrambotservice.application.service.dialogbotapi.UserSessionService;
+import by.zemich.telegrambotservice.application.service.api.TelegramFileDownloader;
+import by.zemich.telegrambotservice.application.service.api.TelegramSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.GetFile;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.File;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import by.zemich.telegrambotservice.application.service.dialogbotapi.ScenarioDetector;
+import by.zemich.telegrambotservice.application.service.botscenarious.api.UpdateHandler;
 
 
 @Component
 @RequiredArgsConstructor
-public class DialogBot extends TelegramLongPollingBot implements TelegramSender<SendMessage> {
+public class DialogBot extends TelegramLongPollingBot implements TelegramSender<SendMessage>, TelegramFileDownloader {
 
     private final TelegramBotRegistry telegramBotRegistry;
-    private final StateMachineOrchestrator stateMachineOrchestrator;
-    private final ScenarioDetector scenarioDetector;
+    private final UpdateHandler updateHandler;
+
 
     @Override
     public String getBotUsername() {
@@ -29,20 +28,7 @@ public class DialogBot extends TelegramLongPollingBot implements TelegramSender<
 
     @Override
     public void onUpdateReceived(Update update) {
-
-        if (!update.hasMessage() && !update.hasCallbackQuery()) {
-            return;
-        }
-        Long chatId = update.hasMessage()
-                ? update.getMessage().getChatId()
-                : update.getCallbackQuery().getMessage().getChatId();
-
-        ScenarioType scenarioType = scenarioDetector.detectScenario(update);
-
-        if (update.hasCallbackQuery()) {
-            String callbackData = update.getCallbackQuery().getData();
-            stateMachineOrchestrator.handleEvent(chatId, scenarioType, callbackData);
-        } else stateMachineOrchestrator.handleEvent(chatId, scenarioType);
+        updateHandler.handle(update);
     }
 
     @Override
@@ -52,5 +38,20 @@ public class DialogBot extends TelegramLongPollingBot implements TelegramSender<
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }
+    }
+
+
+    @Override
+    public File downloadFile(GetFile getFile) {
+        try {
+            return execute(getFile);
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public String getToken() {
+        return telegramBotRegistry.getByName("dialogBot").getBotToken();
     }
 }
