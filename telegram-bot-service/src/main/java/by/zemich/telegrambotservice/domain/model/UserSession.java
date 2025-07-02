@@ -1,6 +1,5 @@
 package by.zemich.telegrambotservice.domain.model;
 
-import by.zemich.telegrambotservice.application.service.botscenarious.ScenarioEvent;
 import by.zemich.telegrambotservice.application.service.botscenarious.ScenarioType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

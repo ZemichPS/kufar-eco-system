@@ -5,6 +5,8 @@ import by.zemich.telegrambotservice.application.service.botscenarious.adcreation
 import by.zemich.telegrambotservice.application.service.botscenarious.adcreation.AddAdvertisementEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.statemachine.StateContext;
+import org.springframework.statemachine.action.Action;
 import org.springframework.statemachine.config.EnableStateMachineFactory;
 import org.springframework.statemachine.config.StateMachineConfigurerAdapter;
 import org.springframework.statemachine.config.builders.StateMachineConfigurationConfigurer;
@@ -46,6 +48,7 @@ public class AddAdvertisementFSMConfig extends StateMachineConfigurerAdapter<AdC
                 .source(AdCreationState.CONDITION_INPUT)
                 .target(AdCreationState.PRICE_INPUT)
                 .event(AddAdvertisementEvent.PRICE_RECEIVED)
+                .action(stateContext -> stateContext.getExtendedState().getVariables().put("nextEvent", AddAdvertisementEvent.COMMENT_RECEIVED))
                 .and()
                 .withExternal()
                 .source(AdCreationState.PRICE_INPUT)

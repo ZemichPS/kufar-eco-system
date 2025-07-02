@@ -2,6 +2,7 @@ package by.zemich.telegrambotservice.application.service.bots;
 
 import by.zemich.telegrambotservice.application.service.TelegramSender;
 import by.zemich.telegrambotservice.application.service.botscenarious.ScenarioType;
+import by.zemich.telegrambotservice.application.service.botscenarious.adcreation.AddAdvertisementEvent;
 import by.zemich.telegrambotservice.application.service.dialogbotapi.StateMachineOrchestrator;
 import by.zemich.telegrambotservice.application.service.dialogbotapi.UserSessionService;
 import lombok.RequiredArgsConstructor;
@@ -28,9 +29,20 @@ public class DialogBot extends TelegramLongPollingBot implements TelegramSender<
 
     @Override
     public void onUpdateReceived(Update update) {
-        Long chatId = update.getMessage().getChatId();
+
+        if (!update.hasMessage() && !update.hasCallbackQuery()) {
+            return;
+        }
+        Long chatId = update.hasMessage()
+                ? update.getMessage().getChatId()
+                : update.getCallbackQuery().getMessage().getChatId();
+
         ScenarioType scenarioType = scenarioDetector.detectScenario(update);
-        stateMachineOrchestrator.handleEvent(chatId, scenarioType);
+
+        if (update.hasCallbackQuery()) {
+            String callbackData = update.getCallbackQuery().getData();
+            stateMachineOrchestrator.handleEvent(chatId, scenarioType, callbackData);
+        } else stateMachineOrchestrator.handleEvent(chatId, scenarioType);
     }
 
     @Override

@@ -1,8 +1,6 @@
 package by.zemich.telegrambotservice.application.service.botscenarious.adcreation;
 
-import by.zemich.telegrambotservice.application.service.botscenarious.ScenarioEvent;
-
-public enum AddAdvertisementEvent implements ScenarioEvent {
+public enum AddAdvertisementEvent {
     CATEGORY_RECEIVED,
     CONDITION_RECEIVED,
     PRICE_RECEIVED,

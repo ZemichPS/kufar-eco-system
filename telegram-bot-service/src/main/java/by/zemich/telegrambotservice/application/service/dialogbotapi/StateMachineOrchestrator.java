@@ -35,6 +35,23 @@ public class StateMachineOrchestrator {
         sessionService.save(session, chatId);
     }
 
+    @SuppressWarnings("unchecked")
+    public <S extends Enum<S>, E extends Enum<E>> void handleEvent(
+            Long chatId,
+            ScenarioType scenarioType
+    ) {
+        UserSession session = sessionService.getByChatIdAndScenarioType(chatId, scenarioType)
+                .orElseGet(() -> userSessionService.create(chatId, scenarioType));
+
+        StateMachine<S, E> stateMachine = getStateMachine(session);
+        E event = (E) stateMachine.getExtendedState().getVariables().get("nextEvent");
+
+        stateMachine.sendEvent(event);
+        session.setLastActivity(Instant.now());
+        sessionService.save(session, chatId);
+    }
+
+    @SuppressWarnings("unchecked")
     private <S, E> StateMachine<S, E> getStateMachine(UserSession session) {
         StateMachine<S, E> stateMachine = (StateMachine<S, E>) factories
                 .get(session.getCurrentScenarioType())
@@ -43,8 +60,8 @@ public class StateMachineOrchestrator {
         if (stateMachine == null) {
             stateMachine = (StateMachine<S, E>) factories.get(session.getCurrentScenarioType()).getStateMachine();
             session.setStateMachineId(stateMachine.getId());
-            stateMachine.start();
         }
+        stateMachine.start();
         stateMachine.getExtendedState().getVariables().putAll(session.getContextData());
         return stateMachine;
     }
