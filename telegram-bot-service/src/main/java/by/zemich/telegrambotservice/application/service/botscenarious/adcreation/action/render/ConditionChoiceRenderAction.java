@@ -1,4 +1,4 @@
-package by.zemich.telegrambotservice.application.service.botscenarious.adcreation.action;
+package by.zemich.telegrambotservice.application.service.botscenarious.adcreation.action.render;
 
 import by.zemich.telegrambotservice.application.service.api.TelegramSender;
 import by.zemich.telegrambotservice.application.service.botscenarious.adcreation.AdCreationState;
@@ -15,15 +15,15 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import java.util.List;
 
 @Component
-public class ConditionChoiceAction extends BaseAdCreationAction {
+public class ConditionChoiceRenderAction extends AdCreationRenderAction {
 
-    public ConditionChoiceAction(TelegramSender<SendMessage> telegramSender) {
+    public ConditionChoiceRenderAction(TelegramSender<SendMessage> telegramSender) {
         super("Выберите состояние", telegramSender);
     }
 
     @Override
     public void execute(StateContext<AdCreationState, AddAdvertisementEvent> context) {
-        StateMachine<?, ?> sm = getStateMachine(context);
+        StateMachine<AdCreationState, AddAdvertisementEvent> sm = getStateMachine(context);
         Long chatId = StateMachineContextHelper.getChatId(sm);
         fillInAd(sm);
 
@@ -35,7 +35,7 @@ public class ConditionChoiceAction extends BaseAdCreationAction {
     }
 
     @Override
-    protected void fillInAd(StateMachine<?, ?> stateMachine) {
+    protected void fillInAd(StateMachine<AdCreationState, AddAdvertisementEvent> stateMachine) {
         String adCategory = StateMachineContextHelper.getPreviousStageText(stateMachine);
         AdvertisementDraftDto adDraft = StateMachineContextHelper.getAdDraft(stateMachine);
         adDraft.setCategory(adCategory);

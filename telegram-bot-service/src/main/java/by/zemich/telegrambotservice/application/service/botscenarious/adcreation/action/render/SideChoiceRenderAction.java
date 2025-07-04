@@ -1,4 +1,4 @@
-package by.zemich.telegrambotservice.application.service.botscenarious.adcreation.action;
+package by.zemich.telegrambotservice.application.service.botscenarious.adcreation.action.render;
 
 import by.zemich.telegrambotservice.application.service.api.TelegramSender;
 import by.zemich.telegrambotservice.application.service.botscenarious.adcreation.AdCreationState;
@@ -7,7 +7,6 @@ import by.zemich.telegrambotservice.application.service.botscenarious.api.Keyboa
 import by.zemich.telegrambotservice.application.service.botscenarious.api.StateMachineContextHelper;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.StateMachine;
-import org.springframework.statemachine.action.Action;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -15,14 +14,14 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import java.util.List;
 
 @Component
-public class SideChoiceAction extends BaseAdCreationAction {
-    public SideChoiceAction(TelegramSender<SendMessage> telegramSender) {
+public class SideChoiceRenderAction extends AdCreationRenderAction {
+    public SideChoiceRenderAction(TelegramSender<SendMessage> telegramSender) {
         super("Вы что-то ищите или желаете продать?", telegramSender);
     }
 
     @Override
     public void execute(StateContext<AdCreationState, AddAdvertisementEvent> context) {
-        StateMachine<?, ?> sm = context.getStateMachine();
+        StateMachine<AdCreationState, AddAdvertisementEvent> sm = context.getStateMachine();
         fillInAd(sm);
         Long chatId = StateMachineContextHelper.getChatId(sm);
         InlineKeyboardMarkup inlineKeyboardMarkup = KeyboardUtil.createInlineKeyboardMarkup(List.of("Ищу", "Продаю"), 2);
@@ -31,7 +30,7 @@ public class SideChoiceAction extends BaseAdCreationAction {
     }
 
     @Override
-    protected void fillInAd(StateMachine<?, ?> stateMachine) {
+    protected void fillInAd(StateMachine<AdCreationState, AddAdvertisementEvent> stateMachine) {
 
     }
 }

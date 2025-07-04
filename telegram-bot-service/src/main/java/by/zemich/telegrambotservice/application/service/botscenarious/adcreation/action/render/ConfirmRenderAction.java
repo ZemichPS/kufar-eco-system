@@ -1,4 +1,4 @@
-package by.zemich.telegrambotservice.application.service.botscenarious.adcreation.action;
+package by.zemich.telegrambotservice.application.service.botscenarious.adcreation.action.render;
 
 import by.zemich.telegrambotservice.application.service.api.TelegramSender;
 import by.zemich.telegrambotservice.application.service.botscenarious.adcreation.AdCreationState;
@@ -10,27 +10,34 @@ import org.springframework.statemachine.StateMachine;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
-@Component
-public class PhotoLoaderAction extends BaseAdCreationAction {
+import java.util.Arrays;
+import java.util.List;
 
-    public PhotoLoaderAction(TelegramSender<SendMessage> telegramSender) {
-        super("выберите фото", telegramSender);
+@Component
+public class ConfirmRenderAction extends AdCreationRenderAction {
+
+    public ConfirmRenderAction(TelegramSender<SendMessage> telegramSender) {
+        super(
+                "Поздравляю! объявление успешно создано. Через некоторое время оно будет опубликовано в канале",
+                telegramSender
+        );
     }
 
     @Override
     public void execute(StateContext<AdCreationState, AddAdvertisementEvent> context) {
-        StateMachine<?, ?> sm = context.getStateMachine();
-        fillInAd(sm);
+        StateMachine<AdCreationState, AddAdvertisementEvent> sm = getStateMachine(context);
         Long chatId = StateMachineContextHelper.getChatId(sm);
-        SendMessage message = createMessage(chatId, this.ACTION_TEXT, null);
+        fillInAd(sm);
+        SendMessage message = createMessage(chatId, ACTION_TEXT, null);
         telegramSender.send(message);
     }
 
     @Override
-    protected void fillInAd(StateMachine<?, ?> stateMachine) {
-        String comment = StateMachineContextHelper.getPreviousStageText(stateMachine);
+    protected void fillInAd(StateMachine<AdCreationState, AddAdvertisementEvent> stateMachine) {
+        String previousStageText = StateMachineContextHelper.getPreviousStageText(stateMachine);
+        List<String> attributes = Arrays.stream(previousStageText.split("\\n")).toList();
         AdvertisementDraftDto adDraft = StateMachineContextHelper.getAdDraft(stateMachine);
-        adDraft.setComment(comment);
+        adDraft.setAttributes(attributes);
         StateMachineContextHelper.setAdDraft(stateMachine, adDraft);
     }
 }

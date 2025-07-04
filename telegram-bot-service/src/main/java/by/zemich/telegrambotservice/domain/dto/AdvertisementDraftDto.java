@@ -12,6 +12,8 @@ public class AdvertisementDraftDto {
         this.userUuid = userUuid;
     }
     private UUID userUuid;
+    private String vendorName;
+    private String modelName;
     private String category;
     private String condition;
     private String price;

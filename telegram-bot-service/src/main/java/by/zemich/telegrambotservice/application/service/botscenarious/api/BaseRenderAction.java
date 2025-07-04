@@ -1,8 +1,6 @@
-package by.zemich.telegrambotservice.application.service.botscenarious.adcreation.action;
+package by.zemich.telegrambotservice.application.service.botscenarious.api;
 
 import by.zemich.telegrambotservice.application.service.api.TelegramSender;
-import by.zemich.telegrambotservice.application.service.botscenarious.adcreation.AdCreationState;
-import by.zemich.telegrambotservice.application.service.botscenarious.adcreation.AddAdvertisementEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.StateMachine;
@@ -11,16 +9,16 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
 @RequiredArgsConstructor
-public abstract class BaseAdCreationAction implements Action<AdCreationState, AddAdvertisementEvent> {
+public abstract class BaseRenderAction<S,E> implements Action<S, E> {
 
     protected final String ACTION_TEXT;
     protected final TelegramSender<SendMessage> telegramSender;
 
-    protected StateMachine<?,?> getStateMachine(StateContext<AdCreationState, AddAdvertisementEvent> context) {
+    protected StateMachine<S,E> getStateMachine(StateContext<S, E> context) {
         return context.getStateMachine();
     }
 
-    protected abstract void fillInAd(StateMachine<?,?> stateMachine);
+
 
     protected SendMessage createMessage(Long chatId,
                                         String text,
@@ -30,6 +28,15 @@ public abstract class BaseAdCreationAction implements Action<AdCreationState, Ad
                 .chatId(chatId)
                 .text(text)
                 .replyMarkup(reply)
+                .build();
+    }
+
+    protected SendMessage createMessage(Long chatId,
+                                        String text
+    ){
+        return SendMessage.builder()
+                .chatId(chatId)
+                .text(text)
                 .build();
     }
 }

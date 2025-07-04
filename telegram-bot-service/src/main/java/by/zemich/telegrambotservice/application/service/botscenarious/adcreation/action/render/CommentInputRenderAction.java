@@ -1,4 +1,4 @@
-package by.zemich.telegrambotservice.application.service.botscenarious.adcreation.action;
+package by.zemich.telegrambotservice.application.service.botscenarious.adcreation.action.render;
 
 import by.zemich.telegrambotservice.application.service.api.TelegramSender;
 import by.zemich.telegrambotservice.application.service.botscenarious.adcreation.AdCreationState;
@@ -10,34 +10,27 @@ import org.springframework.statemachine.StateMachine;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
-import java.util.Arrays;
-import java.util.List;
-
 @Component
-public class ConfirmAction extends BaseAdCreationAction {
+public class CommentInputRenderAction extends AdCreationRenderAction {
 
-    public ConfirmAction(TelegramSender<SendMessage> telegramSender) {
-        super(
-                "Поздравляю! объявление успешно создано. Через некоторое время оно будет опубликовано в канале",
-                telegramSender
-        );
+    public CommentInputRenderAction(TelegramSender<SendMessage> telegramSender) {
+        super("Добавьте комментарий, например некоторые особенности состояния и прочее", telegramSender);
     }
 
     @Override
     public void execute(StateContext<AdCreationState, AddAdvertisementEvent> context) {
-        StateMachine<?, ?> sm = getStateMachine(context);
-        Long chatId = StateMachineContextHelper.getChatId(sm);
+        StateMachine<AdCreationState, AddAdvertisementEvent> sm = context.getStateMachine();
         fillInAd(sm);
+        Long chatId = StateMachineContextHelper.getChatId(sm);
         SendMessage message = createMessage(chatId, ACTION_TEXT, null);
-        telegramSender.send(message);
+        this.telegramSender.send(message);
     }
 
     @Override
-    protected void fillInAd(StateMachine<?, ?> stateMachine) {
-        String previousStageText = StateMachineContextHelper.getPreviousStageText(stateMachine);
-        List<String> attributes = Arrays.stream(previousStageText.split("\\n")).toList();
+    protected void fillInAd(StateMachine<AdCreationState, AddAdvertisementEvent> stateMachine) {
+        String price = StateMachineContextHelper.getPreviousStageText(stateMachine);
         AdvertisementDraftDto adDraft = StateMachineContextHelper.getAdDraft(stateMachine);
-        adDraft.setAttributes(attributes);
+        adDraft.setPrice(price);
         StateMachineContextHelper.setAdDraft(stateMachine, adDraft);
     }
 }

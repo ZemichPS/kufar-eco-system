@@ -1,4 +1,4 @@
-package by.zemich.telegrambotservice.application.service.botscenarious.adcreation.action;
+package by.zemich.telegrambotservice.application.service.botscenarious.adcreation.action.render;
 
 import by.zemich.telegrambotservice.application.service.api.TelegramSender;
 import by.zemich.telegrambotservice.application.service.botscenarious.adcreation.AdCreationState;
@@ -11,26 +11,26 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 @Component
-public class PriceInputAction extends BaseAdCreationAction{
+public class PhotoLoaderRenderAction extends AdCreationRenderAction {
 
-    public PriceInputAction(TelegramSender<SendMessage> telegramSender) {
-        super("Введите цену", telegramSender);
+    public PhotoLoaderRenderAction(TelegramSender<SendMessage> telegramSender) {
+        super("выберите фото", telegramSender);
     }
 
     @Override
     public void execute(StateContext<AdCreationState, AddAdvertisementEvent> context) {
-        StateMachine<?, ?> sm = context.getStateMachine();
+        StateMachine<AdCreationState, AddAdvertisementEvent> sm = context.getStateMachine();
         fillInAd(sm);
         Long chatId = StateMachineContextHelper.getChatId(sm);
-        SendMessage message = createMessage(chatId, ACTION_TEXT, null);
-        this.telegramSender.send(message);
+        SendMessage message = createMessage(chatId, this.ACTION_TEXT, null);
+        telegramSender.send(message);
     }
 
     @Override
-    protected void fillInAd(StateMachine<?, ?> stateMachine) {
-        String condition = StateMachineContextHelper.getPreviousStageText(stateMachine);
+    protected void fillInAd(StateMachine<AdCreationState, AddAdvertisementEvent> stateMachine) {
+        String comment = StateMachineContextHelper.getPreviousStageText(stateMachine);
         AdvertisementDraftDto adDraft = StateMachineContextHelper.getAdDraft(stateMachine);
-        adDraft.setCondition(condition);
+        adDraft.setComment(comment);
         StateMachineContextHelper.setAdDraft(stateMachine, adDraft);
     }
 }

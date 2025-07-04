@@ -1,4 +1,4 @@
-package by.zemich.telegrambotservice.application.service.botscenarious.adcreation.action;
+package by.zemich.telegrambotservice.application.service.botscenarious.adcreation.action.render;
 
 import by.zemich.telegrambotservice.application.service.api.TelegramSender;
 import by.zemich.telegrambotservice.application.service.botscenarious.adcreation.AdCreationState;
@@ -18,14 +18,14 @@ import java.util.List;
 import java.util.UUID;
 
 @Component
-public class CategoryChoiceAction extends BaseAdCreationAction {
+public class CategoryChoiceRenderAction extends AdCreationRenderAction {
 
     private final AdvertisementServiceOpenFeign advertisementServiceOpenFeign;
     private final UserServiceOpenFeign userServiceOpenFeign;
 
-    public CategoryChoiceAction(TelegramSender<SendMessage> telegramSender,
-                                AdvertisementServiceOpenFeign advertisementServiceOpenFeign,
-                                UserServiceOpenFeign userServiceOpenFeign
+    public CategoryChoiceRenderAction(TelegramSender<SendMessage> telegramSender,
+                                      AdvertisementServiceOpenFeign advertisementServiceOpenFeign,
+                                      UserServiceOpenFeign userServiceOpenFeign
     ) {
         super("Выберите категорию", telegramSender);
         this.advertisementServiceOpenFeign = advertisementServiceOpenFeign;
@@ -35,7 +35,7 @@ public class CategoryChoiceAction extends BaseAdCreationAction {
 
     @Override
     public void execute(StateContext<AdCreationState, AddAdvertisementEvent> stateContext) {
-        StateMachine<?, ?> sm = stateContext.getStateMachine();
+        StateMachine<AdCreationState, AddAdvertisementEvent> sm = stateContext.getStateMachine();
         fillInAd(sm);
         Long chatId = StateMachineContextHelper.getChatId(sm);
         List<String> categoryList = advertisementServiceOpenFeign.getCategories();
@@ -45,7 +45,7 @@ public class CategoryChoiceAction extends BaseAdCreationAction {
     }
 
     @Override
-    protected void fillInAd(StateMachine<?, ?> stateMachine) {
+    protected void fillInAd(StateMachine<AdCreationState, AddAdvertisementEvent> stateMachine) {
         Long userId = StateMachineContextHelper.getUserId(stateMachine);
         UUID userUuid = userServiceOpenFeign.getUserIdByTelegramId(userId);
         AdvertisementDraftDto adDraft = new AdvertisementDraftDto(userUuid);

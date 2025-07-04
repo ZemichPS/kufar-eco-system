@@ -1,4 +1,4 @@
-package by.zemich.telegrambotservice.application.service.botscenarious.adcreation.action;
+package by.zemich.telegrambotservice.application.service.botscenarious.adcreation.action.render;
 
 import by.zemich.telegrambotservice.application.service.api.TelegramSender;
 import by.zemich.telegrambotservice.application.service.botscenarious.adcreation.AdCreationState;
@@ -14,11 +14,11 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import java.io.IOException;
 
 @Component
-public class AttributeInputAction extends BaseAdCreationAction {
+public class AttributeInputRenderAction extends AdCreationRenderAction {
 
     private final TelegramFileLoader telegramFileLoader;
 
-    public AttributeInputAction(TelegramSender<SendMessage> telegramSender, TelegramFileLoader telegramFileLoader) {
+    public AttributeInputRenderAction(TelegramSender<SendMessage> telegramSender, TelegramFileLoader telegramFileLoader) {
         super("""
                 📝 Отправьте характеристики товара по одному на строку ⏎
                 Например:
@@ -31,15 +31,16 @@ public class AttributeInputAction extends BaseAdCreationAction {
 
     @Override
     public void execute(StateContext<AdCreationState, AddAdvertisementEvent> context) {
-        StateMachine<?, ?> sm = context.getStateMachine();
+        StateMachine<AdCreationState, AddAdvertisementEvent> sm = context.getStateMachine();
         fillInAd(sm);
         Long chatId = StateMachineContextHelper.getChatId(sm);
         SendMessage message = createMessage(chatId, ACTION_TEXT, null);
         telegramSender.send(message);
     }
 
+
     @Override
-    protected void fillInAd(StateMachine<?, ?> stateMachine) {
+    protected void fillInAd(StateMachine<AdCreationState, AddAdvertisementEvent> stateMachine) {
         String fileId = stateMachine.getExtendedState().get("fileId", String.class);
         String filename = null;
 
