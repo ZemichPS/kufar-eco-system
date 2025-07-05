@@ -32,6 +32,6 @@ public class ContactRequestAction extends AbstractUserRegistrationAction {
 
     @Override
     public UserRegistrationState getHandleState() {
-        return UserRegistrationState.CONTACT_INPUT;
+        return UserRegistrationState.USER_CONTACT_INPUT;
     }
 }

@@ -22,4 +22,8 @@ public class RoleGuard extends AbstractUserRegistrationGuard implements RoleProv
     }
 
 
+    @Override
+    public UserRegistrationState getType() {
+        return UserRegistrationState.ROLE_INPUT;
+    }
 }

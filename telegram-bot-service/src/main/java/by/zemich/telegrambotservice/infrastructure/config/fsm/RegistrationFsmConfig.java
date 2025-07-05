@@ -1,6 +1,7 @@
 package by.zemich.telegrambotservice.infrastructure.config.fsm;
 
-import by.zemich.telegrambotservice.application.service.scenarious.adcreation.AdCreationState;
+import by.zemich.telegrambotservice.application.service.scenarious.api.BaseRenderAction;
+import by.zemich.telegrambotservice.application.service.scenarious.api.CustomGuard;
 import by.zemich.telegrambotservice.application.service.scenarious.registration.event.UserRegistrationEvent;
 import by.zemich.telegrambotservice.application.service.scenarious.registration.state.UserRegistrationState;
 import lombok.RequiredArgsConstructor;
@@ -11,16 +12,21 @@ import org.springframework.statemachine.config.builders.StateMachineStateConfigu
 import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
 
 import java.util.EnumSet;
+import java.util.Map;
 
 @Configuration
 @EnableStateMachineFactory(name = "REGISTRATION")
 @RequiredArgsConstructor
 public class RegistrationFsmConfig extends StateMachineConfigurerAdapter<UserRegistrationState, UserRegistrationEvent> {
+
+    private final Map<UserRegistrationState, BaseRenderAction<UserRegistrationState, UserRegistrationEvent>> registrationRenderActionMap;
+    private final Map<UserRegistrationState, CustomGuard<UserRegistrationState, UserRegistrationEvent>> registrationGuardMap;
+
     @Override
     public void configure(StateMachineStateConfigurer<UserRegistrationState, UserRegistrationEvent> states) throws Exception {
         states.withStates()
-                .initial(UserRegistrationState.START)
-                .end(UserRegistrationState.END)
+                .initial(UserRegistrationState.START_REGISTRATION)
+                .end(UserRegistrationState.END_REGISTRATION)
                 .states(EnumSet.allOf(UserRegistrationState.class));
     }
 
@@ -28,10 +34,15 @@ public class RegistrationFsmConfig extends StateMachineConfigurerAdapter<UserReg
     public void configure(StateMachineTransitionConfigurer<UserRegistrationState, UserRegistrationEvent> transitions) throws Exception {
         transitions
                 .withChoice()
-                .source(UserRegistrationState.START)
-                .first()
-                .last()
-                .
+                .source(UserRegistrationState.START_REGISTRATION)
+                .first(UserRegistrationState.USER_DATA_INPUT,
+                        registrationGuardMap.get(UserRegistrationState.USER_DATA_INPUT),
+                        registrationRenderActionMap.get(UserRegistrationState.USER_DATA_INPUT)
+                )
+                .last(UserRegistrationState.START_REGISTRATION_ERROR);
+
+        transitions.withFork().
+
 
     }
 }

@@ -21,4 +21,9 @@ public class UserExistsGuard extends AbstractUserRegistrationGuard {
         Long userId = update.getMessage().getFrom().getId();
         return userServiceOpenFeign.existsByTelegramId(userId);
     }
+
+    @Override
+    public UserRegistrationState getType() {
+        return UserRegistrationState.START_REGISTRATION;
+    }
 }

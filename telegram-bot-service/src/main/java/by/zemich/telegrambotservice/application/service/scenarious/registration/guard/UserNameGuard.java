@@ -19,4 +19,9 @@ public class UserNameGuard extends AbstractUserRegistrationGuard {
                 !username.isBlank() &&
                 username.split(" ").length == 2;
     }
+
+    @Override
+    public UserRegistrationState getType() {
+        return UserRegistrationState.USER_DATA_INPUT;
+    }
 }

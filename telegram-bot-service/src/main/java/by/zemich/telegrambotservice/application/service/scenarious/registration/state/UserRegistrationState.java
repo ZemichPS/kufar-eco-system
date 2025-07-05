@@ -1,10 +1,10 @@
 package by.zemich.telegrambotservice.application.service.scenarious.registration.state;
 
 public enum UserRegistrationState {
-    START,
-    CONFIRM,
+    START_REGISTRATION,
+    CONFIRM_REGISTRATION,
     ROLE_INPUT,
     USER_DATA_INPUT,
-    CONTACT_INPUT,
-    END
+    USER_CONTACT_INPUT,
+    END_REGISTRATION, START_REGISTRATION_ERROR,
 }

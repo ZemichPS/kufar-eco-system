@@ -34,6 +34,6 @@ public class StartRegistrationAction extends AbstractUserRegistrationAction {
 
     @Override
     public UserRegistrationState getHandleState() {
-        return UserRegistrationState.START;
+        return UserRegistrationState.START_REGISTRATION;
     }
 }
