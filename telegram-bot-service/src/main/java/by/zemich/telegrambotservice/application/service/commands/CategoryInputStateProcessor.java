@@ -1,7 +1,7 @@
 package by.zemich.telegrambotservice.application.service.commands;
 
 import by.zemich.telegrambotservice.application.service.api.TelegramSender;
-import by.zemich.telegrambotservice.application.service.botscenarious.adcreation.AdCreationState;
+import by.zemich.telegrambotservice.application.service.scenarious.adcreation.AdCreationState;
 import by.zemich.telegrambotservice.application.service.openfeign.AdvertisementServiceOpenFeign;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

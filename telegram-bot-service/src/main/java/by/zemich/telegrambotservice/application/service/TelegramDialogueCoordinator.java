@@ -1,6 +1,6 @@
 package by.zemich.telegrambotservice.application.service;
 
-import by.zemich.telegrambotservice.application.service.botscenarious.ScenarioType;
+import by.zemich.telegrambotservice.application.service.scenarious.ScenarioType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.statemachine.StateMachine;

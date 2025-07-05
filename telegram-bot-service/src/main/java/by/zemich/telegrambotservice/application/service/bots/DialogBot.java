@@ -10,7 +10,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.File;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import by.zemich.telegrambotservice.application.service.botscenarious.api.UpdateHandler;
+import by.zemich.telegrambotservice.application.service.scenarious.api.UpdateHandler;
 
 
 @Component
