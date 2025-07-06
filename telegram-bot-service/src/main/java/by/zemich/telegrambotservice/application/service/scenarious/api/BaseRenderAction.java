@@ -1,7 +1,6 @@
 package by.zemich.telegrambotservice.application.service.scenarious.api;
 
 import by.zemich.telegrambotservice.application.service.api.TelegramSender;
-import by.zemich.telegrambotservice.application.service.scenarious.registration.state.UserRegistrationState;
 import lombok.RequiredArgsConstructor;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.StateMachine;
@@ -10,7 +9,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
 @RequiredArgsConstructor
-public abstract class BaseRenderAction<S extends Enum<S>, E> implements Action<S, E>, TypeHandler<S> {
+public abstract class BaseRenderAction<S extends Enum<S>, E> implements Action<S, E>, StateHandleable<S> {
 
     protected final String ACTION_TEXT;
     protected final TelegramSender<SendMessage> telegramSender;
@@ -18,8 +17,6 @@ public abstract class BaseRenderAction<S extends Enum<S>, E> implements Action<S
     protected StateMachine<S, E> getStateMachine(StateContext<S, E> context) {
         return context.getStateMachine();
     }
-
-    public abstract S getHandleState();
 
     protected SendMessage createMessage(Long chatId,
                                         String text,

@@ -1,5 +1,6 @@
 package by.zemich.telegrambotservice.application.service.scenarious.api;
 
-public interface TypeHandler<T extends Enum<T>> {
+public interface StateHandleable<T extends Enum<T>> {
+
     T getType();
 }

@@ -19,11 +19,11 @@ public class UserExistsGuard extends AbstractUserRegistrationGuard {
     public boolean evaluate(StateContext<UserRegistrationState, UserRegistrationEvent> context) {
         Update update = StateMachineContextHelper.getUpdate(context.getStateMachine());
         Long userId = update.getMessage().getFrom().getId();
-        return userServiceOpenFeign.existsByTelegramId(userId);
+        return !userServiceOpenFeign.existsByTelegramId(userId);
     }
 
     @Override
     public UserRegistrationState getType() {
-        return UserRegistrationState.START_REGISTRATION;
+        return UserRegistrationState.USER_DATA_INPUT;
     }
 }

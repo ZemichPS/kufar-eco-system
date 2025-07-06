@@ -34,7 +34,7 @@ public class UserDataRequestAction extends AbstractUserRegistrationAction {
     }
 
     @Override
-    public UserRegistrationState getHandleState() {
+    public UserRegistrationState getType() {
         return UserRegistrationState.USER_DATA_INPUT;
     }
 }

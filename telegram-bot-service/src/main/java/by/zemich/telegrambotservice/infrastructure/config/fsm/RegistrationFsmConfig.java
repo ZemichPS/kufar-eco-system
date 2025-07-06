@@ -34,14 +34,19 @@ public class RegistrationFsmConfig extends StateMachineConfigurerAdapter<UserReg
     public void configure(StateMachineTransitionConfigurer<UserRegistrationState, UserRegistrationEvent> transitions) throws Exception {
         transitions
                 .withChoice()
-                .source(UserRegistrationState.START_REGISTRATION)
-                .first(UserRegistrationState.USER_DATA_INPUT,
+                    .source(UserRegistrationState.START_REGISTRATION)
+                    .first(UserRegistrationState.USER_DATA_INPUT,
                         registrationGuardMap.get(UserRegistrationState.USER_DATA_INPUT),
                         registrationRenderActionMap.get(UserRegistrationState.USER_DATA_INPUT)
-                )
-                .last(UserRegistrationState.START_REGISTRATION_ERROR);
-
-        transitions.withFork().
+                    )
+                    .last(UserRegistrationState.USER_EXISTS)
+                .and()
+                .withExternal()
+                    .source(UserRegistrationState.USER_DATA_INPUT)
+                    .target(UserRegistrationState.USER_CONTACT_INPUT)
+                    .action()
+                    .action()
+                    .guard()
 
 
     }
