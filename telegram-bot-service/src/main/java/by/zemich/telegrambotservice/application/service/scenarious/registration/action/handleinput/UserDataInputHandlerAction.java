@@ -33,5 +33,6 @@ public class UserDataInputHandlerAction extends AbstractUserRegistrationInputHan
         userRegistration.setChatId(update.getMessage().getChatId());
         userRegistration.setUserId(update.getMessage().getFrom().getId());
         saveUserRegistration(context, userRegistration);
+        sendEvent(context, UserRegistrationEvent.USER_DATA_INPUTED);
     }
 }

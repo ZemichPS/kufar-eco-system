@@ -21,4 +21,8 @@ public abstract class AbstractUserRegistrationInputHandlerAction implements Acti
     protected Update getUpdate(StateContext<UserRegistrationState, UserRegistrationEvent> context) {
         return context.getExtendedState().get("userRegistration", Update.class);
     }
+
+    protected void sendEvent(StateContext<UserRegistrationState, UserRegistrationEvent> context, UserRegistrationEvent event){
+        context.getStateMachine().sendEvent(event);
+    }
 }
