@@ -2,5 +2,5 @@ package by.zemich.telegrambotservice.application.service.scenarious.registration
 
 public enum UserRegistrationEvent {
     STARTED,
-    ENDED
+    USER_DATA_INPUTED, USER_CONTACT_INPUTED, USER_ROLE_INPUTED, ENDED
 }
