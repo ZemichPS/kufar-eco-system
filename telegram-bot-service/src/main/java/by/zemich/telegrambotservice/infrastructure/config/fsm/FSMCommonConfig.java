@@ -43,7 +43,7 @@ public class FSMCommonConfig {
     public Map<UserRegistrationState, AbstractUserRegistrationGuard<UserRegistrationState, UserRegistrationEvent>> registrationRenderActionMap(List<AbstractUserRegistrationGuard<UserRegistrationState, UserRegistrationEvent>> actionList) {
         Map<UserRegistrationState, AbstractUserRegistrationGuard<UserRegistrationState, UserRegistrationEvent>> renderActionMap = new EnumMap<>(UserRegistrationState.class);
         actionList.forEach(guard -> {
-            renderActionMap.put(guard.getType(), guard);
+            renderActionMap.put(guard.getHandleState(), guard);
         });
         return renderActionMap;
     }

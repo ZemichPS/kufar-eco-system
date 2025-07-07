@@ -23,7 +23,7 @@ public class UserExistsGuard extends AbstractUserRegistrationGuard {
     }
 
     @Override
-    public UserRegistrationState getType() {
+    public UserRegistrationState getHandleState() {
         return UserRegistrationState.USER_DATA_INPUT;
     }
 }

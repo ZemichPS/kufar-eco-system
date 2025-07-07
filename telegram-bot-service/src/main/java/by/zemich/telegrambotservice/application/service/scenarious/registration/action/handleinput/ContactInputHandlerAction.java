@@ -17,6 +17,6 @@ public class ContactInputHandlerAction extends AbstractUserRegistrationInputHand
         UserRegistrationDto userRegistration = getUserRegistration(context);
         userRegistration.setPhoneNumber(phoneNumber);
         saveUserRegistration(context, userRegistration);
-        sendEvent(context, UserRegistrationEvent.USER_ROLE_INPUTED);
+        sendEvent(context, UserRegistrationEvent.USER_ROLE_RECEIVED);
     }
 }

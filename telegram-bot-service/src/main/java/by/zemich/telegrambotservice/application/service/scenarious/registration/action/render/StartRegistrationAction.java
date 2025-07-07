@@ -23,7 +23,7 @@ public class StartRegistrationAction extends AbstractUserRegistrationAction {
     public void execute(StateContext<UserRegistrationState, UserRegistrationEvent> context) {
         Long chatId = StateMachineContextHelper.getChatId(context.getStateMachine());
         String username = getUserName(context);
-        String greeting = String.format("Приветствую Вас, %s! Сейчас я помогу Вам зарегистрироваться в приложении", username);
+        String greeting = String.format("Приветствую Вас, %s! Сейчас я помогу Вам зарегистрироваться в приложении.", username);
         KeyboardUtil.createInlineKeyboardMarkup(List.of("Далее..."),1);
         SendMessage sendMessage = this.createMessage(chatId, greeting);
         telegramSender.send(sendMessage);
@@ -38,7 +38,7 @@ public class StartRegistrationAction extends AbstractUserRegistrationAction {
 
 
     @Override
-    public UserRegistrationState getType() {
+    public UserRegistrationState getHandleState() {
         return UserRegistrationState.START_REGISTRATION;
     }
 
