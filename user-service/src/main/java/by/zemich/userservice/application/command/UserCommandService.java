@@ -25,7 +25,7 @@ public class UserCommandService {
     public User handle(RegisterUserCommand command) {
         String email = command.email().getEmail();
         if (userRepository.existsByEmail(email)) throw new UserAlreadyExistsException(email);
-
+        System.out.println("sdfsdf");
         String encodedPassword = passwordEncoder.encode(command.rawPassword());
         User newUser = new User(command);
         newUser.setPassword(encodedPassword);
