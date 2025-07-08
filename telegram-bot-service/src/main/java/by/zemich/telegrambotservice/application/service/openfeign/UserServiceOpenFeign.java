@@ -7,7 +7,9 @@ import java.util.UUID;
 
 @FeignClient("getcategoriespath")
 public interface UserServiceOpenFeign {
+
     UUID getUserIdByTelegramId(Long id);
+
     boolean existsByTelegramId(Long id);
 
     boolean saveUser(UserRegistrationDto userRegistration);

@@ -2,8 +2,10 @@ package by.zemich.userservice.api.rest;
 
 import by.zemich.userservice.api.rest.dto.OrganizationRequestDto;
 import by.zemich.userservice.api.rest.dto.UserCreateRequestDto;
+import by.zemich.userservice.api.rest.dto.UserRegistrationDto;
 import by.zemich.userservice.domain.command.CreateOrganizationCommand;
 import by.zemich.userservice.domain.command.RegisterUserCommand;
+import by.zemich.userservice.domain.command.RegisterUserFromTelegramCommand;
 import by.zemich.userservice.domain.command.UpdateOrganizationCommand;
 import by.zemich.userservice.domain.model.organization.vo.OrganizationId;
 import by.zemich.userservice.domain.model.organization.vo.OrganizationType;
@@ -25,6 +27,17 @@ public class CommandMapper {
         );
     }
 
+
+    public static RegisterUserFromTelegramCommand map(UserRegistrationDto dto) {
+        return new RegisterUserFromTelegramCommand(
+                new FullName(dto.getFirstName(), dto.getLastName()),
+                Role.valueOf(dto.getRole()),
+                new Email(dto.getEmail()),
+                new PhoneNumber(dto.getPhoneNumber()),
+                new ExternalTelegramData(dto.getUserId(), dto.getChatId(), dto.getUsername())
+        );
+    }
+
     public static CreateOrganizationCommand map(OrganizationRequestDto dto){
         return new CreateOrganizationCommand(
                 new OrganizationId(UUID.randomUUID()),
@@ -42,6 +55,8 @@ public class CommandMapper {
                 dto.getApartmentNumber()
         );
     }
+
+
 
     public static UpdateOrganizationCommand map(OrganizationRequestDto dto, UUID idUser, UUID organizationId){
         return new UpdateOrganizationCommand(

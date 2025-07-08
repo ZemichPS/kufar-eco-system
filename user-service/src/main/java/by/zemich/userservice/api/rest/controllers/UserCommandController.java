@@ -1,18 +1,11 @@
 package by.zemich.userservice.api.rest.controllers;
 
 import by.zemich.userservice.api.rest.CommandMapper;
-import by.zemich.userservice.api.rest.dto.AssignRoleDto;
-import by.zemich.userservice.api.rest.dto.ConfirmationCodeDto;
-import by.zemich.userservice.api.rest.dto.OrganizationRequestDto;
-import by.zemich.userservice.api.rest.dto.UserCreateRequestDto;
-import by.zemich.userservice.domain.command.ConfirmRegistrationCodeCommand;
+import by.zemich.userservice.api.rest.dto.*;
+import by.zemich.userservice.domain.command.*;
 import by.zemich.userservice.application.command.OrganizationCommandService;
 import by.zemich.userservice.application.command.UserCommandService;
 import by.zemich.userservice.domain.dto.UserResponseDto;
-import by.zemich.userservice.domain.command.AssignUserRoleCommand;
-import by.zemich.userservice.domain.command.CreateOrganizationCommand;
-import by.zemich.userservice.domain.command.RegisterUserCommand;
-import by.zemich.userservice.domain.command.UpdateOrganizationCommand;
 import by.zemich.userservice.domain.model.organization.entity.Organization;
 import by.zemich.userservice.domain.model.user.entity.User;
 import by.zemich.userservice.domain.model.user.vo.Role;
@@ -40,6 +33,20 @@ public class UserCommandController {
             @Valid @RequestBody UserCreateRequestDto dto
     ) {
         RegisterUserCommand command = CommandMapper.map(dto);
+        User newUser = userCommandService.handle(command);
+        String location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(newUser.getUserId().id())
+                .toUriString();
+        return ResponseEntity.created(URI.create(location)).build();
+    }
+
+    @PostMapping("/telegram")
+    public ResponseEntity<UserResponseDto> register(
+            @Valid @RequestBody UserRegistrationDto dto
+    ) {
+        RegisterUserFromTelegramCommand command = CommandMapper.map(dto);
         User newUser = userCommandService.handle(command);
         String location = ServletUriComponentsBuilder
                 .fromCurrentRequest()

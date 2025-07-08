@@ -21,8 +21,8 @@ public class User {
     private FullName fullName;
     private Email email;
     private PhoneNumber phoneNumber;
-    private String telegramUserId;
     private String password;
+    private ExternalTelegramData externalTelegramData;
     private OrganizationId organizationId;
     private boolean enabled;
 
