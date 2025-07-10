@@ -23,7 +23,7 @@ public class DialogBot extends TelegramLongPollingBot implements TelegramSender<
 
     @Override
     public String getBotUsername() {
-        return telegramBotRegistry.getByName("dialogBot").getBotUsername();
+        return telegramBotRegistry.getByName("dialogBotBot").getBotUsername();
     }
 
     @Override

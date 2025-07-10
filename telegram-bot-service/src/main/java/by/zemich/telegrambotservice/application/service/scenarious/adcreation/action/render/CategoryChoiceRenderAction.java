@@ -44,7 +44,6 @@ public class CategoryChoiceRenderAction extends AdCreationRenderAction {
         telegramSender.send(sendMessage);
     }
 
-    @Override
     protected void fillInAd(StateMachine<AdCreationState, AddAdvertisementEvent> stateMachine) {
         Long userId = StateMachineContextHelper.getUserId(stateMachine);
         UUID userUuid = userServiceOpenFeign.getUserIdByTelegramId(userId);

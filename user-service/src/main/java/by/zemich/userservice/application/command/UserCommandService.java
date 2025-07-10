@@ -6,6 +6,7 @@ import by.zemich.userservice.domain.command.RegisterUserCommand;
 import by.zemich.userservice.domain.command.RegisterUserFromTelegramCommand;
 import by.zemich.userservice.domain.exception.UserAlreadyExistsException;
 import by.zemich.userservice.domain.exception.UserNotFoundException;
+import by.zemich.userservice.domain.model.factories.UserFactory;
 import by.zemich.userservice.domain.model.user.entity.User;
 import by.zemich.userservice.domain.model.user.vo.UserId;
 import by.zemich.userservice.domain.policy.UserActivationAllowedPolicy;
@@ -21,28 +22,21 @@ public class UserCommandService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserConfirmationService userConfirmationService;
+    private final UserFactory userFactory = new UserFactory();
 
     public User handle(RegisterUserCommand command) {
         String email = command.email().getEmail();
         if (userRepository.existsByEmail(email)) throw new UserAlreadyExistsException(email);
-        System.out.println("sdfsdf");
-        System.out.println("sdfsdf");
-        String encodedPassword = passwordEncoder.encode(command.rawPassword());
-        User newUser = new User(command);
-        newUser.setPassword(encodedPassword);
+        User newUser = userFactory.createFromCommand(command, passwordEncoder);
         userConfirmationService.sendConfirmationEmail(email, newUser.getUserId());
         return userRepository.save(newUser);
     }
 
     public User handle(RegisterUserFromTelegramCommand command) {
-        String email = command.email().getEmail();
-        if (userRepository.existsByEmail(email)) throw new UserAlreadyExistsException(email);
-
-        String encodedPassword = passwordEncoder.encode(command.rawPassword());
-        User newUser = new User(command);
-        newUser.setPassword(encodedPassword);
-        userConfirmationService.sendConfirmationEmail(email, newUser.getUserId());
-        return userRepository.save(newUser);
+        Long telegramUserId = command.externalTelegramData().getUserId();
+        if (userRepository.existsByTelegramId(telegramUserId)) throw new UserAlreadyExistsException(telegramUserId.toString());
+        User newUserFromTelegram = userFactory.createFromCommand(command);
+        return userRepository.save(newUserFromTelegram);
     }
 
     public void handle(ConfirmRegistrationCodeCommand command) {
@@ -61,6 +55,5 @@ public class UserCommandService {
         userRepository.save(user);
     }
 
-    private
 
 }

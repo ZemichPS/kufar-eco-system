@@ -25,7 +25,6 @@ public class CategoryInputHandlerAction extends AdCreationHandlerInputAction {
         return AddAdvertisementEvent.MODEL_RECEIVED;
     }
 
-    @Override
     public void validate(String input) {
        if (input.isEmpty()) throw new IllegalArgumentException("Неверная категория");
     }

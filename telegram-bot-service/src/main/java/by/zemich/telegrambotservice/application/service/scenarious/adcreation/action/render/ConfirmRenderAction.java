@@ -32,7 +32,6 @@ public class ConfirmRenderAction extends AdCreationRenderAction {
         telegramSender.send(message);
     }
 
-    @Override
     protected void fillInAd(StateMachine<AdCreationState, AddAdvertisementEvent> stateMachine) {
         String previousStageText = StateMachineContextHelper.getPreviousStageText(stateMachine);
         List<String> attributes = Arrays.stream(previousStageText.split("\\n")).toList();

@@ -60,4 +60,9 @@ public class JpaUserRepository implements UserRepository {
     public Optional<User> getUserId(UserId userId) {
         return springDataUserRepository.findById(userId.id()).map(UserMapper::map);
     }
+
+    @Override
+    public boolean existsByTelegramId(Long telegramUserId) {
+        return springDataUserRepository.existsByTelegramUserId(telegramUserId);
+    }
 }

@@ -15,7 +15,11 @@ public class UserMapper {
         user.setFullName(new FullName(entity.getFirstName(), entity.getLastName()));
         user.setEmail(new Email(entity.getEmail()));
         user.setPhoneNumber(new PhoneNumber(entity.getPhoneNumber()));
-        user.setTelegramUserId(entity.getTelegramUserId());
+        user.setExternalTelegramData(new ExternalTelegramData(
+                entity.getTelegramUserId(),
+                entity.getTelegramChatId(),
+                entity.getTelegramUsername()
+        ));
         user.setPassword(entity.getPassword());
         user.setEnabled(entity.getEnabled());
         if (entity.getOrganization() != null)
@@ -31,7 +35,9 @@ public class UserMapper {
                 .registrationDate(domain.getRegisteredAt())
                 .email(domain.getEmail().getEmail())
                 .phoneNumber(domain.getPhoneNumber().phoneNumber())
-                .telegramUserId(domain.getTelegramUserId())
+                .telegramUserId(domain.getExternalTelegramData().getUserId())
+                .telegramUsername(domain.getExternalTelegramData().getUsername())
+                .telegramChatId(domain.getExternalTelegramData().getChatId())
                 .password(domain.getPassword())
                 .role(UserEntity.Role.valueOf(domain.getRole().toString()))
                 .enabled(domain.isEnabled())

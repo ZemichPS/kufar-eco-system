@@ -10,7 +10,9 @@ CREATE TABLE app.users
     last_name         text,
     email             text,
     phone_number      text,
-    telegram_user_id  text,
+    telegram_user_id  bigint,
+    telegram_chat_id  bigint,
+    telegram_username text,
     password          text,
     organization_id   uuid,
     enabled           bool

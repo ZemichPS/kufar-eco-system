@@ -29,7 +29,7 @@ public class ModelChoiceAction extends AdCreationRenderAction {
     public void execute(StateContext<AdCreationState, AddAdvertisementEvent> context) {
         Long chatId = StateMachineContextHelper.getChatId(context.getStateMachine());
         String vendorName = getVendor(context.getStateMachine());
-        List<String> modelList = deviceCatalogDeviceOpenFeign.getModelByVendor(vendorName);
+        List<String> modelList = deviceCatalogDeviceOpenFeign.getModelsByVendorName(vendorName);
         InlineKeyboardMarkup modelInlineKeyboardMarkup = KeyboardUtil.createInlineKeyboardMarkup(modelList, 3);
         SendMessage sendMessage = createMessage(chatId, this.ACTION_TEXT, modelInlineKeyboardMarkup);
         telegramSender.send(sendMessage);

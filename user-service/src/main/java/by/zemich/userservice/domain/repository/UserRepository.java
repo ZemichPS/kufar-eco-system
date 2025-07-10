@@ -23,4 +23,6 @@ public interface UserRepository {
     List<User> getAll();
 
     Optional<User> getUserId(UserId userId);
+
+    boolean existsByTelegramId(Long telegramUserId);
 }

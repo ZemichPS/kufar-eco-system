@@ -1,16 +1,15 @@
 package by.zemich.telegrambotservice.infrastructure.config;
 
-import by.zemich.telegrambotservice.application.service.scenarious.adcreation.AdCreationState;
-import by.zemich.telegrambotservice.application.service.scenarious.adcreation.AddAdvertisementEvent;
+import by.zemich.telegrambotservice.domain.model.UserSession;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
-import org.springframework.statemachine.persist.DefaultStateMachinePersister;
-import org.springframework.statemachine.persist.StateMachinePersister;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
 
@@ -31,12 +30,11 @@ public class AppRedisConfig {
     }
 
     @Bean
-    public StateMachinePersister<AdCreationState, AddAdvertisementEvent, String> redisPersister(
-            RedisConnectionFactory redisConnectionFactory
-    ) {
-        RedisStateMachinePersist<AdCreationState, AddAdvertisementEvent> persist =
-                new RedisStateMachinePersist<>(redisConnectionFactory);
-
-        return new DefaultStateMachinePersister<>(persist);
+    public RedisTemplate<String, UserSession> redisTemplate(LettuceConnectionFactory lettuceConnectionFactory) {
+        RedisTemplate<String, UserSession> template = new RedisTemplate<>();
+        template.setConnectionFactory(lettuceConnectionFactory);
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        return template;
     }
 }

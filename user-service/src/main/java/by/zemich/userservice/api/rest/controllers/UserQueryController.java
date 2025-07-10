@@ -2,6 +2,7 @@ package by.zemich.userservice.api.rest.controllers;
 
 import by.zemich.userservice.application.query.OrganizationQueryService;
 import by.zemich.userservice.application.query.UserQueryService;
+import by.zemich.userservice.domain.queries.ExistsUserByTelegramUserQuery;
 import by.zemich.userservice.domain.queries.GetUserByTelegramIdQuery;
 import by.zemich.userservice.domain.queries.GetUserByUserId;
 import by.zemich.userservice.domain.model.user.vo.UserId;
@@ -42,5 +43,16 @@ public class UserQueryController {
         UserFullRecord response = userQueryService.getFullRecordById(new GetUserByUserId(userId));
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/exists")
+    public ResponseEntity<Boolean> checkUserExists(@RequestParam Long telegramUserId) {
+        ExistsUserByTelegramUserQuery query = new ExistsUserByTelegramUserQuery(telegramUserId);
+        boolean exists =  userQueryService.existsByTelegramUserId(query);
+        return exists
+                ? ResponseEntity.ok(true)
+                : ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
+    }
+
+
 
 }

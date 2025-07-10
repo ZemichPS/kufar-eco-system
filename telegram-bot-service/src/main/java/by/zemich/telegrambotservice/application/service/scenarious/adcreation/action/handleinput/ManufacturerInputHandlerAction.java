@@ -25,7 +25,6 @@ public class ManufacturerInputHandlerAction extends AdCreationHandlerInputAction
         return AddAdvertisementEvent.MANUFACTURER_RECEIVED;
     }
 
-    @Override
     public void validate(String input) {
         if (input.isEmpty()) throw new IllegalArgumentException("Неверный производитель");
     }

@@ -17,4 +17,9 @@ public class RoleInputHandlerAction extends AbstractUserRegistrationInputHandler
         userRegistration.setRole(role);
         saveUserRegistration(context, userRegistration);
     }
+
+    @Override
+    public UserRegistrationState getHandleState() {
+        return UserRegistrationState.ROLE_INPUT;
+    }
 }

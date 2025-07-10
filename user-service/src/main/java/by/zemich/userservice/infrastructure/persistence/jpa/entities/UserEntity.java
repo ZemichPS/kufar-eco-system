@@ -24,7 +24,9 @@ public class UserEntity {
     @CreationTimestamp
     private LocalDateTime registrationDate;
     private String email;
-    private String telegramUserId;
+    private Long telegramUserId;
+    private Long telegramChatId;
+    private String telegramUsername;
     private String phoneNumber;
     private String password;
     @OneToOne(

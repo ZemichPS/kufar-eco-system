@@ -72,7 +72,7 @@ telegram:
   bots:
     KufarSpy: 7899332979:AAHbNgTpqFhNs3GSFggBduf-kPnLmAZOhPM
     kufar-assistant: 7154289150:AAHvRug9PYcG6TZHCjseCBQZ3euIAZQTZns
-    dialogBot: 7154289150:AAHvRug9G6TZHCjseCBQZ3euIAZQTZns # заменить token
+    dialogBotBot: 7835063190:AAEkmC2SV7O2roTY5C8qB73UKzVusc2XOJY
 
 
 server:

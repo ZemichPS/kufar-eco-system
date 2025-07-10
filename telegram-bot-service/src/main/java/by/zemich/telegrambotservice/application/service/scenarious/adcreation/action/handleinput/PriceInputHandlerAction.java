@@ -27,7 +27,6 @@ public class PriceInputHandlerAction extends AdCreationHandlerInputAction {
         return AddAdvertisementEvent.MODEL_RECEIVED;
     }
 
-    @Override
     public void validate(String input) {
         try {
             BigDecimal value = new BigDecimal(input);

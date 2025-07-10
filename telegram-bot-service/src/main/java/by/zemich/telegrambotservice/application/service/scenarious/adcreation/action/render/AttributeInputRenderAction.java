@@ -39,7 +39,6 @@ public class AttributeInputRenderAction extends AdCreationRenderAction {
     }
 
 
-    @Override
     protected void fillInAd(StateMachine<AdCreationState, AddAdvertisementEvent> stateMachine) {
         String fileId = stateMachine.getExtendedState().get("fileId", String.class);
         String filename = null;

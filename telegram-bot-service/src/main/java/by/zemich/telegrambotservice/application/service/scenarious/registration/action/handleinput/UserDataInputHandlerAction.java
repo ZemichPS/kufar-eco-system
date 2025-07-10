@@ -35,4 +35,9 @@ public class UserDataInputHandlerAction extends AbstractUserRegistrationInputHan
         saveUserRegistration(context, userRegistration);
         sendEvent(context, UserRegistrationEvent.USER_DATA_RECEIVED);
     }
+
+    @Override
+    public UserRegistrationState getHandleState() {
+        return UserRegistrationState.USER_DATA_INPUT;
+    }
 }

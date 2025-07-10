@@ -30,7 +30,6 @@ public class StartInputHandlerAction extends AdCreationHandlerInputAction {
         return AddAdvertisementEvent.STARTED;
     }
 
-    @Override
     public void validate(String input) {
 
     }

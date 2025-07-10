@@ -26,7 +26,6 @@ public class PriceInputRenderAction extends AdCreationRenderAction {
         this.telegramSender.send(message);
     }
 
-    @Override
     protected void fillInAd(StateMachine<AdCreationState, AddAdvertisementEvent> stateMachine) {
         String condition = StateMachineContextHelper.getPreviousStageText(stateMachine);
         AdvertisementDraftDto adDraft = StateMachineContextHelper.getAdDraft(stateMachine);

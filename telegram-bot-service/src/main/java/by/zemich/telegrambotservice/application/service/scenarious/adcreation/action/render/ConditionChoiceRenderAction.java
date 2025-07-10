@@ -34,7 +34,6 @@ public class ConditionChoiceRenderAction extends AdCreationRenderAction {
         telegramSender.send(message);
     }
 
-    @Override
     protected void fillInAd(StateMachine<AdCreationState, AddAdvertisementEvent> stateMachine) {
         String adCategory = StateMachineContextHelper.getPreviousStageText(stateMachine);
         AdvertisementDraftDto adDraft = StateMachineContextHelper.getAdDraft(stateMachine);

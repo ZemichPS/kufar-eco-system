@@ -8,5 +8,4 @@ public record RegisterUserFromTelegramCommand(
         Email email,
         PhoneNumber phoneNumber,
         ExternalTelegramData externalTelegramData
-) {
-}
+) {}

@@ -3,6 +3,7 @@ package by.zemich.device_catalog_service.api.rest;
 import by.zemich.device_catalog_service.domen.dtos.BrandDto;
 import by.zemich.device_catalog_service.domen.dtos.BrandModifyDto;
 import by.zemich.device_catalog_service.domen.dtos.ModelCreateDto;
+import by.zemich.device_catalog_service.domen.dtos.ModelDto;
 import by.zemich.device_catalog_service.service.BrandServiceFacade;
 import by.zemich.device_catalog_service.service.DataProvider;
 import jakarta.validation.Valid;
@@ -26,6 +27,12 @@ public class BrandRestController {
     @GetMapping
     public ResponseEntity<List<BrandDto>> getAllBrands() {
         List<BrandDto> response = brandServiceFacade.getAllBrands();
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{brandName}/models")
+    public ResponseEntity<List<ModelDto>> getAllModelsByBrandName(String brandName) {
+        List<ModelDto> response = brandServiceFacade.getAllModelsByBrandName(brandName);
         return ResponseEntity.ok(response);
     }
 

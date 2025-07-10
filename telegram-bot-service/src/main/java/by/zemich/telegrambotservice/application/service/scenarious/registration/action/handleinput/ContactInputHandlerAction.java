@@ -19,4 +19,9 @@ public class ContactInputHandlerAction extends AbstractUserRegistrationInputHand
         saveUserRegistration(context, userRegistration);
         sendEvent(context, UserRegistrationEvent.USER_ROLE_RECEIVED);
     }
+
+    @Override
+    public UserRegistrationState getHandleState() {
+        return UserRegistrationState.USER_CONTACT_INPUT;
+    }
 }

@@ -40,6 +40,13 @@ public class BrandServiceFacade {
                 })
                 .toList();
     }
+    @Cacheable(key = "'allModelsByBrandName'")
+    public List<ModelDto> getAllModelsByBrandName(String brandName) {
+        return brandService.getByName(brandName)
+                .map(this::mapToDto)
+                .orElseThrow()
+                .getModels();
+    }
 
     @Cacheable(key = "#brandName")
     public BrandDto getByName(String brandName) {
@@ -78,7 +85,8 @@ public class BrandServiceFacade {
 
     @Caching(
             evict = {
-                    @CacheEvict(key = "'all'")
+                    @CacheEvict(key = "'all'"),
+                    @CacheEvict(key = "'allModelsByBrandName'")
             },
             put = {
                     @CachePut(key = "#result.name"),
@@ -121,7 +129,8 @@ public class BrandServiceFacade {
 
     @Caching(
             evict = {
-                    @CacheEvict(key = "'all'")
+                    @CacheEvict(key = "'all'"),
+                    @CacheEvict(key = "'allModelsByBrandName'")
             },
             put = {
                     @CachePut(key = "#brandUuid"),
@@ -140,6 +149,7 @@ public class BrandServiceFacade {
     @Caching(
             evict = {
                     @CacheEvict(key = "'all'"),
+                    @CacheEvict(key = "'allModelsByBrandName'"),
                     @CacheEvict(key = "#result.uuid"),
                     @CacheEvict(key = "#result.name"),
             }
