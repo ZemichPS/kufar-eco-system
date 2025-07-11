@@ -1,33 +1,38 @@
 spring:
-
   kafka:
     bootstrap-servers: localhost:9092
-    consumer:
-      group-id: advertisement-group
-      enable-auto-commit: true
-      auto-offset-reset: earliest
     properties:
       schema.registry.url: http://localhost:8085
+    enabled: false
 
   autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
+
   #  datasource:
-#    driver-class-name: org.postgresql.Driver
-#    url: jdbc:postgresql://localhost:5435/telegram-bot-db
-#    username: postgres_user_admin
-#    password: postgres_db_password
-#    hikari:
-#      pool-name: HikariPool
-#      maximum-pool-size: 20
-#      minimum-idle: 5       # Минимальное количество подключений в ожидании
-#      idle-timeout: 30000   # Тайм-аут ожидания (в миллисекундах) для неактивных соединений
-#      max-lifetime: 1800000 # Максимальное время жизни соединения (в миллисекундах)
-#      connection-timeout: 30000 # Тайм-аут для получения соединения из пула
-#      validation-timeout: 5000 # Тайм-аут для проверки соединения
-#      connection-test-query: SELECT 1
+  #    driver-class-name: org.postgresql.Driver
+  #    url: jdbc:postgresql://localhost:5435/telegram-bot-db
+  #    username: postgres_user_admin
+  #    password: postgres_db_password
+  #    hikari:
+  #      pool-name: HikariPool
+  #      maximum-pool-size: 20
+  #      minimum-idle: 5       # Минимальное количество подключений в ожидании
+  #      idle-timeout: 30000   # Тайм-аут ожидания (в миллисекундах) для неактивных соединений
+  #      max-lifetime: 1800000 # Максимальное время жизни соединения (в миллисекундах)
+  #      connection-timeout: 30000 # Тайм-аут для получения соединения из пула
+  #      validation-timeout: 5000 # Тайм-аут для проверки соединения
+  #      connection-test-query: SELECT 1
 
   config:
-    import: configserver:http://localhost:8888
+    import: "configserver:"
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: configserver
+      fail-fast: false
 
 eureka:
   client:

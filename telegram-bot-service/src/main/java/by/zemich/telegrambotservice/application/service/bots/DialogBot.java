@@ -2,7 +2,9 @@ package by.zemich.telegrambotservice.application.service.bots;
 
 import by.zemich.telegrambotservice.application.service.api.TelegramFileDownloader;
 import by.zemich.telegrambotservice.application.service.api.TelegramSender;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.GetFile;
@@ -15,19 +17,24 @@ import by.zemich.telegrambotservice.application.service.scenarious.api.UpdateHan
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class DialogBot extends TelegramLongPollingBot implements TelegramSender<SendMessage>, TelegramFileDownloader {
 
-    private final TelegramBotRegistry telegramBotRegistry;
     private final UpdateHandler updateHandler;
 
+    @PostConstruct
+    private void init(){
+        log.info("Initializing Bot name: {}", getBotUsername());
+    }
 
     @Override
     public String getBotUsername() {
-        return telegramBotRegistry.getByName("dialogBotBot").getBotUsername();
+        return "DialogueBot";
     }
 
     @Override
     public void onUpdateReceived(Update update) {
+        log.info("Update received: {}", update.getMessage().getText());
         updateHandler.handle(update);
     }
 
@@ -52,6 +59,6 @@ public class DialogBot extends TelegramLongPollingBot implements TelegramSender<
 
     @Override
     public String getToken() {
-        return telegramBotRegistry.getByName("dialogBot").getBotToken();
+        return "7835063190:AAFFaTsvaeEF0b1jZ0a0VuOt5l5vTYfiLgs";
     }
 }

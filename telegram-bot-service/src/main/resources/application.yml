@@ -72,8 +72,6 @@ telegram:
   bots:
     KufarSpy: 7899332979:AAHbNgTpqFhNs3GSFggBduf-kPnLmAZOhPM
     kufar-assistant: 7154289150:AAHvRug9PYcG6TZHCjseCBQZ3euIAZQTZns
-    dialogBotBot: 7835063190:AAEkmC2SV7O2roTY5C8qB73UKzVusc2XOJY
-
 
 server:
   port: 8087

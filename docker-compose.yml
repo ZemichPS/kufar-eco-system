@@ -290,13 +290,16 @@ services:
 
   redis:
     container_name: redis-cache
-    image: redis:8.0-M02-alpine
+    image: redis:8.0-alpine
     restart: always
     ports:
       - "6379:6379"
     networks:
       - application-net
-
+    environment:
+      - REDIS_PASSWORD=admin
+    command: >
+      sh -c "redis-server --requirepass \"$REDIS_PASSWORD\" --appendonly yes"
 
   prometheus:
     container_name: prometheus
@@ -402,5 +405,3 @@ services:
     ports:
       - "9200:9200"
       - "9300:9300"
-
-

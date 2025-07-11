@@ -1,6 +1,8 @@
 package by.zemich.telegrambotservice.infrastructure.config;
 
 import by.zemich.telegrambotservice.domain.model.UserSession;
+import io.lettuce.core.ClientOptions;
+import io.lettuce.core.SocketOptions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
@@ -21,12 +23,20 @@ public class AppRedisConfig {
     public LettuceConnectionFactory lettuceConnectionFactory() {
 
         LettuceClientConfiguration clientConfig = LettuceClientConfiguration.builder()
-                .useSsl().and()
                 .commandTimeout(Duration.ofSeconds(2))
                 .shutdownTimeout(Duration.ZERO)
-                .build();
+                .clientOptions(ClientOptions.builder()
+                        .autoReconnect(true) // Автоподключение при разрыве
+                        .socketOptions(SocketOptions.builder()
+                                .connectTimeout(Duration.ofSeconds(1))
+                                .build())
+                        .build()).build();
 
-        return new LettuceConnectionFactory(new RedisStandaloneConfiguration("localhost", 6379), clientConfig);
+        RedisStandaloneConfiguration redisConfig = new RedisStandaloneConfiguration();
+        redisConfig.setHostName("localhost");
+        redisConfig.setPort(6379);
+        redisConfig.setPassword("admin");
+        return new LettuceConnectionFactory(redisConfig, clientConfig);
     }
 
     @Bean
