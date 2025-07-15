@@ -7,8 +7,6 @@ import org.springframework.statemachine.StateMachine;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.time.Instant;
-
 @Component
 @RequiredArgsConstructor
 public class UpdateHandler {
@@ -16,32 +14,20 @@ public class UpdateHandler {
     private final StateMachineOrchestrator stateMachineOrchestrator;
     private final ScenarioDetector scenarioDetector;
     private final UserSessionService userSessionService;
-    private final NextEventResolver nextEventResolver;
+    //private final NextEventResolver nextEventResolver;
 
     public <E extends Enum<E>, S extends Enum<S>> void handle(Update update) {
 
-        if (!update.hasMessage() && !update.hasCallbackQuery()) {
-            //TODO отправить сообщение по умолчанию
-            return;
-        }
-
         Long chatId = getChatId(update);
-        ScenarioType scenarioType = scenarioDetector.detectScenario(update);
 
-        UserSession session = userSessionService.getByChatIdAndScenarioType(chatId, scenarioType)
-                .orElseGet(() -> userSessionService.create(chatId, scenarioType));
+        UserSession session = userSessionService.findByChatId(chatId)
+                .orElseGet(() -> userSessionService.create(chatId));
 
-        StateMachine<S, E> stateMachine = stateMachineOrchestrator.getStateMachine(session);
-        nextEventResolver.resolveNextEvent(stateMachine).ifPresent(
-                event -> {
-                    String text = getMessageText(update);
-                    StateMachineContextHelper.setVariable(stateMachine, "textFromUpdate", text);
-                    StateMachineContextHelper.setUserId(stateMachine, getUserId(update));
-                    session.setLastActivity(Instant.now());
-                    userSessionService.save(session, chatId);
-                    stateMachine.sendEvent(event);
-                }
-        );
+        ScenarioType scenarioType = scenarioDetector.detectScenario(update, session);
+        if (session.getCurrentScenarioType() == null) session.setCurrentScenarioType(scenarioType);
+        StateMachine<S, E> stateMachine = stateMachineOrchestrator.getStateMachineBySession(session);
+        userSessionService.update(session);
+        stateMachine.start();
     }
 
     private Long getChatId(Update update) {

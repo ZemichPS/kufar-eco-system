@@ -10,24 +10,10 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Service
 @AllArgsConstructor
 public class ScenarioDetector {
-    private final UserSessionService userSessionService;
 
-    public ScenarioType detectScenario(Update update) {
-        if (!update.hasMessage()) {
-            return ScenarioType.DEFAULT;
-        }
-
-        Long chatId = update.getMessage().getChatId();
-        // TODO заменить на orElse()
-        UserSession session = userSessionService.findByChatId(chatId).get();
-
-        if (session != null && session.getCurrentScenarioType() != null) {
-            return session.getCurrentScenarioType();
-        }
+    public ScenarioType detectScenario(Update update, UserSession session) {
 
         Message message = update.getMessage();
-
-        if (message.hasPhoto()) return ScenarioType.PHOTO_PROCESSING;
 
         if (message.hasText()) {
             String text = message.getText();
@@ -38,9 +24,15 @@ public class ScenarioDetector {
 
     private ScenarioType detectBySession(UserSession session) {
         return (session != null && session.getCurrentScenarioType() != null)
-                ? ScenarioType.CONTINUE_PREVIOUS // Продолжаем текущий сценарий
+                ? session.getCurrentScenarioType()
                 : ScenarioType.DEFAULT; // Или переходим в дефолтное состояние
     }
+
+//    private ScenarioType detectBySession(UserSession session) {
+//        return (session != null && session.getCurrentScenarioType() != null)
+//                ? ScenarioType.CONTINUE_PREVIOUS // Продолжаем текущий сценарий
+//                : ScenarioType.DEFAULT; // Или переходим в дефолтное состояние
+//    }
 
     private ScenarioType detectByCommand(String text) {
         return switch (text.split(" ")[0]) {

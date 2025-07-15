@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/advertisement-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/advertisement-service.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/by.zemich.telegram-bot-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/by.zemich.telegram-bot-service.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/gateway-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/gateway-service.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/kufar-eco-system.iml" filepath="$PROJECT_DIR$/.idea/kufar-eco-system.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kufar.main.iml" filepath="$PROJECT_DIR$/.idea/modules/kufar.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/user-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/user-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/telegram-bot-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/telegram-bot-service.main.iml" />
     </modules>
   </component>
 </project>

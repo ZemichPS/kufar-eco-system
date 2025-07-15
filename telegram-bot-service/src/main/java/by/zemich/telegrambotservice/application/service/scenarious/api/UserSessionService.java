@@ -7,10 +7,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -31,7 +30,7 @@ public class UserSessionService {
                 .chatId(chatId)
                 .currentScenarioType(scenarioType)
                 .contextData(HashMap.newHashMap(16))
-                .lastActivity(Instant.now())
+                .lastActivity(LocalDateTime.now())
                 .chatId(chatId)
                 .build();
         String key = createKey(chatId, scenarioType);
@@ -39,19 +38,31 @@ public class UserSessionService {
         return session;
     }
 
-    public void save(UserSession session, Long chatId) {
+    public UserSession create(Long chatId) {
+        UserSession session = UserSession.builder()
+                .id(UUID.randomUUID())
+                .chatId(chatId)
+                .contextData(HashMap.newHashMap(16))
+                .lastActivity(LocalDateTime.now())
+                .chatId(chatId)
+                .build();
+        redisTemplate.opsForValue().set(chatId.toString(), session, Duration.ofHours(1));
+        return session;
+    }
+
+    public void saveNew(UserSession session, Long chatId) {
+        String key = createKey(chatId, session.getCurrentScenarioType());
+        redisTemplate.opsForValue().set(key, session, Duration.ofHours(1));
+    }
+
+    public void update(UserSession session) {
+        Long chatId = session.getChatId();
         String key = createKey(chatId, session.getCurrentScenarioType());
         redisTemplate.opsForValue().set(key, session, Duration.ofHours(1));
     }
 
     public Optional<UserSession> findByChatId(Long chatId) {
-        String pattern = createKey(chatId, null) + "*";
-        Set<String> keys = redisTemplate.keys(pattern);
-        if (keys == null || keys.isEmpty()) {
-            return Optional.empty();
-        }
-        String firstKey = keys.iterator().next();
-        return Optional.ofNullable(redisTemplate.opsForValue().get(firstKey));
+        return Optional.ofNullable(redisTemplate.opsForValue().get(chatId.toString()));
 
     }
 

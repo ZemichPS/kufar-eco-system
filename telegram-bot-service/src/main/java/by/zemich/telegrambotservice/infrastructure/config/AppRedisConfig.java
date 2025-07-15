@@ -1,8 +1,10 @@
 package by.zemich.telegrambotservice.infrastructure.config;
 
 import by.zemich.telegrambotservice.domain.model.UserSession;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.lettuce.core.ClientOptions;
 import io.lettuce.core.SocketOptions;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
@@ -11,13 +13,18 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
 
 @Configuration
 @EnableRedisRepositories
+@RequiredArgsConstructor
 public class AppRedisConfig {
+
+
+    private final ObjectMapper objectMapper;
 
     @Bean
     public LettuceConnectionFactory lettuceConnectionFactory() {
@@ -43,8 +50,14 @@ public class AppRedisConfig {
     public RedisTemplate<String, UserSession> redisTemplate(LettuceConnectionFactory lettuceConnectionFactory) {
         RedisTemplate<String, UserSession> template = new RedisTemplate<>();
         template.setConnectionFactory(lettuceConnectionFactory);
+
+        Jackson2JsonRedisSerializer<UserSession> serializer = new Jackson2JsonRedisSerializer<>(objectMapper, UserSession.class);
+
+        template.setDefaultSerializer(serializer);
         template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        template.setHashKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(serializer);
+        template.setHashValueSerializer(serializer);
         return template;
     }
 }

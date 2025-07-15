@@ -7,11 +7,13 @@ import by.zemich.telegrambotservice.application.service.scenarious.adcreation.ac
 import by.zemich.telegrambotservice.application.service.scenarious.api.BaseRenderAction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.statemachine.config.EnableStateMachine;
 import org.springframework.statemachine.config.EnableStateMachineFactory;
 import org.springframework.statemachine.config.StateMachineConfigurerAdapter;
 import org.springframework.statemachine.config.builders.StateMachineConfigurationConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineStateConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
+import org.springframework.stereotype.Component;
 
 import java.util.EnumSet;
 import java.util.Map;
@@ -23,7 +25,7 @@ import java.util.Map;
 public class AddAdvertisementFSMConfig extends StateMachineConfigurerAdapter<AdCreationState, AddAdvertisementEvent> {
 
     private final AddAdsStateMachineListenerAdapter listenerAdapter;
-    private final AdCreationGoBackAction adCreationGoBackAction;
+ //   private final AdCreationGoBackAction adCreationGoBackAction;
     private final Map<AdCreationState, BaseRenderAction<AdCreationState, AddAdvertisementEvent>> renderActionMap;
 
 
@@ -32,18 +34,7 @@ public class AddAdvertisementFSMConfig extends StateMachineConfigurerAdapter<AdC
         states.withStates()
                 .initial(AdCreationState.START_AD_CREATION)
                 .end(AdCreationState.CONFIRMATION)
-                .states(EnumSet.allOf(AdCreationState.class))
-                .stateEntry(AdCreationState.START_AD_CREATION, renderActionMap.get(AdCreationState.START_AD_CREATION), adCreationGoBackAction)
-                .stateEntry(AdCreationState.SIDE_INPUT, renderActionMap.get(AdCreationState.SIDE_INPUT), adCreationGoBackAction)
-                .stateEntry(AdCreationState.CATEGORY_INPUT, renderActionMap.get(AdCreationState.CATEGORY_INPUT), adCreationGoBackAction)
-                .stateEntry(AdCreationState.CONDITION_INPUT, renderActionMap.get(AdCreationState.CONDITION_INPUT), adCreationGoBackAction)
-                .stateEntry(AdCreationState.PRICE_INPUT, renderActionMap.get(AdCreationState.PRICE_INPUT), adCreationGoBackAction)
-                .stateEntry(AdCreationState.COMMENT_INPUT, renderActionMap.get(AdCreationState.COMMENT_INPUT), adCreationGoBackAction)
-                .stateEntry(AdCreationState.PHOTO_INPUT, renderActionMap.get(AdCreationState.PHOTO_INPUT), adCreationGoBackAction)
-                .stateEntry(AdCreationState.ATTRIBUTES_INPUT, renderActionMap.get(AdCreationState.ATTRIBUTES_INPUT), adCreationGoBackAction)
-                .stateEntry(AdCreationState.MANUFACTURER_INPUT, renderActionMap.get(AdCreationState.MANUFACTURER_INPUT), adCreationGoBackAction)
-                .stateEntry(AdCreationState.MODEL_INPUT, renderActionMap.get(AdCreationState.MODEL_INPUT), adCreationGoBackAction)
-                .stateEntry(AdCreationState.CONFIRMATION, renderActionMap.get(AdCreationState.CONFIRMATION), adCreationGoBackAction);
+                .states(EnumSet.allOf(AdCreationState.class));
     }
 
     @Override
