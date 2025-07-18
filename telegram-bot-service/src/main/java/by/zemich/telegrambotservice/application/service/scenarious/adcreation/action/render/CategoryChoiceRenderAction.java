@@ -37,7 +37,7 @@ public class CategoryChoiceRenderAction extends AdCreationRenderAction {
     public void execute(StateContext<AdCreationState, AddAdvertisementEvent> stateContext) {
         StateMachine<AdCreationState, AddAdvertisementEvent> sm = stateContext.getStateMachine();
         fillInAd(sm);
-        Long chatId = StateMachineContextHelper.getChatId(sm);
+        Long chatId = StateMachineContextHelper.getChatId(stateContext);
         List<String> categoryList = advertisementServiceOpenFeign.getCategories();
         InlineKeyboardMarkup inlineKeyboardMarkup = KeyboardUtil.createInlineKeyboardMarkup(categoryList, 2);
         SendMessage sendMessage = createMessage(chatId, ACTION_TEXT, inlineKeyboardMarkup);

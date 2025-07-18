@@ -15,9 +15,10 @@ import org.telegram.telegrambots.meta.api.objects.File;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+
 @Component
 @Slf4j
-public class DialogBot extends TelegramLongPollingBot implements TelegramSender<SendMessage>, TelegramFileDownloader {
+public class DialogBot extends TelegramLongPollingBot {
 
     private final UpdateHandler updateHandler;
 
@@ -36,27 +37,4 @@ public class DialogBot extends TelegramLongPollingBot implements TelegramSender<
         updateHandler.handle(update);
     }
 
-    @Override
-    public void send(SendMessage sendMessage) {
-        try {
-            this.execute(sendMessage);
-        } catch (TelegramApiException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
-    @Override
-    public File downloadFile(GetFile getFile) {
-        try {
-            return execute(getFile);
-        } catch (TelegramApiException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public String getToken() {
-        return "7835063190:AAFFaTsvaeEF0b1jZ0a0VuOt5l5vTYfiLgs";
-    }
 }

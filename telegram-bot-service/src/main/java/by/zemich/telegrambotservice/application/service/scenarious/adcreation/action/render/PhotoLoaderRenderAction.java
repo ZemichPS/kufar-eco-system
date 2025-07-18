@@ -21,7 +21,7 @@ public class PhotoLoaderRenderAction extends AdCreationRenderAction {
     public void execute(StateContext<AdCreationState, AddAdvertisementEvent> context) {
         StateMachine<AdCreationState, AddAdvertisementEvent> sm = context.getStateMachine();
         fillInAd(sm);
-        Long chatId = StateMachineContextHelper.getChatId(sm);
+        Long chatId = StateMachineContextHelper.getChatId(context);
         SendMessage message = createMessage(chatId, this.ACTION_TEXT, null);
         telegramSender.send(message);
     }

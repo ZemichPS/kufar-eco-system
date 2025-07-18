@@ -1,6 +1,9 @@
 package by.zemich.telegrambotservice.application.service.scenarious.api;
 
+import by.zemich.telegrambotservice.application.service.scenarious.registration.event.UserRegistrationEvent;
+import by.zemich.telegrambotservice.application.service.scenarious.registration.state.UserRegistrationState;
 import by.zemich.telegrambotservice.domain.dto.AdvertisementDraftDto;
+import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.StateMachine;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -11,8 +14,8 @@ public class StateMachineContextHelper {
         return (E) sm.getExtendedState().get("nextEvent", Enum.class);
     }
 
-    public static Long getChatId(StateMachine<?, ?> sm) {
-        return sm.getExtendedState().get("chaId", Long.class);
+    public static Long getChatId(StateContext<?, ?> context) {
+        return context.getExtendedState().get("chatId", Long.class);
     }
 
     public static String getPreviousStageText(StateMachine<?, ?> sm) {

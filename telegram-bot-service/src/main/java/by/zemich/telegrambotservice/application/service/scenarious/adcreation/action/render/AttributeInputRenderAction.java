@@ -32,7 +32,7 @@ public class AttributeInputRenderAction extends AdCreationRenderAction {
     @Override
     public void execute(StateContext<AdCreationState, AddAdvertisementEvent> context) {
         StateMachine<AdCreationState, AddAdvertisementEvent> sm = context.getStateMachine();
-        Long chatId = StateMachineContextHelper.getChatId(sm);
+        Long chatId = StateMachineContextHelper.getChatId(context);
         saveTriggerEvent(context);
         SendMessage message = createMessage(chatId, ACTION_TEXT, null);
         telegramSender.send(message);

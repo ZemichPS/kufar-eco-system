@@ -14,6 +14,7 @@ import org.springframework.statemachine.config.StateMachineConfigurerAdapter;
 import org.springframework.statemachine.config.builders.StateMachineConfigurationConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineStateConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
+import org.springframework.statemachine.listener.StateMachineListener;
 import org.springframework.statemachine.persist.StateMachineRuntimePersister;
 
 import java.util.EnumSet;
@@ -22,9 +23,10 @@ import java.util.Map;
 @Configuration
 @EnableStateMachineFactory(name = "REGISTRATION")
 @RequiredArgsConstructor
-public class FsmConfig extends StateMachineConfigurerAdapter<UserRegistrationState, UserRegistrationEvent> {
+public class RegistrationFsmConfig extends StateMachineConfigurerAdapter<UserRegistrationState, UserRegistrationEvent> {
 
     private final StateMachineRuntimePersister<UserRegistrationState, UserRegistrationEvent, String> stateMachineRuntimePersister;
+    private final StateMachineListener<UserRegistrationState, UserRegistrationEvent> stateMachineListener;
 
     private final Map<UserRegistrationState, BaseRenderAction<UserRegistrationState, UserRegistrationEvent>> renderActionMap;
     private final Map<UserRegistrationState, CustomGuard<UserRegistrationState, UserRegistrationEvent>> guardMap;
@@ -33,7 +35,10 @@ public class FsmConfig extends StateMachineConfigurerAdapter<UserRegistrationSta
 
     @Override
     public void configure(StateMachineConfigurationConfigurer<UserRegistrationState, UserRegistrationEvent> config) throws Exception {
-        config.withConfiguration().autoStartup(true)
+        config.withConfiguration()
+                .machineId("user-registration")
+                .listener(stateMachineListener)
+                .autoStartup(false)
                 .and()
                 .withPersistence().runtimePersister(stateMachineRuntimePersister);
 
@@ -51,13 +56,17 @@ public class FsmConfig extends StateMachineConfigurerAdapter<UserRegistrationSta
     public void configure(StateMachineTransitionConfigurer<UserRegistrationState, UserRegistrationEvent> transitions) throws Exception {
         transitions
                 .withExternal()
-                .source(UserRegistrationState.START_REGISTRATION)
-                .target(UserRegistrationState.GREETING)
-                .event(UserRegistrationEvent.BEGIN_REGISTRATION) // ← Триггер
-                .action(renderActionMap.get(UserRegistrationState.START_REGISTRATION))
+                    .source(UserRegistrationState.START_REGISTRATION)
+                    .target(UserRegistrationState.GREETING)
+                    .action(renderActionMap.get(UserRegistrationState.START_REGISTRATION))
                 .and()
-                .withChoice()
-                .source(UserRegistrationState.GREETING)
+                .withExternal()
+                    .source(UserRegistrationState.GREETING)
+                    .target(UserRegistrationState.USER_CHECK_ROUTER)
+                    .event(UserRegistrationEvent.CONTINUE_REGISTRATION)
+                .and()
+                    .withChoice()
+                    .source(UserRegistrationState.USER_CHECK_ROUTER)
                 .first(UserRegistrationState.USER_DATA_INPUT,
                         guardMap.get(UserRegistrationState.USER_DATA_INPUT)
                 )

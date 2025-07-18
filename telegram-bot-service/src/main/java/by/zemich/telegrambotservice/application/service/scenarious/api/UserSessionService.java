@@ -38,10 +38,11 @@ public class UserSessionService {
         return session;
     }
 
-    public UserSession create(Long chatId) {
+    public UserSession create(Long chatId, Long userId) {
         UserSession session = UserSession.builder()
                 .id(UUID.randomUUID())
                 .chatId(chatId)
+                .userId(userId)
                 .contextData(HashMap.newHashMap(16))
                 .lastActivity(LocalDateTime.now())
                 .chatId(chatId)
@@ -57,13 +58,12 @@ public class UserSessionService {
 
     public void update(UserSession session) {
         Long chatId = session.getChatId();
-        String key = createKey(chatId, session.getCurrentScenarioType());
-        redisTemplate.opsForValue().set(key, session, Duration.ofHours(1));
+        //String key = createKey(chatId, session.getCurrentScenarioType());
+        redisTemplate.opsForValue().set(chatId.toString(), session, Duration.ofHours(1));
     }
 
-    public Optional<UserSession> findByChatId(Long chatId) {
-        return Optional.ofNullable(redisTemplate.opsForValue().get(chatId.toString()));
-
+    public Optional<UserSession> findByUserId(Long userId) {
+        return Optional.ofNullable(redisTemplate.opsForValue().get(userId.toString()));
     }
 
     private String createKey(Long chatId, ScenarioType scenarioType) {

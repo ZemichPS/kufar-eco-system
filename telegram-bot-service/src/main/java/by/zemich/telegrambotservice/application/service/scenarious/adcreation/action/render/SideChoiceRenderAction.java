@@ -22,7 +22,7 @@ public class SideChoiceRenderAction extends AdCreationRenderAction {
     @Override
     public void execute(StateContext<AdCreationState, AddAdvertisementEvent> context) {
         StateMachine<AdCreationState, AddAdvertisementEvent> sm = context.getStateMachine();
-        Long chatId = StateMachineContextHelper.getChatId(sm);
+        Long chatId = StateMachineContextHelper.getChatId(context);
         InlineKeyboardMarkup inlineKeyboardMarkup = KeyboardUtil.createInlineKeyboardMarkup(List.of("Ищу", "Продаю"), 2);
         SendMessage message = createMessage(chatId, this.ACTION_TEXT, inlineKeyboardMarkup);
         telegramSender.send(message);

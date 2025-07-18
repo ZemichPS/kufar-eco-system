@@ -27,7 +27,7 @@ public class ModelChoiceAction extends AdCreationRenderAction {
 
     @Override
     public void execute(StateContext<AdCreationState, AddAdvertisementEvent> context) {
-        Long chatId = StateMachineContextHelper.getChatId(context.getStateMachine());
+        Long chatId = StateMachineContextHelper.getChatId(context);
         String vendorName = getVendor(context.getStateMachine());
         List<String> modelList = deviceCatalogDeviceOpenFeign.getModelsByVendorName(vendorName);
         InlineKeyboardMarkup modelInlineKeyboardMarkup = KeyboardUtil.createInlineKeyboardMarkup(modelList, 3);

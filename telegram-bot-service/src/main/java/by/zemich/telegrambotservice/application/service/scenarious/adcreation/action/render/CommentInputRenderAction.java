@@ -21,7 +21,7 @@ public class CommentInputRenderAction extends AdCreationRenderAction {
     public void execute(StateContext<AdCreationState, AddAdvertisementEvent> context) {
         StateMachine<AdCreationState, AddAdvertisementEvent> sm = context.getStateMachine();
         fillInAd(sm);
-        Long chatId = StateMachineContextHelper.getChatId(sm);
+        Long chatId = StateMachineContextHelper.getChatId(context);
         SendMessage message = createMessage(chatId, ACTION_TEXT, null);
         this.telegramSender.send(message);
     }

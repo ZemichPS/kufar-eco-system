@@ -44,7 +44,7 @@ public abstract class BaseRenderAction<S extends Enum<S>, E> implements Action<S
     }
 
     protected Long getChatId(StateContext<S, E> context) {
-        return StateMachineContextHelper.getChatId(context.getStateMachine());
+        return StateMachineContextHelper.getChatId(context);
     }
 
 

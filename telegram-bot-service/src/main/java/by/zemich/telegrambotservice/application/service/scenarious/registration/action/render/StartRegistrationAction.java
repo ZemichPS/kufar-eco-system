@@ -9,6 +9,7 @@ import org.springframework.statemachine.StateContext;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 import java.util.List;
 
@@ -21,11 +22,11 @@ public class StartRegistrationAction extends AbstractUserRegistrationAction {
 
     @Override
     public void execute(StateContext<UserRegistrationState, UserRegistrationEvent> context) {
-        Long chatId = StateMachineContextHelper.getChatId(context.getStateMachine());
+        Long chatId = StateMachineContextHelper.getChatId(context);
         String username = getUserName(context);
         String greeting = String.format("Приветствую Вас, %s! Сейчас я помогу Вам зарегистрироваться в приложении.", username);
-        KeyboardUtil.createInlineKeyboardMarkup(List.of("Далее..."),1);
-        SendMessage sendMessage = this.createMessage(chatId, greeting);
+        InlineKeyboardMarkup contonueInlineKeyboardMarkup = KeyboardUtil.createInlineKeyboardMarkup(List.of("Далее..."), List.of("event:CONTINUE_REGISTRATION"));
+        SendMessage sendMessage = this.createMessage(chatId, greeting, contonueInlineKeyboardMarkup);
         telegramSender.send(sendMessage);
     }
 

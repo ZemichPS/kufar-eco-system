@@ -26,7 +26,7 @@ public class ManufacturerChoiceRenderAction extends AdCreationRenderAction {
     @Override
     public void execute(StateContext<AdCreationState, AddAdvertisementEvent> context) {
         List<String> vendors = deviceCatalogDeviceOpenFeign.getVendors();
-        Long chatId = StateMachineContextHelper.getChatId(context.getStateMachine());
+        Long chatId = StateMachineContextHelper.getChatId(context);
         InlineKeyboardMarkup vendorInlineKeyboardMarkup = KeyboardUtil.createInlineKeyboardMarkup(vendors, 3);
         SendMessage sendMessage = createMessage(chatId, this.ACTION_TEXT, vendorInlineKeyboardMarkup);
         telegramSender.send(sendMessage);

@@ -26,7 +26,7 @@ public class ConfirmRenderAction extends AdCreationRenderAction {
     @Override
     public void execute(StateContext<AdCreationState, AddAdvertisementEvent> context) {
         StateMachine<AdCreationState, AddAdvertisementEvent> sm = getStateMachine(context);
-        Long chatId = StateMachineContextHelper.getChatId(sm);
+        Long chatId = StateMachineContextHelper.getChatId(context);
         fillInAd(sm);
         SendMessage message = createMessage(chatId, ACTION_TEXT, null);
         telegramSender.send(message);

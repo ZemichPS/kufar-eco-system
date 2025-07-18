@@ -20,8 +20,9 @@ import java.util.UUID;
 public class UserSession implements Serializable {
     private UUID id;
     Long chatId;
+    Long userId;
     ScenarioType currentScenarioType;
     private Map<String, Object> contextData = new HashMap<>();
-    private String stateMachineId; // Связь с SM в Redis
+    private UUID stateMachineId; // Связь с SM в Redis
     private LocalDateTime lastActivity;
 }
