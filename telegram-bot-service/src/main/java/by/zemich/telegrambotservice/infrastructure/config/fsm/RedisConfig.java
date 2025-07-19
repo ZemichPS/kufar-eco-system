@@ -21,7 +21,6 @@ import org.springframework.statemachine.persist.StateMachineRuntimePersister;
 @EnableRedisRepositories
 public class RedisConfig {
 
-
     @Bean
     public StateMachineRuntimePersister<UserRegistrationState, UserRegistrationEvent, String> stateMachineRuntimePersister(RedisStateMachineRepository repository) {
         return new RedisPersistingStateMachineInterceptor<>(repository);
@@ -44,6 +43,4 @@ public class RedisConfig {
             StateMachinePersist<UserRegistrationState, UserRegistrationEvent, String> stateMachinePersist) {
         return new RedisStateMachinePersister<>(stateMachinePersist);
     }
-
-
 }

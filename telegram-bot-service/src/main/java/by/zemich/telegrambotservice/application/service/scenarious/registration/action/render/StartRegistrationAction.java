@@ -8,7 +8,6 @@ import by.zemich.telegrambotservice.application.service.scenarious.registration.
 import org.springframework.statemachine.StateContext;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 import java.util.List;
@@ -31,9 +30,8 @@ public class StartRegistrationAction extends AbstractUserRegistrationAction {
     }
 
     private String getUserName(StateContext<UserRegistrationState, UserRegistrationEvent> context) {
-        Update update = StateMachineContextHelper.getUpdate(context.getStateMachine());
-        String firsName = update.getMessage().getFrom().getFirstName();
-        String username = update.getMessage().getFrom().getUserName();
+        String firsName = context.getExtendedState().get("username", String.class);
+        String username = context.getExtendedState().get("firsName", String.class);
         return firsName != null ? firsName : username;
     }
 

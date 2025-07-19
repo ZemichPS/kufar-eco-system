@@ -289,7 +289,7 @@ services:
 
 
   redis:
-    container_name: redis-cache
+    container_name: redis
     image: redis:8.0-alpine
     restart: always
     ports:
@@ -300,6 +300,19 @@ services:
       - REDIS_PASSWORD=admin
     command: >
       sh -c "redis-server --requirepass \"$REDIS_PASSWORD\" --appendonly yes"
+
+  redisinsight:
+    container_name: redisinsight
+    image: redis/redisinsight:latest
+    restart: always
+    ports:
+      - "5540:5540"
+    networks:
+      - application-net
+    environment:
+      - REDIS_PASSWORD=admin
+    depends_on:
+      - redis
 
   prometheus:
     container_name: prometheus
